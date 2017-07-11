@@ -7,6 +7,8 @@ var config = require('./config');
 
 var StatsCommand = require('./lib/commands/stats');
 var OperatorCommand = require('./lib/commands/operator');
+var RandomOperatorCommand = require('./lib/commands/randomop');
+var HelpCommand = require('./lib/commands/help');
 
 
 var r6client = new R6Stats({
@@ -24,7 +26,9 @@ client.on('ready', () => {
 
 var commands = {
 	'stats': new StatsCommand(players),
-	'operator': new OperatorCommand(players)
+	'operator': new OperatorCommand(players),
+	'randomop': new RandomOperatorCommand(),
+	'help': new HelpCommand()
 }
 
 client.on('message', message => {
