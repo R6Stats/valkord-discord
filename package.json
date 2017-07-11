@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "discord.js": "^11.1.0",
+    "r6stats": "0.0.3"
+  }
+}
