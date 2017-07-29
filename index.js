@@ -47,6 +47,7 @@ client.on('message', message => {
 	if (!found) return;
 
 	var split = message.content.split(' ');
+	if (split.length <= 1) return;
 	var command = split[1].toLowerCase();
 	var args = split.slice(2);
 
