@@ -1,38 +1,33 @@
-var ex = {};
-
-ex.getPlatform = function (plat) {
-	var platform, platformImg;
-	switch(plat) {
+const getPlatform = (platform) => {
+	let name, image
+	switch(platform) {
 		case 'xbox':
 		case 'xone':
 		case 'xbl':
 		case 'xboxone':
-		platform = 'xone';
-		platformImg = 'https://beta.r6stats.com/static/platform-icons/xone_logo.png'
-		break;
+		name = 'xone'
+		image = 'https://beta.r6stats.com/static/platform-icons/xone_logo.png'
+		break
 		case 'uplay':
 		case 'steam':
 		case 'pc':
-		platform = 'uplay';
-		platformImg = 'https://beta.r6stats.com/static/platform-icons/uplay_logo.png'
-		break;
+		name = 'uplay'
+		image = 'https://beta.r6stats.com/static/platform-icons/uplay_logo.png'
+		break
 		case 'psn':
 		case 'playstation':
 		case 'ps4':
-		platform = 'ps4';
-		platformImg = 'https://beta.r6stats.com/static/platform-icons/ps4_logo.png'
-		break;
+		name = 'ps4'
+		image = 'https://beta.r6stats.com/static/platform-icons/ps4_logo.png'
+		break
 		default:
-		platform = null;
+		name = null
 	}
 
-	return {
-		name: platform,
-		image: platformImg
-	};
+	return { name, image }
 }
 
-ex.getGamemode = function(gamemode) {
+const getGamemode = (gamemode) => {
 	switch(gamemode) {
 		case "general":
 		case "overall":
@@ -48,29 +43,29 @@ ex.getGamemode = function(gamemode) {
 		gamemode = null
 	}
 
-	return gamemode;
+	return gamemode
 }
 
-ex.getRole = function(role) {
+const getRole = (role) => {
 	switch(role) {
 		case "atk":
 		case "attacker":
 		case "attack":
-			role = "atk";
-			break;
+			role = "atk"
+			break
 		case "def":
 		case "defender":
 		case "defend":
 		case "denfense":
-			role = "def";
-			break;
+			role = "def"
+			break
 		default:
-			role = null;
+			role = null
 	}
-	return role;
+	return role
 }
 
-ex.playtime = function(seconds, timeView) {
+const playtime = (seconds, timeView) => {
   let hours
   let minutes
   let days
@@ -93,5 +88,4 @@ ex.playtime = function(seconds, timeView) {
   return timeStr.length > 0 ? timeStr : 'N/A'
 }
 
-
-module.exports = ex;
+module.exports = { getPlatform, getGamemode, getRole, playtime }
