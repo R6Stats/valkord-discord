@@ -21,7 +21,7 @@ const getPlatform = (platform) => {
 		image = 'https://beta.r6stats.com/static/platform-icons/ps4_logo.png'
 		break
 		default:
-		name = null
+    return null
 	}
 
 	return { name, image }

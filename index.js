@@ -8,11 +8,19 @@ const config = require('./config');
 import StatsCommand from './src/commands/StatsCommand'
 import HelpCommand from './src/commands/HelpCommand'
 
-// var r6client = new R6Stats({
-// 	username: config.r6stats.username,
-// 	password: config.r6stats.password,
-// 	user_agent: config.r6stats.user_agent
-// });
+import R6StatsAPI from 'r6stats'
+
+const api = new R6StatsAPI({
+  loginId: config.r6stats.login,
+ 	password: config.r6stats.password,
+  userAgent: config.r6stats.user_agent,
+  baseUrl: config.r6stats.base_url
+})
+try {
+  api.authenticate()
+} catch (e) {
+  console.error(e, 'Error authenticating R6Stats API Client')
+}
 
 client.on('ready', () => {
 	console.log('Client connected!');
@@ -41,7 +49,7 @@ function messageHandler (message) {
 
   for (let cmd of commands) {
 
-    let cmdInstance = new cmd({ args, message, command })
+    let cmdInstance = new cmd({ args, message, command, api })
     if (cmdInstance.shouldInvoke()) {
       cmdInstance.invoke()
       break

@@ -4,6 +4,10 @@ class BaseCommand {
     this._args = args
     this._command = command
   }
+
+  reply (msg) {
+    this._message.channel.send(msg)
+  }
 }
 
 
