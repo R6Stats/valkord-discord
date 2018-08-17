@@ -1,6 +1,13 @@
 {
+  "scripts": {
+    "start": "babel-node index.js"
+  },
   "dependencies": {
     "discord.js": "^11.1.0",
     "r6stats": "0.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }

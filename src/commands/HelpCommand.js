@@ -1,6 +1,12 @@
-class HelpCommand {
-  constructor ({ message }) {
-    this._message = message
+import BaseCommand from '../BaseCommand'
+
+class HelpCommand extends BaseCommand {
+  constructor ({ }) {
+    super(...arguments)
+  }
+
+  shouldInvoke () {
+    return this._command === 'help'
   }
 
   invoke () {
@@ -24,10 +30,14 @@ class HelpCommand {
         }
         ],
         footer: {
-          icon_url: 'https://cdn.r6stats.com/logo/large-logo-100.png',
+          icon_url: 'https://alpha.r6stats.com/img/logos/r6stats-logo-100.png',
           text: "Stats Provided by R6Stats.com",
           url: 'https://r6stats.com'
         }
       }
+    })
   }
 }
+
+
+export default HelpCommand
