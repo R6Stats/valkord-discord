@@ -9,7 +9,7 @@ class StatsCommand extends BaseCommand {
     this._api = api
   }
 
-  shouldInvoke() {
+  shouldInvoke () {
     return this._command === 'stats'
   }
 
@@ -30,11 +30,11 @@ class StatsCommand extends BaseCommand {
 
     const stats = rawStats.stats[0]
 
-    if (this.queue === "general") {
+    if (this.queue === 'general') {
       var { kills, deaths, wins, losses } = stats.general
-    } else if (this.queue === "ranked") {
+    } else if (this.queue === 'ranked') {
       var { kills, deaths, wins, losses } = stats.queue.ranked
-    } else if (this.queue === "casual") {
+    } else if (this.queue === 'casual') {
       var { kills, deaths, wins, losses } = stats.queue.casual
     }
 
@@ -43,13 +43,6 @@ class StatsCommand extends BaseCommand {
 
     let { assists, headshots, revives, suicides, barricades_deployed, reinforcements_deployed, melee_kills, penetration_kills } = stats.general
 
-
-    // headshots = headshots.toLocaleString()
-    // kills = kills.toLocaleString()
-    // deaths = deaths.toLocaleString()
-    // wins = wins.toLocaleString()
-    // losses = losses.toLocaleString()
-
     const title = this.queue.charAt(0).toUpperCase() + this.queue.slice(1)
 
     this.reply({
@@ -57,7 +50,7 @@ class StatsCommand extends BaseCommand {
         color: 3447003,
           author: {
             name: stats.username,
-            url: 'https://alpha.r6stats.com/stats/' + player.ubisoft_id,
+            url: 'https://r6stats.com/stats/' + player.ubisoft_id,
             icon_url: this.platform.image
           },
           title: title + ' Player Stats',
@@ -95,7 +88,7 @@ class StatsCommand extends BaseCommand {
           ],
           footer: {
             icon_url: 'https://alpha.r6stats.com/img/logos/r6stats-logo-100.png',
-            text: "Stats Provided by R6Stats.com",
+            text: 'Stats Provided by R6Stats.com',
             url: 'https://alpha.r6stats.com'
           }
       }
@@ -108,7 +101,7 @@ class StatsCommand extends BaseCommand {
     var i = 1
     if (username.startsWith('"')) {
       while (!username.endsWith('"') && i < this._args.length - 1) {
-        username += " " + this._args[i]
+        username += ' ' + this._args[i]
         i++
       }
       username = username.replace(/"/g, '')
@@ -118,9 +111,8 @@ class StatsCommand extends BaseCommand {
     if (!platform) {
       return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
     }
-    this.reply(`Username: ${ username }, Platform: ${ platform ? platform.name : 'Undefined' }, Gamemode: ${ queue ? queue : 'Not Specified' }`)
     this.platform = platform
-    this.queue = queue || "general"
+    this.queue = queue || 'general'
     this.username = username
   }
 

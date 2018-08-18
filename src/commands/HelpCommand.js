@@ -10,7 +10,7 @@ class HelpCommand extends BaseCommand {
   }
 
   invoke () {
-    this._message.channel.send({
+    this.reply({
       embed: {
         color: 3447003,
         title: 'R6Stats Help',
@@ -31,7 +31,7 @@ class HelpCommand extends BaseCommand {
         ],
         footer: {
           icon_url: 'https://alpha.r6stats.com/img/logos/r6stats-logo-100.png',
-          text: "Stats Provided by R6Stats.com",
+          text: 'Stats Provided by R6Stats.com',
           url: 'https://r6stats.com'
         }
       }

@@ -1,21 +1,25 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const Discord = require('discord.js')
+const fs = require('fs')
+const path = require('path')
+const config = require('./config')
 
-// var R6Stats = require('r6stats');
-
-const config = require('./config');
-
-import StatsCommand from './src/commands/StatsCommand'
-import HelpCommand from './src/commands/HelpCommand'
+const client = new Discord.Client()
 
 import R6StatsAPI from 'r6stats'
 
 const api = new R6StatsAPI({
   loginId: config.r6stats.login,
- 	password: config.r6stats.password,
+  password: config.r6stats.password,
   userAgent: config.r6stats.user_agent,
   baseUrl: config.r6stats.base_url
 })
+
+const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
+
+const commands = []
+
+loadCommands()
+
 try {
   api.authenticate()
 } catch (e) {
@@ -23,29 +27,35 @@ try {
 }
 
 client.on('ready', () => {
-	console.log('Client connected!');
-});
+	console.log('Client connected!')
+})
 
-const commands = [
-  StatsCommand,
-  HelpCommand
-]
-
-const supportedResponders = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6'];
 
 client.on('message', messageHandler)
-client.login(config.discord.token);
+client.login(config.discord.token)
+
+async function loadCommands () {
+  const files = fs.readdirSync(path.join(__dirname, 'src', 'commands'))
+
+  for (let file of files) {
+    const { default: clazz } = await require(path.join(__dirname, 'src', 'commands', file))
+    console.log(`Registering command ${ clazz.name }...`)
+    commands.push(clazz)
+  }
+
+  console.log(`${ commands.length } command${ commands.length === 1 ? '': 's' } registered.`)
+}
 
 function messageHandler (message) {
 
-	if (message.author.bot) return;
+	if (message.author.bot) return
 
   if (!isOurCommand(message.content)) return
 
-	let split = message.content.split(' ');
-	if (split.length <= 1) return;
-	let command = split[1].toLowerCase();
-	let args = split.slice(2);
+	let split = message.content.split(' ')
+	if (split.length <= 1) return
+	let command = split[1].toLowerCase()
+	let args = split.slice(2)
 
   for (let cmd of commands) {
 
@@ -58,7 +68,7 @@ function messageHandler (message) {
 }
 
 function isOurCommand(str) {
-  for (let responder of supportedResponders) {
+  for (let responder of SUPPORTED_RESPONDERS) {
 		if (str.startsWith(responder)) {
 			return true
 		}
