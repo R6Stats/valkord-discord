@@ -1,4 +1,18 @@
 {
+  "name": "r6stats-discord-bot",
+  "version": "2.0.0-rc1",
+  "description": "R6Stats Discord Bot",
+  "main": "index.js",
+  "private": true,
+  "keywords": [
+    "r6stats",
+    "rainbowsix",
+    "discord",
+    "discord-bot",
+    "discordjs"
+  ],
+  "author": "Jake <support@r6stats.com>",
+  "license": "GPL-3.0",
   "scripts": {
     "start": "babel-node index.js",
     "dev": "nodemon --exec npm run start"
