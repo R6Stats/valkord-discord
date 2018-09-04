@@ -30,7 +30,7 @@ class HelpCommand extends BaseCommand {
         }
         ],
         footer: {
-          icon_url: 'https://alpha.r6stats.com/img/logos/r6stats-logo-100.png',
+          icon_url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png',
           text: 'Stats Provided by R6Stats.com',
           url: 'https://r6stats.com'
         }

@@ -61,6 +61,9 @@ function messageHandler (message) {
 
     let cmdInstance = new cmd({ args, message, command, api })
     if (cmdInstance.shouldInvoke()) {
+      let channel = message.channel
+      let name = channel.hasOwnProperty('name') ? `in #${channel.name}` : 'via DM'
+      console.log(`Invoking command ${ command } ${name} with args ${args.join(',')}`)
       cmdInstance.invoke()
       break
     }

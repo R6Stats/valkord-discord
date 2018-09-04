@@ -82,7 +82,7 @@ class OperatorStatsCommand extends BaseCommand {
           }
         ],
         footer: {
-          icon_url: 'https://alpha.r6stats.com/img/logos/r6stats-logo-100.png',
+          icon_url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png',
           text: 'Stats Provided by R6Stats.com',
           url: 'https://r6stats.com'
         }
@@ -100,7 +100,7 @@ class OperatorStatsCommand extends BaseCommand {
       }
       username = username.replace(/"/g, '')
     }
-    let platform = getPlatform(this._args[i])
+    let platform = getPlatform(this._args[i].toLowerCase())
     let operator = this._args[i+1]
     if (!platform) {
       return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
