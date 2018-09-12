@@ -18,7 +18,7 @@ class StatsCommand extends BaseCommand {
       return this.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    this.hydrateParamaters()
+    this.hydrateParameters()
 
     try {
       var { data: players } = await this._api.playerSearch({ username: this.username, platform: this.platform.name })
@@ -112,7 +112,7 @@ class StatsCommand extends BaseCommand {
 
   }
 
-  hydrateParamaters () {
+  hydrateParameters () {
     let username = this._args[0]
     var i = 1
     if (username.startsWith('"')) {
