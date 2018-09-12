@@ -123,7 +123,7 @@ class StatsCommand extends BaseCommand {
       username = username.replace(/"/g, '')
     }
     let platform = getPlatform(this._args[i].toLowerCase())
-    let queue = getGamemode(this._args[i+1] ? this.args_[i+1].toLowerCase() : null)
+    let queue = getGamemode(this._args[i+1] ? this._args[i+1].toLowerCase() : null)
     if (!platform) {
       return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
     }
