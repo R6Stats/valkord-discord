@@ -18,7 +18,7 @@ class OperatorStatsCommand extends BaseCommand {
       return this.reply('Usage: operator <username> <platform> <operator>')
     }
 
-    this.hydrateParamaters()
+    this.hydrateParameters()
 
     const { data: players } = await this._api.playerSearch({ username: this.username, platform: this.platform.name })
     if (!(players && players.length && players.length >= 1)) return this.reply('No players found.')
@@ -90,7 +90,7 @@ class OperatorStatsCommand extends BaseCommand {
     })
   }
 
-  hydrateParamaters () {
+  hydrateParameters () {
     let username = this._args[0]
     var i = 1
     if (username.startsWith('"')) {
