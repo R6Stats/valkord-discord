@@ -35,7 +35,7 @@ class RankCommand extends BaseCommand {
   }
 
   shouldInvoke () {
-    return this._command === 'rank'
+    return this._command === 'rank' || this._command === 'season' || this._command === 'seasonal'
   }
 
   async invoke () {
