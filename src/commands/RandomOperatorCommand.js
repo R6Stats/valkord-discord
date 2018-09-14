@@ -19,11 +19,11 @@ class RandomOperatorCommand extends BaseCommand {
 
     let { data: operators } = this._api.call({
       method: 'get',
-      url: `/database/operators`
+      url: '/database/operators'
     })
 
     let role
-    switch (this._args[0]) {
+    switch (this._args[0].toLowerCase()) {
       case 'attacker':
       case 'atk':
         role = 'attacker'

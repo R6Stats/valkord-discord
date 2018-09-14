@@ -1,6 +1,6 @@
 import BaseCommand from '../BaseCommand'
 
-import { getPlatform, getGamemode } from '../utilities'
+import { getPlatform, getGamemode, playtime } from '../utilities'
 
 class StatsCommand extends BaseCommand {
 
@@ -33,6 +33,7 @@ class StatsCommand extends BaseCommand {
     }
 
     const stats = rawStats.stats[0]
+    const progression = rawStats.progression
 
     if (this.queue === 'general') {
       var { kills, deaths, wins, losses } = stats.general
@@ -51,8 +52,14 @@ class StatsCommand extends BaseCommand {
       reinforcements_deployed,
       melee_kills, penetration_kills,
       blind_kills, rappel_breaches,
-      dbnos
+      dbnos, playtime: timePlayed
     } = stats.general
+
+    let {
+      level, lootbox_probability
+    } = progression
+
+    const statsUrl = 'https://r6stats.com/stats/' + player.ubisoft_id
 
     const title = this.queue.charAt(0).toUpperCase() + this.queue.slice(1)
     this.reply({
@@ -60,28 +67,36 @@ class StatsCommand extends BaseCommand {
         color: 3447003,
         author: {
           name: player.username,
-          url: 'https://r6stats.com/stats/' + player.ubisoft_id,
+          url: statsUrl,
           icon_url: this.platform.image
         },
         thumbnail: {
           url: `https://ubisoft-avatars.akamaized.net/${ player.ubisoft_id }/default_146_146.png`
         },
         title: title + ' Player Stats',
+        description: `[View Full Stats for ${player.username}](${statsUrl})`,
         fields: [
+          {
+            name: 'About',
+            inline: true,
+            value: '**Level**: ' + level + '\n'
+              + '**Playtime**: ' + playtime(timePlayed) + '\n'
+              + '**Lootbox Chance**: ' + (lootbox_probability / 100) + '%'
+          },
           {
             name: 'Kill/Deaths',
             inline: true,
             value: '**Kills**: ' + kills + '\n'
               + '**Deaths**: ' + deaths + '\n'
               + '**Assists**: ' + assists + '\n'
-              + '**K/D**: ' + kd + '\n'
+              + '**K/D**: ' + kd
           },
           {
             name: 'Win/Loss',
             inline: true,
             value: '**Wins**: ' + wins + '\n'
               + '**Losses**: ' + losses + '\n'
-              + '**W/L**: ' + wlr + '\n'
+              + '**W/L**: ' + wlr
           },
           {
             name: 'Kills Breakdown',
@@ -89,7 +104,7 @@ class StatsCommand extends BaseCommand {
             value: '**Headshots**: ' + headshots + '\n'
               + '**Blind Kills**: ' + blind_kills + '\n'
               + '**Melee Kills**: ' + melee_kills + '\n'
-              + '**Penetration Kills**: ' + penetration_kills + '\n'
+              + '**Penetration Kills**: ' + penetration_kills
           },
           {
             name: 'Misc.',
@@ -99,7 +114,7 @@ class StatsCommand extends BaseCommand {
               + '**Barricades**: ' + barricades_deployed + '\n'
               + '**Reinforcements**: ' + reinforcements_deployed + '\n'
               + '**Rappel Breaches**: ' + rappel_breaches + '\n'
-              + '**DBNOs**: ' + dbnos + '\n'
+              + '**DBNOs**: ' + dbnos
           },
         ],
         footer: {

@@ -6,19 +6,19 @@ const getPlatform = (platform) => {
 		case 'xbl':
 		case 'xboxone':
 		name = 'xone'
-		image = 'https://alpha.r6stats.com/img/platforms/xbox_logo.png'
+		image = 'https://r6stats.com/img/platforms/xbox_logo.png'
 		break
 		case 'uplay':
 		case 'steam':
 		case 'pc':
 		name = 'uplay'
-		image = 'https://alpha.r6stats.com/img/platforms/pc_logo.png'
+		image = 'https://r6stats.com/img/platforms/pc_logo.png'
 		break
 		case 'psn':
 		case 'playstation':
 		case 'ps4':
 		name = 'ps4'
-		image = 'https://alpha.r6stats.com/img/platforms/ps4_logo.png'
+		image = 'https://r6stats.com/img/platforms/ps4_logo.png'
 		break
 		default:
     return null

@@ -10,32 +10,21 @@ class HelpCommand extends BaseCommand {
   }
 
   invoke () {
-    this.reply({
-      embed: {
-        color: 3447003,
-        title: 'R6Stats Help',
-        description: 'Parameters enclosed in **<  >** are required while those within **{   }** are optional. \nDo not include these symbols.',
-        fields: [
-        {
-          name: 'Usage',
-          value: '**r6s stats <player> <platform> {general|ranked|casual}**: Get the stats of a player\n'
-          + '**r6s operator <operator> <player> <platform> **: Get the stats of a single operator\n'
-          + '**r6s help**: Display this help screen\n'
-        },
-        {
-          name: 'Examples',
-          value: '**r6s stats Zed_AU uplay**\n'
-          + '**r6s stats Zed_AU uplay ranked**\n'
-          + '**r6s operator Jager Dfletcher ps4 **\n'
-        }
-        ],
-        footer: {
-          icon_url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png',
-          text: 'Stats Provided by R6Stats.com',
-          url: 'https://r6stats.com'
-        }
-      }
-    })
+    this.reply(
+      '**R6Stats Bot Help**' +
+      '```\n' +
+      'Stats\n' +
+      '   r6s stats <username> <platform> {general|ranked|casual}\n' +
+      '   r6s rank <username> <platform> {region: ncsa|emea|apac} {season}\n' +
+      '   r6s operator <username> <platform> <operator>\n' +
+      'Other\n' +
+      '   r6s randomop <role>\n' +
+      '   r6s ping\n' +
+      '   r6s invite\n' +
+      '\n\n' +
+      'Options in <...> are required. Options in {...} are required.\n' +
+      '```'
+    )
   }
 }
 
