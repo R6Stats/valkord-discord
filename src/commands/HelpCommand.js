@@ -22,7 +22,7 @@ class HelpCommand extends BaseCommand {
       '   r6s ping\n' +
       '   r6s invite\n' +
       '\n\n' +
-      'Options in <...> are required. Options in {...} are required.\n' +
+      'Options in <...> are required. Options in {...} are optional.\n' +
       '```'
     )
   }
