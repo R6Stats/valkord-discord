@@ -18,7 +18,7 @@ class StatsCommand extends BaseCommand {
       return this.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    this.hydrateParamaters()
+    this.hydrateParameters()
 
     try {
       var { data: players } = await this._api.playerSearch({ username: this.username, platform: this.platform.name })
@@ -127,7 +127,7 @@ class StatsCommand extends BaseCommand {
 
   }
 
-  hydrateParamaters () {
+  hydrateParameters () {
     let username = this._args[0]
     var i = 1
     if (username.startsWith('"')) {
@@ -138,7 +138,7 @@ class StatsCommand extends BaseCommand {
       username = username.replace(/"/g, '')
     }
     let platform = getPlatform(this._args[i].toLowerCase())
-    let queue = getGamemode(this._args[i+1] ? this.args_[i+1].toLowerCase() : null)
+    let queue = getGamemode(this._args[i+1] ? this._args[i+1].toLowerCase() : null)
     if (!platform) {
       return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
     }
