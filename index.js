@@ -14,7 +14,7 @@ const api = new R6StatsAPI({
   baseUrl: config.r6stats.base_url
 })
 
-const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
+const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'R6s', 'R6S', 'r6stats', 'r6']
 
 const commands = []
 
