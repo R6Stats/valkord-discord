@@ -72,8 +72,8 @@ function messageHandler (message) {
 
 function isOurCommand(str) {
   for (let responder of SUPPORTED_RESPONDERS) {
-		if (str.startsWith(responder)) {
-			return true
-		}
-	}
+    if (str.split(' ')[0].toLowerCase() === responder) {
+      return true
+    }
+  }
 }

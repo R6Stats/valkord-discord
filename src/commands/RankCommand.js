@@ -2,7 +2,6 @@ import BaseCommand from '../BaseCommand'
 
 import { getPlatform } from '../utilities'
 
-
 const RANKS = [
   { name: 'Unranked', img: 'unranked.svg' },
   { name: 'Copper IV', img: 'copper-4.svg' },

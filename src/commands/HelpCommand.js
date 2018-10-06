@@ -10,21 +10,37 @@ class HelpCommand extends BaseCommand {
   }
 
   invoke () {
-    this.reply(
-      '**R6Stats Bot Help**' +
-      '```\n' +
-      'Stats\n' +
-      '   r6s stats <username> <platform> {general|ranked|casual}\n' +
-      '   r6s rank <username> <platform> {region: ncsa|emea|apac} {season}\n' +
-      '   r6s operator <username> <platform> <operator>\n' +
-      'Other\n' +
-      '   r6s randomop <role>\n' +
-      '   r6s ping\n' +
-      '   r6s invite\n' +
-      '\n\n' +
-      'Options in <...> are required. Options in {...} are required.\n' +
-      '```'
-    )
+    this.reply({
+      embed: {
+        color: 3447003,
+        title: 'R6Stats Bot Help',
+        description: 'Options in <...> are required. Options in {...} are optional.',
+        thumbnail: {
+          url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png'
+        },
+        fields: [
+          {
+            name: 'Stats',
+            inline: true,
+            value: '**Generic Stats**: r6s stats <username> <platform> {general|ranked|casual}\n' +
+              '**Seasonal/Rank Stats**: r6s rank <username> <platform> {region: ncsa|emea|apac} {season}\n' +
+              '**Operator Stats**: r6s operator <username> <platform> <operator>'
+          },
+          {
+            name: 'Other',
+            inline: true,
+            value: '**Random Operator**: r6s randomop <role>\n' +
+              '**Ping**: r6s ping\n' +
+              '**Invite Link**: r6s invite'
+          }
+        ],
+        footer: {
+          icon_url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png',
+          text: 'Bot provided by R6Stats.com',
+          url: 'https://r6stats.com'
+        }
+      }
+    })
   }
 }
 
