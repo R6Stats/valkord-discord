@@ -71,8 +71,11 @@ function messageHandler (message) {
 }
 
 function isOurCommand(str) {
+  let split = str.split(' ')
+  if (split.length === 0) return false
+  let cmd = split[0].toLowerCase()
   for (let responder of SUPPORTED_RESPONDERS) {
-    if (str.split(' ')[0].toLowerCase() === responder) {
+    if (cmd === responder) {
       return true
     }
   }
