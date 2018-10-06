@@ -6,7 +6,7 @@ class BaseCommand {
   }
 
   reply (msg) {
-    this._message.channel.send(msg)
+    return this._message.channel.send(msg)
   }
 }
 

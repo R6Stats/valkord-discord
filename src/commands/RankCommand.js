@@ -67,7 +67,7 @@ class RankCommand extends BaseCommand {
     }
 
     if (!season) {
-      return this.reply('Season not found.')
+      return this.reply('Season not found.')//.then(m => m.delete(3000))
     }
 
     if (this.region) {
