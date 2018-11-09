@@ -16,7 +16,7 @@ class HelpCommand extends BaseCommand {
         title: 'R6Stats Bot Help',
         description: 'Options in <...> are required. Options in {...} are optional.',
         thumbnail: {
-          url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png'
+          url: 'https://r6stats.com/img/logos/r6stats-100.png',
         },
         fields: [
           {
@@ -35,7 +35,7 @@ class HelpCommand extends BaseCommand {
           }
         ],
         footer: {
-          icon_url: 'https://r6stats.com/img/logos/r6stats-logo-100x100.png',
+          icon_url: 'https://r6stats.com/img/logos/r6stats-100.png',
           text: 'Bot provided by R6Stats.com',
           url: 'https://r6stats.com'
         }
