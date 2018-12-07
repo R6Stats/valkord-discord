@@ -14,7 +14,7 @@ class RandomOperatorCommand extends BaseCommand {
 
   async invoke () {
     if (this._args.length < 1) {
-      return this.reply('Usage: randomop <role (attacker, defender or recruit)>')
+      return this.reply('Usage: randomop <role (attacker or defender)>')
     }
 
     let { data: operators } = await this._api.call({
@@ -49,7 +49,7 @@ class RandomOperatorCommand extends BaseCommand {
           {
             name: 'Chosen Operator',
             inline: true,
-            value: `**Name**: ${name}\n`
+            value: '**Name**:' + name + '\n'
           }
         ],
         thumbnail: {
