@@ -14,10 +14,10 @@ class RandomOperatorCommand extends BaseCommand {
 
   async invoke () {
     if (this._args.length < 1) {
-      return this.reply('Usage: randomop <role (attacker or defender)>')
+      return this.reply('Usage: randomop <role (attacker, defender or recruit)>')
     }
 
-    let { data: operators } = this._api.call({
+    let { data: operators } = await this._api.call({
       method: 'get',
       url: '/database/operators'
     })
@@ -36,7 +36,7 @@ class RandomOperatorCommand extends BaseCommand {
         return this.reply('Role not recognized. Usage: randomop <role (attacker or defender)>')
     }
 
-    operators = operators.filter(op => op.role === role)
+    operators = operators.filter(op => op.role === role || op.role === 'recruit')
     const random = operators[Math.random(Math.floor(Math.random() * operators.length))]
 
     const { name, images: { badge: badge_url } } = random
@@ -49,7 +49,7 @@ class RandomOperatorCommand extends BaseCommand {
           {
             name: 'Chosen Operator',
             inline: true,
-            value: '**Name**: ' + name + '\n'
+            value: `**Name**: ${name}\n`
           }
         ],
         thumbnail: {
