@@ -1,11 +1,14 @@
-config.js
 node_modules/
+
+config.js
 config.example.js
+
+package.json
 package-lock.json
+
 yarn.lock
-yarn.lock
+
 .vscode/iisexpress.json
 .vs/VSWorkspaceState.json
 .vs/slnx.sqlite
 .vs/discord-bot/v16/.suo
-package.json
