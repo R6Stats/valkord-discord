@@ -19,8 +19,7 @@
   },
   "dependencies": {
     "discord.js": "^11.4.2",
-    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2",
-    "yarn": "^1.15.2"
+    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
