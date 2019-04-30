@@ -1,12 +1,6 @@
 node_modules/
 
 config.js
-config.example.js
-
-package.json
-package-lock.json
-
-yarn.lock
 
 .vscode/iisexpress.json
 .vs/VSWorkspaceState.json
