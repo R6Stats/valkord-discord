@@ -75,7 +75,7 @@ class RankCommand extends BaseCommand {
       region = Object.values(season.regions).map(r => r[0]).sort((a, b) => (b.max_rank-a.max_rank))[0]
     }
 
-    const REGION_CONVERTS = { ncsa: 'America', na: 'America', emea: 'Europe', eu: 'Europe', apac: 'Asia' }
+    const REGION_CONVERTS = { ncsa: 'America', na: 'America', emea: 'Europe', eu: 'Europe', apac: 'Asia', asia: 'Asia' }
 
     let { region: regionKey, wins, losses, abandons, max_mmr, mmr, prev_rank_mmr, next_rank_mmr, skill_mean, skill_standard_deviation, rank, max_rank } = region
 
@@ -144,7 +144,7 @@ class RankCommand extends BaseCommand {
     this.platform = getPlatform(this._args[i].toLowerCase())
     let region, season
     let regionOrSeason = (this._args.length >= i ? this._args[i+1] : null)
-    const REGIONS = ['ncsa', 'na', 'emea', 'eu', 'apac']
+    const REGIONS = ['ncsa', 'na', 'emea', 'eu', 'apac', 'asia']
     let seasonCheck = (this._args.length >= i+1 ? this._args[i+2] : null)
     if (regionOrSeason) {
       if (REGIONS.includes(regionOrSeason.toLowerCase())) {
