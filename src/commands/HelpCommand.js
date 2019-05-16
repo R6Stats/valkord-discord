@@ -23,7 +23,7 @@ class HelpCommand extends BaseCommand {
             name: 'Stats',
             inline: true,
             value: '**Generic Stats**: r6s stats <username> <platform> {general|ranked|casual}\n' +
-              '**Seasonal/Rank Stats**: r6s rank <username> <platform> {region: ncsa|emea|apac} {season}\n' +
+              '**Seasonal/Rank Stats**: r6s rank <username> <platform> {region: ncsa|na|emea|eu|apac|asia} {season}\n' +
               '**Operator Stats**: r6s operator <username> <platform> <operator>'
           },
           {
