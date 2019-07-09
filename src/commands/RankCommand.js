@@ -28,16 +28,16 @@ const RANKS = [
 
 class RankCommand extends BaseCommand {
 
-  constructor ({ api }) {
+  constructor({ api }) {
     super(...arguments)
     this._api = api
   }
 
-  shouldInvoke () {
+  shouldInvoke() {
     return this._command === 'rank' || this._command === 'season' || this._command === 'seasonal'
   }
 
-  async invoke () {
+  async invoke() {
     if (this._args.length < 2) {
       return this.reply('Usage: rank <username> <platform> {region} {season}')
     }
@@ -56,7 +56,7 @@ class RankCommand extends BaseCommand {
       return this.reply('Stats not found.')
     }
 
-    const seasons = Object.values(rawStats.seasons).sort((a, b) => (b.id-a.id))
+    const seasons = Object.values(rawStats.seasons).sort((a, b) => (b.id - a.id))
     let season, region
     var self = this
     if (!this.season) {
@@ -72,7 +72,7 @@ class RankCommand extends BaseCommand {
     if (this.region) {
       region = season.regions[this.region][0]
     } else {
-      region = Object.values(season.regions).map(r => r[0]).sort((a, b) => (b.max_rank-a.max_rank))[0]
+      region = Object.values(season.regions).map(r => r[0]).sort((a, b) => (b.max_rank - a.max_rank))[0]
     }
 
     const REGION_CONVERTS = { ncsa: 'America', na: 'America', emea: 'Europe', eu: 'Europe', apac: 'Asia', asia: 'Asia' }
@@ -117,7 +117,7 @@ class RankCommand extends BaseCommand {
             inline: true,
             value: '**Wins**: ' + wins + '\n'
               + '**Losses**: ' + losses + '\n'
-              + '**W/L**: ' + (losses === 0 ? 'n/a' : Number(wins/losses).toFixed(2)) + '\n'
+              + '**W/L**: ' + (losses === 0 ? 'n/a' : Number(wins / losses).toFixed(2)) + '\n'
               + '**Abandons**: ' + abandons
           }
         ],
@@ -131,21 +131,21 @@ class RankCommand extends BaseCommand {
 
   }
 
-  hydrateParamaters () {
+  hydrateParamaters() {
     let username = this._args[0]
     var i = 1
-    if (username.startsWith('"')) {
-      while (!username.endsWith('"') && i < this._args.length - 1) {
+    if (username.startsWith('"') || username.startsWith('“') || username.startsWith('”')) {
+      while (!(username.endsWith('"') || username.endsWith('“') || username.endsWith('”')) && i < this._args.length - 1) {
         username += ' ' + this._args[i]
         i++
       }
-      username = username.replace(/"/g, '')
+      username = username.replace(/"/g, '').replace(/“/g, '').replace(/”/g, '')
     }
     this.platform = getPlatform(this._args[i].toLowerCase())
     let region, season
-    let regionOrSeason = (this._args.length >= i ? this._args[i+1] : null)
+    let regionOrSeason = (this._args.length >= i ? this._args[i + 1] : null)
     const REGIONS = ['ncsa', 'na', 'emea', 'eu', 'apac', 'asia']
-    let seasonCheck = (this._args.length >= i+1 ? this._args[i+2] : null)
+    let seasonCheck = (this._args.length >= i + 1 ? this._args[i + 2] : null)
     if (regionOrSeason) {
       if (REGIONS.includes(regionOrSeason.toLowerCase())) {
         region = regionOrSeason.toLowerCase()

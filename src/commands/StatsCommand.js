@@ -4,16 +4,16 @@ import { getPlatform, getGamemode, playtime } from '../utilities'
 
 class StatsCommand extends BaseCommand {
 
-  constructor ({ api }) {
+  constructor({ api }) {
     super(...arguments)
     this._api = api
   }
 
-  shouldInvoke () {
+  shouldInvoke() {
     return this._command === 'stats'
   }
 
-  async invoke () {
+  async invoke() {
     if (this._args.length < 2) {
       return this.reply('Usage: stats <username> <platform> {queue}')
     }
@@ -71,7 +71,7 @@ class StatsCommand extends BaseCommand {
           icon_url: this.platform.image
         },
         thumbnail: {
-          url: `https://ubisoft-avatars.akamaized.net/${ player.ubisoft_id }/default_146_146.png`
+          url: `https://ubisoft-avatars.akamaized.net/${player.ubisoft_id}/default_146_146.png`
         },
         title: title + ' Player Stats',
         description: `[View Full Stats for ${player.username}](${statsUrl})`,
@@ -127,20 +127,20 @@ class StatsCommand extends BaseCommand {
 
   }
 
-  hydrateParameters () {
+  hydrateParameters() {
     let username = this._args[0]
     var i = 1
-    if (username.startsWith('"')) {
-      while (!username.endsWith('"') && i < this._args.length - 1) {
+    if (username.startsWith('"') || username.startsWith('“') || username.startsWith('”')) {
+      while (!(username.endsWith('"') || username.endsWith('“') || username.endsWith('”')) && i < this._args.length - 1) {
         username += ' ' + this._args[i]
         i++
       }
-      username = username.replace(/"/g, '')
+      username = username.replace(/"/g, '').replace(/“/g, '').replace(/”/g, '')
     }
     let platform = getPlatform(this._args[i].toLowerCase())
-    let queue = getGamemode(this._args[i+1] ? this._args[i+1].toLowerCase() : null)
+    let queue = getGamemode(this._args[i + 1] ? this._args[i + 1].toLowerCase() : null)
     if (!platform) {
-      return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
+      return this.reply(`The platform ${this._args[i]} is invalid. Specify pc, xbox, or ps4.`)
     }
     this.platform = platform
     this.queue = queue || 'general'
