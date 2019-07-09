@@ -4,16 +4,16 @@ import { getPlatform, playtime } from '../utilities'
 
 class OperatorStatsCommand extends BaseCommand {
 
-  constructor ({ api }) {
+  constructor({ api }) {
     super(...arguments)
     this._api = api
   }
 
-  shouldInvoke () {
+  shouldInvoke() {
     return this._command === 'operator'
   }
 
-  async invoke () {
+  async invoke() {
     if (this._args.length < 3) {
       return this.reply('Usage: operator <username> <platform> <operator>')
     }
@@ -90,20 +90,20 @@ class OperatorStatsCommand extends BaseCommand {
     })
   }
 
-  hydrateParameters () {
+  hydrateParameters() {
     let username = this._args[0]
     var i = 1
-    if (username.startsWith('"')) {
-      while (!username.endsWith('"') && i < this._args.length - 1) {
+    if (username.startsWith('"') || username.startsWith('“') || username.startsWith('”')) {
+      while (!(username.endsWith('"') || username.endsWith('“') || username.endsWith('”')) && i < this._args.length - 1) {
         username += ' ' + this._args[i]
         i++
       }
-      username = username.replace(/"/g, '')
+      username = username.replace(/"/g, '').replace(/“/g, '').replace(/”/g, '')
     }
     let platform = getPlatform(this._args[i].toLowerCase())
-    let operator = this._args[i+1]
+    let operator = this._args[i + 1]
     if (!platform) {
-      return this.reply(`The platform ${ this._args[i] } is invalid. Specify pc, xbox, or ps4.`)
+      return this.reply(`The platform ${this._args[i]} is invalid. Specify pc, xbox, or ps4.`)
     }
     this.platform = platform
     this.operator = operator
