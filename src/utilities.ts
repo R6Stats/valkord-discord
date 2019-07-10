@@ -1,3 +1,15 @@
+import { ResolvableType, RESOLVABLES } from "./constants"
+
+export const resolveType = (type: ResolvableType) => {
+  const opts = RESOLVABLES[type]
+  for (let i = 0; i < opts.length; i++) {
+    const aliases = opts[i][1]
+    for (let j = 1; j < aliases.length; j++) {
+
+    }
+  }
+}
+
 const getPlatform = (platform) => {
 	let name, image
 	switch(platform) {
@@ -65,7 +77,7 @@ const getRole = (role) => {
 	return role
 }
 
-const playtime = (seconds, timeView) => {
+export const playtime = (seconds, timeView) => {
   let hours
   let minutes
   let days
@@ -87,5 +99,3 @@ const playtime = (seconds, timeView) => {
 
   return timeStr.length > 0 ? timeStr : 'N/A'
 }
-
-module.exports = { getPlatform, getGamemode, getRole, playtime }

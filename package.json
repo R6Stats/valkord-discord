@@ -1,6 +1,6 @@
 {
   "name": "r6stats-discord-bot",
-  "version": "2.0.1",
+  "version": "3.0.0-alpha",
   "description": "R6Stats Discord Bot",
   "main": "index.js",
   "private": true,
@@ -19,10 +19,11 @@
   },
   "dependencies": {
     "discord.js": "^11.4.2",
-    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2"
+    "r6stats": "3.0.0-alpha"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "regenerator-runtime": "^0.12.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.5.2"
   }
 }
