@@ -79,7 +79,8 @@ class R6StatsBot {
 
     for (let cmd of commands) {
 
-      const cmdInstance = new cmd(command, args, message)
+      const cmdInstance = new cmd()
+      cmdInstance.hydrate(command, args, message)
       if (cmdInstance.shouldInvoke()) {
         const channel = message.channel
         const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'

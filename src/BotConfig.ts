@@ -1,7 +1,8 @@
+import { IBotConfig } from "./types";
 
 require('dotenv').config()
 
-class BotConfig implements BotConfig {
+class BotConfig implements IBotConfig {
   apiToken?: string
   discordToken?: string
 

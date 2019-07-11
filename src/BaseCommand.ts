@@ -5,10 +5,12 @@ abstract class BaseCommand {
   protected args: Array<string>
   protected command: string
 
-  constructor (command: string, args: Array<string>, message: Message) {
+  hydrate (command: string, args: Array<string>, message: Message): BaseCommand {
     this.message = message
     this.args = args
     this.command = command
+
+    return this
   }
 
   reply (msg: string | object) {

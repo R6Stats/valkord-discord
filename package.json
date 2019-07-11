@@ -20,7 +20,7 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "dotenv": "^8.0.0",
-    "inversify": "2.0.0-rc.14",
+    "inversify": "^5.0.1",
     "r6stats": "3.0.0-alpha",
     "reflect-metadata": "^0.1.13"
   },
