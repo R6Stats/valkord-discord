@@ -1,6 +1,6 @@
 {
   "name": "r6stats-discord-bot",
-  "version": "3.0.0-alpha",
+  "version": "3.0.0",
   "description": "R6Stats Discord Bot",
   "main": "index.js",
   "private": true,
@@ -14,14 +14,18 @@
   "author": "Jake <support@r6stats.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "babel-node index.js",
-    "dev": "nodemon --exec npm run start"
+    "start": "tsc",
+    "dev": "tsc -w"
   },
   "dependencies": {
     "discord.js": "^11.4.2",
     "r6stats": "3.0.0-alpha"
   },
   "devDependencies": {
+    "@types/node": "^12.6.2",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "eslint": "^6.0.1",
     "regenerator-runtime": "^0.12.1",
     "tslib": "^1.10.0",
     "typescript": "^3.5.2"

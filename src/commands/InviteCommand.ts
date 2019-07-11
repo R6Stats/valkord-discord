@@ -1,12 +1,9 @@
 import BaseCommand from '../BaseCommand'
 
 class InviteCommand extends BaseCommand {
-  constructor ({ }) {
-    super(...arguments)
-  }
 
   shouldInvoke () {
-    return this._command === 'invite'
+    return this.command === 'invite'
   }
 
   invoke () {
@@ -26,6 +23,7 @@ class InviteCommand extends BaseCommand {
       }
     })
   }
+
 }
 
 

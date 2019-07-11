@@ -2,6 +2,8 @@
 require('dotenv').config()
 
 class BotConfig implements BotConfig {
+  apiToken?: string
+  discordToken?: string
 
   constructor () {
     this.apiToken = process.env.R6STATS_API_TOKEN
@@ -9,3 +11,5 @@ class BotConfig implements BotConfig {
   }
 
 }
+
+export default new BotConfig()

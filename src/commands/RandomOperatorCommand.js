@@ -1,6 +1,5 @@
 import BaseCommand from '../BaseCommand'
 
-
 class RandomOperatorCommand extends BaseCommand {
 
   constructor ({ api }) {

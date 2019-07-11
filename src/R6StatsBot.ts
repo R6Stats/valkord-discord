@@ -1,17 +1,13 @@
-const Discord = require('discord.js')
-const fs = require('fs')
-const path = require('path')
-const config = require('./config')
-
-const client = new Discord.Client()
-
+import { Client, Message } from 'discord.js'
+import config from './BotConfig'
 import R6StatsAPI from 'r6stats'
+import * as fs from 'fs'
+import * as path from 'path'
+
+const client = new Client()
 
 const api = new R6StatsAPI({
-  loginId: config.r6stats.login,
-  password: config.r6stats.password,
-  userAgent: config.r6stats.user_agent,
-  baseUrl: config.r6stats.base_url
+  apiKey: config.apiToken || ''
 })
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
@@ -19,12 +15,6 @@ const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 const commands = []
 
 loadCommands()
-
-try {
-  api.authenticate()
-} catch (e) {
-  console.error(e, 'Error authenticating R6Stats API Client')
-}
 
 client.on('ready', () => {
   console.log(`Shard ${client.shard.id} online and ready to handle ${client.guilds.size} guilds!`)
@@ -36,7 +26,7 @@ client.on('error', e => {
 
 
 client.on('message', messageHandler)
-client.login(config.discord.token)
+client.login(config.discordToken)
 
 async function loadCommands () {
   const files = fs.readdirSync(path.join(__dirname, 'src', 'commands'))
@@ -50,7 +40,7 @@ async function loadCommands () {
   console.log(`${ commands.length } command${ commands.length === 1 ? '': 's' } registered.`)
 }
 
-function messageHandler (message) {
+function messageHandler (message: Message) {
 
 	if (message.author.bot) return
 

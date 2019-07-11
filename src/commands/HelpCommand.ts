@@ -1,12 +1,9 @@
 import BaseCommand from '../BaseCommand'
 
 class HelpCommand extends BaseCommand {
-  constructor ({ }) {
-    super(...arguments)
-  }
 
   shouldInvoke () {
-    return this._command === 'help'
+    return this.command === 'help'
   }
 
   invoke () {
@@ -42,6 +39,7 @@ class HelpCommand extends BaseCommand {
       }
     })
   }
+
 }
 
 
