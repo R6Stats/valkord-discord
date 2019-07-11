@@ -240,6 +240,11 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
+dotenv@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.0.0.tgz#ed310c165b4e8a97bb745b0a9d99c31bda566440"
+  integrity sha512-30xVGqjLjiUOArT4+M5q9sYdvuR4riM6yK9wMcas9Vbp6zZa+ocC9dp6QoftuhTPhFAiLK/0C5Ni2nou/Bk8lg==
+
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
@@ -504,6 +509,11 @@ inquirer@^6.2.2:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
+inversify@2.0.0-rc.14:
+  version "2.0.0-rc.14"
+  resolved "https://registry.yarnpkg.com/inversify/-/inversify-2.0.0-rc.14.tgz#9837f27e0f4a10fa4e19bb03b49ad0a8ac46e55e"
+  integrity sha1-mDfyfg9KEPpOGbsDtJrQqKxG5V4=
+
 is-buffer@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-2.0.3.tgz#4ecf3fcf749cbd1e472689e109ac66261a25e725"
@@ -714,6 +724,11 @@ r6stats@3.0.0-alpha:
   integrity sha512-QIhuMHj3q/iIQHtDXqMYK0OhKpCiAodkUBzqmj9FUrR2saMEmjsOHvnyput/gI+8u3pVDYGgTIAWF5UNq2MTog==
   dependencies:
     axios "^0.19.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regenerator-runtime@^0.12.1:
   version "0.12.1"
