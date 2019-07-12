@@ -1,5 +1,7 @@
 import { Message } from "discord.js";
+import { injectable } from 'inversify';
 
+@injectable()
 abstract class BaseCommand {
   protected message: Message
   protected args: Array<string>

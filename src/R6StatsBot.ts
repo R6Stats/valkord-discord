@@ -1,13 +1,15 @@
 import { Client, Message, TextChannel } from 'discord.js'
-import config from './BotConfig'
 import R6StatsAPI from 'r6stats'
 import * as fs from 'fs'
 import * as path from 'path'
 import BaseCommand from './BaseCommand'
 
-const api = new R6StatsAPI({
-  apiKey: config.apiToken || ''
-})
+import container from '../inversify.config'
+import BotConfig from './BotConfig'
+import { ServiceTypes } from './types'
+import R6StatsAPIProvider from './providers/R6StatsAPIProvider';
+import ConfigProvider from './providers/ConfigProvider';
+import { interfaces } from 'inversify';
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
@@ -20,7 +22,9 @@ class R6StatsBot {
   constructor () {
     this.client = new Client()
     this.setupHandlers()
-    this.client.login(config.discordToken)
+    this.registerProviders()
+    this.loadCommands()
+    this.login()
   }
 
   setupHandlers () {
@@ -31,14 +35,41 @@ class R6StatsBot {
     client.on('message', (message: Message) => this.handleMessage(message))
   }
 
+  registerProviders () {
+    const PROVIDERS = [
+      ConfigProvider,
+      R6StatsAPIProvider
+    ]
+
+
+    PROVIDERS.forEach(ProviderClass => {
+      const instance = new ProviderClass()
+      instance.boot()
+      instance.register()
+    })
+  }
+
+  login () {
+    const config = container.get<BotConfig>(ServiceTypes.Config)
+    this.client.login(config.discordToken)
+  }
+
   async loadCommands () {
     const files = fs.readdirSync(path.join(__dirname, 'commands'))
 
     for (let file of files) {
       const { default: clazz } = await import(path.join(__dirname, 'commands', file))
+      container.bind<BaseCommand>(clazz).toFactory(() => () => container.get(clazz))
       console.log(`Registering command ${ clazz.name }...`)
       commands.push(clazz)
     }
+
+    // container.bind<interfaces.Factory<BaseCommand>>(ServiceTypes.Command).toFactory<BaseCommand>((context: interfaces.Context) => {
+    //   return () => {
+    //     console.log(context)
+    //     return context.container.get<BaseCommand>(ServiceTypes.Command)
+    //   }
+    // })
 
     console.log(`${ commands.length } command${ commands.length === 1 ? '': 's' } registered.`)
   }
@@ -79,8 +110,10 @@ class R6StatsBot {
 
     for (let cmd of commands) {
 
-      const cmdInstance = new cmd()
+      const cmdInstance = container.get<BaseCommand>(cmd)
+      console.log(cmdInstance)
       cmdInstance.hydrate(command, args, message)
+
       if (cmdInstance.shouldInvoke()) {
         const channel = message.channel
         const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'

@@ -1,7 +1,9 @@
 import { IBotConfig } from "./types";
+import { injectable } from 'inversify';
 
 require('dotenv').config()
 
+@injectable()
 class BotConfig implements IBotConfig {
   apiToken?: string
   discordToken?: string
@@ -13,4 +15,4 @@ class BotConfig implements IBotConfig {
 
 }
 
-export default new BotConfig()
+export default BotConfig

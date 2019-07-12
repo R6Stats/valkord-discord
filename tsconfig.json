@@ -7,7 +7,7 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "./lib"
+    "outDir": "./lib",
   },
   "include": ["src"],
   "exclude": ["node_modules"]

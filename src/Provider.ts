@@ -1,5 +1,6 @@
 'use strict'
 
-abstract class Provider {
-  abstract register (): void;
+interface Provider {
+  boot (): void;
+  register ();
 }
