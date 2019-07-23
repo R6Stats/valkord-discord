@@ -13,7 +13,7 @@ class MessageContext {
     this.args = args
   }
 
-  reply (msg: string | object) {
+  public reply (msg: string | object) {
     return this.message.channel.send(msg)
   }
 }

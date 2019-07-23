@@ -10,10 +10,13 @@ import { resolvePlatform } from '../utilities/resolvers'
 import { playtime, formatListField } from '../utilities/formatters'
 
 import R6StatsAPI from 'r6stats'
-import InvalidArgumentException from '../exceptions/InvalidArgumentException';
+import InvalidArgumentException from '../exceptions/InvalidArgumentException'
 
 class OperatorStatsCommand extends BaseCommand {
   private api: R6StatsAPI
+
+  command: string = 'operator'
+  category: string = 'Stats'
 
   constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
@@ -21,10 +24,6 @@ class OperatorStatsCommand extends BaseCommand {
     super()
 
     this.api = api
-  }
-
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'operator'
   }
 
   async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
@@ -91,6 +90,12 @@ class OperatorStatsCommand extends BaseCommand {
     })
   }
 
+  /**
+   * Returns a normalized string of the given operator name. Replaces all special characters
+   * including accents, tildes, etc. Useful for comparing operators with special names such as Jager.
+   *
+   * @param {string} name
+   */
   normalizeOperator (name: string) {
     return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
   }

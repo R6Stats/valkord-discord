@@ -12,11 +12,15 @@ import { resolveRankedRegion, resolvePlatform } from '../utilities/resolvers'
 import R6StatsAPI from 'r6stats'
 import { formatListField } from '../utilities/formatters'
 import { RankedRegion } from '../types/Resolvable'
-import InvalidArgumentException from '../exceptions/InvalidArgumentException';
+import InvalidArgumentException from '../exceptions/InvalidArgumentException'
 
 @injectable()
 class RankCommand extends BaseCommand {
   private api: R6StatsAPI
+
+  command: string = 'rank'
+  aliases: string[] = ['season', 'seasonal']
+  category: string = 'Stats'
 
   constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
@@ -26,11 +30,7 @@ class RankCommand extends BaseCommand {
     this.api = api
   }
 
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'rank' || ctx.command === 'season' || ctx.command === 'seasonal'
-  }
-
-  async invoke(ctx: MessageContext): Promise<void|Message|Message[]> {
+  async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: rank <username> <platform> {region} {season}')
     }

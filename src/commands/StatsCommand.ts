@@ -17,16 +17,15 @@ import InvalidArgumentException from '../exceptions/InvalidArgumentException'
 class StatsCommand extends BaseCommand {
   private api: R6StatsAPI
 
+  command: string = 'stats'
+  category: string = 'Stats'
+
   constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
   ) {
     super()
 
     this.api = api
-  }
-
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'stats'
   }
 
   async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {

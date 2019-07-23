@@ -1,5 +1,5 @@
-import { IBotConfig } from "./types";
-import { injectable } from 'inversify';
+import { IBotConfig } from "./types"
+import { injectable } from 'inversify'
 
 require('dotenv').config()
 

@@ -4,8 +4,10 @@ import { Message } from 'discord.js'
 
 class HelpCommand extends BaseCommand {
 
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'help'
+  command: string = 'help'
+
+  constructor () {
+    super()
   }
 
   invoke (ctx: MessageContext): Promise<void|Message|Message[]> {

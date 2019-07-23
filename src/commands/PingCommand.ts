@@ -4,9 +4,8 @@ import { Message } from 'discord.js'
 
 class PingCommand extends BaseCommand {
 
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'ping'
-  }
+  command: string = 'ping'
+  category: string = 'Other'
 
   invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     return ctx.reply('Pong!')

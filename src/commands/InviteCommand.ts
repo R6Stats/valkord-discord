@@ -4,9 +4,8 @@ import { Message } from 'discord.js'
 
 class InviteCommand extends BaseCommand {
 
-  shouldInvoke (ctx: MessageContext) {
-    return ctx.command === 'invite'
-  }
+  command: string = 'invite'
+  category: string = 'Other'
 
   invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     return ctx.reply({
