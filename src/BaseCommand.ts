@@ -6,7 +6,8 @@ import { Message } from 'discord.js'
 abstract class BaseCommand {
   command: string
   category: string
-  help: string
+  name: string
+  usage: string
   aliases: string[] = []
 
   shouldInvoke (ctx: MessageContext): boolean {

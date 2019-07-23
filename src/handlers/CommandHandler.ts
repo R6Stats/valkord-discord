@@ -33,16 +33,13 @@ class CommandHandler implements EventHandler {
   }
 
   private handleMessage (message: Message) {
-
     if (message.author.bot) return
-
     if (!this.isOwnCommand(message.content)) return
 
     let split = message.content.split(' ')
     if (split.length <= 1) return
     let command = split[1].toLowerCase()
     let args = split.slice(2)
-
     const commands = this.registrar.getCommands()
 
     for (let cmd of commands) {
@@ -75,6 +72,10 @@ class CommandHandler implements EventHandler {
         return true
       }
     }
+  }
+
+  public getResponders (): string[] {
+    return SUPPORTED_RESPONDERS
   }
 }
 

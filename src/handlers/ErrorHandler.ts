@@ -13,7 +13,7 @@ class ErrorHandler implements EventHandler {
     this.client = client
   }
 
-  setup (): void {
+  public setup (): void {
     this.client.on('error', (err) => this.handleError(err))
   }
 

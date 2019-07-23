@@ -13,6 +13,8 @@ import CommandRegistrar from './CommandRegistrar'
 import CommandHandler from './handlers/CommandHandler'
 import ErrorHandler from './handlers/ErrorHandler'
 import ReadyHandler from './handlers/ReadyHandler'
+import { CommandSignature } from './arguments/CommandSignature';
+import ArgumentParser from './arguments/ArgumentParser';
 
 class R6StatsBot {
   client: Client
@@ -22,9 +24,12 @@ class R6StatsBot {
 
     decorate(injectable(), Client)
 
+    let sign = new CommandSignature('<user:username> <test> {platform}')
+    console.log(sign.arguments)
+
     container.bind<Client>(ServiceTypes.DiscordClient).toConstantValue(this.client)
-    container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).to(CommandRegistrar)
-    container.bind<CommandHandler>(ServiceTypes.CommandHandler).to(CommandHandler)
+    container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).toConstantValue(new CommandRegistrar())
+    container.bind<CommandHandler>(CommandHandler).toSelf()
     container.bind<ErrorHandler>(ErrorHandler).toSelf()
     container.bind<ReadyHandler>(ReadyHandler).toSelf()
 
@@ -35,7 +40,7 @@ class R6StatsBot {
   }
 
   setupHandlers () {
-    container.get<CommandHandler>(ServiceTypes.CommandHandler).setup()
+    container.get<CommandHandler>(CommandHandler).setup()
     container.get<ErrorHandler>(ErrorHandler).setup()
     container.get<ReadyHandler>(ReadyHandler).setup()
   }

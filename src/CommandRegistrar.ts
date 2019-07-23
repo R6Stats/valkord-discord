@@ -17,7 +17,7 @@ class CommandRegistrar {
 
     this.commands.push(cmd)
 
-    console.log(`Registered command ${ cmd.name }...`)
+    console.log(`Registered command ${cmd.name}...`)
   }
 
   public async registerDirectory (dir: string) {

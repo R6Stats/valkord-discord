@@ -6,10 +6,6 @@ class HelpCommand extends BaseCommand {
 
   command: string = 'help'
 
-  constructor () {
-    super()
-  }
-
   invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     return ctx.reply({
       embed: {
