@@ -1,16 +1,19 @@
-import { Client, Message, TextChannel } from 'discord.js'
-import R6StatsAPI from 'r6stats'
+import container from '../inversify.config'
+import { ServiceTypes } from './types'
+
 import * as fs from 'fs'
 import * as path from 'path'
-import BaseCommand from './BaseCommand'
 
-import container from '../inversify.config'
+import { Client, Message, TextChannel } from 'discord.js'
+
+import BaseCommand from './BaseCommand'
+import MessageContext from './MessageContext'
+
 import BotConfig from './BotConfig'
-import { ServiceTypes } from './types'
-import R6StatsAPIProvider from './providers/R6StatsAPIProvider';
-import ConfigProvider from './providers/ConfigProvider';
-import { interfaces } from 'inversify';
-import MessageContext from './MessageContext';
+
+import ConfigProvider from './providers/ConfigProvider'
+import R6StatsAPIProvider from './providers/R6StatsAPIProvider'
+import BotCommandException from './exceptions/BotCommandException';
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
@@ -58,7 +61,7 @@ class R6StatsBot {
   async loadCommands () {
     const files = fs.readdirSync(path.join(__dirname, 'commands'))
 
-    for (let file of files) {
+    for (const file of files) {
       const { default: clazz } = await import(path.join(__dirname, 'commands', file))
       container.bind<BaseCommand>(clazz).toSelf()
 
@@ -69,10 +72,10 @@ class R6StatsBot {
   }
 
   isOwnCommand (str: string) {
-    let split = str.split(' ')
+    const split = str.split(' ')
     if (split.length === 0) return false
-    let cmd = split[0].toLowerCase()
-    for (let responder of SUPPORTED_RESPONDERS) {
+    const cmd = split[0].toLowerCase()
+    for (const responder of SUPPORTED_RESPONDERS) {
       if (cmd === responder) {
         return true
       }
@@ -103,7 +106,6 @@ class R6StatsBot {
     let args = split.slice(2)
 
     for (let cmd of commands) {
-
       const cmdInstance = container.get<BaseCommand>(cmd)
 
       const ctx = new MessageContext(message, command, args)
@@ -113,6 +115,12 @@ class R6StatsBot {
         const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
         console.log(`Invoking command ${ command } ${name} with args ${args.join(',')}`)
         cmdInstance.invoke(ctx)
+          .catch((err: Error) => {
+            if (err instanceof BotCommandException) {
+              const cmdException = err as BotCommandException;
+              cmdException.render(ctx)
+            }
+          })
         break
       }
     }

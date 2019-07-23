@@ -1,5 +1,6 @@
 import BaseCommand from '../BaseCommand'
 import MessageContext from '../MessageContext'
+import { Message } from 'discord.js'
 
 class HelpCommand extends BaseCommand {
 
@@ -7,8 +8,8 @@ class HelpCommand extends BaseCommand {
     return ctx.command === 'help'
   }
 
-  invoke (ctx: MessageContext) {
-    ctx.reply({
+  invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
+    return ctx.reply({
       embed: {
         color: 3447003,
         title: 'R6Stats Bot Help',

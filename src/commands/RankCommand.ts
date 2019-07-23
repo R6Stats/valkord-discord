@@ -1,5 +1,6 @@
 import BaseCommand from '../BaseCommand'
 import MessageContext from '../MessageContext'
+import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
 import { ServiceTypes } from '../types'
@@ -9,8 +10,9 @@ import { parseUsername } from '../utilities/parsers'
 import { resolveRankedRegion, resolvePlatform } from '../utilities/resolvers'
 
 import R6StatsAPI from 'r6stats'
-import { formatListField } from '../utilities/formatters';
-import { RankedRegion } from '../types/Resolvable';
+import { formatListField } from '../utilities/formatters'
+import { RankedRegion } from '../types/Resolvable'
+import InvalidArgumentException from '../exceptions/InvalidArgumentException';
 
 @injectable()
 class RankCommand extends BaseCommand {
@@ -28,7 +30,7 @@ class RankCommand extends BaseCommand {
     return ctx.command === 'rank' || ctx.command === 'season' || ctx.command === 'seasonal'
   }
 
-  async invoke(ctx: MessageContext) {
+  async invoke(ctx: MessageContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: rank <username> <platform> {region} {season}')
     }
@@ -84,7 +86,7 @@ class RankCommand extends BaseCommand {
       { key: 'Abandons', value: abandons }
     ])
 
-    ctx.reply({
+    return ctx.reply({
       embed: {
         color: 3447003,
         author: {
@@ -115,6 +117,8 @@ class RankCommand extends BaseCommand {
   getParameters (args: string[]) {
     const { username, end: i } = parseUsername(args)
     const platform = resolvePlatform(args[i + 1])
+
+    if (!platform) throw new InvalidArgumentException(`The platform "${args[i + 1]}" is invalid. Specify pc, xbox, or ps4.`)
 
     let region: RankedRegion, season
 

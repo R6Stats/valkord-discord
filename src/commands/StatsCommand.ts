@@ -1,5 +1,6 @@
 import BaseCommand from '../BaseCommand'
 import MessageContext from '../MessageContext'
+import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
 import { ServiceTypes } from '../types'
@@ -10,6 +11,7 @@ import { parseUsername } from '../utilities/parsers'
 import { GAMEMODES } from '../constants'
 
 import R6StatsAPI from 'r6stats'
+import InvalidArgumentException from '../exceptions/InvalidArgumentException'
 
 @injectable()
 class StatsCommand extends BaseCommand {
@@ -27,16 +29,12 @@ class StatsCommand extends BaseCommand {
     return ctx.command === 'stats'
   }
 
-  async invoke (ctx: MessageContext) {
+  async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    try {
-      var { username, platform, queue } = this.getParameters(ctx.args)
-    } catch (e) {
-      return ctx.reply(e.message)
-    }
+    const { username, platform, queue } = this.getParameters(ctx.args)
 
     const player = await this.api.playerStats({ username: username, platform: platform.key })
 
@@ -97,10 +95,10 @@ class StatsCommand extends BaseCommand {
       { key: 'Barricades', value: barricades_deployed },
       { key: 'Reinforcements', value: reinforcements_deployed },
       { key: 'Rappel Breaches', value: rappel_breaches },
-      { key: 'DBNOs', value: dbnos }
+      { key: 'DBNOs', value: dbnos },
     ])
 
-    ctx.reply({
+    return ctx.reply({
       embed: {
         color: 3447003,
         author: {
@@ -135,7 +133,7 @@ class StatsCommand extends BaseCommand {
     const platform = resolvePlatform(args[i + 1])
     const queue = resolveGamemode(args[i + 2], GAMEMODES.OVERALL)
 
-    if (!platform) throw new Error(`The platform ${args[i + 1]} is invalid. Specify pc, xbox, or ps4.`)
+    if (!platform) throw new InvalidArgumentException(`The platform "${args[i + 1]}" is invalid. Specify pc, xbox, or ps4.`)
 
     return { platform, queue, username }
   }

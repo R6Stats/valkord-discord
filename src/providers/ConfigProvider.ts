@@ -1,6 +1,6 @@
-import container from '../../inversify.config';
-import BotConfig from '../BotConfig';
-import { ServiceTypes } from '../types';
+import container from '../../inversify.config'
+import BotConfig from '../BotConfig'
+import { ServiceTypes } from '../types'
 
 class ConfigProvider implements Provider {
   boot (): void {}

@@ -1,6 +1,6 @@
 'use strict'
 
-import { Message } from 'discord.js';
+import { Message } from 'discord.js'
 
 class MessageContext {
   message: Message

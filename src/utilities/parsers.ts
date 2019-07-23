@@ -1,4 +1,4 @@
-export const parseUsername = (args: string[]) => {
+const parseUsername = (args: string[]) => {
   let end = 1
   let username = args[0]
 
@@ -12,3 +12,5 @@ export const parseUsername = (args: string[]) => {
 
   return { username, end: end - 1 }
 }
+
+export { parseUsername }

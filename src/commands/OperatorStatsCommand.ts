@@ -1,5 +1,6 @@
 import BaseCommand from '../BaseCommand'
 import MessageContext from '../MessageContext'
+import { Message } from 'discord.js'
 
 import { ServiceTypes } from '../types'
 import { inject } from 'inversify'
@@ -9,6 +10,7 @@ import { resolvePlatform } from '../utilities/resolvers'
 import { playtime, formatListField } from '../utilities/formatters'
 
 import R6StatsAPI from 'r6stats'
+import InvalidArgumentException from '../exceptions/InvalidArgumentException';
 
 class OperatorStatsCommand extends BaseCommand {
   private api: R6StatsAPI
@@ -25,7 +27,7 @@ class OperatorStatsCommand extends BaseCommand {
     return ctx.command === 'operator'
   }
 
-  async invoke (ctx: MessageContext) {
+  async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 3) {
       return ctx.reply('Usage: operator <username> <platform> <operator>')
     }
@@ -63,7 +65,7 @@ class OperatorStatsCommand extends BaseCommand {
 
     const specials = formatListField('Abilities', abilities.map(a => { return { key: a.ability, value: a.value } }))
 
-    ctx.reply({
+    return ctx.reply({
       embed: {
         color: 3447003,
         author: {
@@ -98,7 +100,7 @@ class OperatorStatsCommand extends BaseCommand {
     const platform = resolvePlatform(args[i + 1])
     const operator = args[i + 2]
 
-    if (!platform) throw new Error(`The platform ${args[i + 1]} is invalid. Specify pc, xbox, or ps4.`)
+    if (!platform) throw new InvalidArgumentException(`The platform ${args[i + 1]} is invalid. Specify pc, xbox, or ps4.`)
 
     return { username, platform, operator }
   }
