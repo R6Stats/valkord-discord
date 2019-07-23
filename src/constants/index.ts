@@ -1,21 +1,46 @@
-export const PLATFORMS = [
-  { aliases: ['xbox', 'xbone', 'xone', 'xboxone', 'xbl'], data: { key: 'xone', name: 'Xbox One', logo: 'https://r6stats.com/img/platforms/xbox_logo.png'} },
-  { aliases: ['psn', 'ps', 'playstation', 'ps4'], data: { key: 'ps4', name: 'PS4', logo: 'https://r6stats.com/img/platforms/ps4_logo.png'} },
-  { aliases: ['steam', 'pc', 'uplay'], data: { key: 'pc', name: 'PC', logo: 'https://r6stats.com/img/platforms/pc_logo.png' } },
+const PLATFORMS = {
+  XBOX_ONE: { key: 'xone', name: 'Xbox One', logo: 'https://r6stats.com/img/platforms/xbox_logo.png'},
+  PS4: { key: 'ps4', name: 'PS4', logo: 'https://r6stats.com/img/platforms/ps4_logo.png'},
+  PC: { key: 'pc', name: 'PC', logo: 'https://r6stats.com/img/platforms/pc_logo.png' },
+}
+
+const RESOLVABLE_PLATFORMS = [
+  { aliases: ['xbox', 'xbone', 'xone', 'xboxone', 'xbl'], data: PLATFORMS.XBOX_ONE },
+  { aliases: ['psn', 'ps', 'playstation', 'ps4'], data: PLATFORMS.PS4 },
+  { aliases: ['steam', 'pc', 'uplay'], data: PLATFORMS.PC },
 ]
 
-export const GAMEMODES = [
-  { aliases: ['general', 'overall'], data: { key: 'overall', name: 'Overall' } },
-  { aliases: ['ranked'], data: { key: 'ranked', name: 'Ranked' } },
-  { aliases: ['casual'], data: { key: 'casual', name: 'Casual' } },
+const GAMEMODES = {
+  OVERALL: { key: 'overall', name: 'Overall' },
+  RANKED: { key: 'ranked', name: 'Ranked' },
+  CASUAL: { key: 'casual', name: 'Casual' },
+}
+
+const RESOLVABLE_GAMEMODES = [
+  { aliases: ['general', 'overall'], data: GAMEMODES.OVERALL  },
+  { aliases: ['ranked'], data: GAMEMODES.RANKED },
+  { aliases: ['casual'], data: GAMEMODES.CASUAL },
 ]
 
-export const ROLES = [
-  { aliases: ['atk', 'attacker', 'attack'], data:  { key: 'atk', name: 'Attack' } },
+const RESOLVABLE_ROLES = [
+  { aliases: ['atk', 'attacker', 'attack'], data: { key: 'atk', name: 'Attack' } },
   { aliases: ['def', 'defender', 'defend'], data: { key: 'def', name: 'Defense' } }
 ]
 
-export const RANKS = [
+const RESOLVABLE_REGIONS = [
+  { aliases: ['eu', 'emea', 'europe'], data: { key: 'emea', name: 'Europe' } },
+  { aliases: ['na', 'ncsa'], data: { key: 'ncsa', name: 'Americas' } },
+  { aliases: ['asia', 'apac'], data: { key: 'apac', name: 'Asia' } },
+]
+
+const RESOLVABLES = {
+  PLATFORMS: RESOLVABLE_PLATFORMS,
+  ROLES: RESOLVABLE_ROLES,
+  GAMEMODES: RESOLVABLE_GAMEMODES,
+  REGIONS: RESOLVABLE_REGIONS
+}
+
+const RANKS = [
   { name: 'Unranked', img: 'unranked.svg' },
   { name: 'Copper IV', img: 'copper-4.svg' },
   { name: 'Copper III', img: 'copper-3.svg' },
@@ -39,4 +64,4 @@ export const RANKS = [
   { name: 'Diamond', img: 'diamond.svg' }
 ]
 
-export const RESOLVABLES = { PLATFORMS, ROLES, GAMEMODES }
+export { PLATFORMS, GAMEMODES, RESOLVABLES, RANKS }

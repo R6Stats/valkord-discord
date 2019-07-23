@@ -10,6 +10,7 @@ import { ServiceTypes } from './types'
 import R6StatsAPIProvider from './providers/R6StatsAPIProvider';
 import ConfigProvider from './providers/ConfigProvider';
 import { interfaces } from 'inversify';
+import MessageContext from './MessageContext';
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
@@ -59,18 +60,11 @@ class R6StatsBot {
 
     for (let file of files) {
       const { default: clazz } = await import(path.join(__dirname, 'commands', file))
-      container.bind<BaseCommand>(clazz).toFactory(() => () => container.get(clazz))
+      container.bind<BaseCommand>(clazz).toSelf()
+
       console.log(`Registering command ${ clazz.name }...`)
       commands.push(clazz)
     }
-
-    // container.bind<interfaces.Factory<BaseCommand>>(ServiceTypes.Command).toFactory<BaseCommand>((context: interfaces.Context) => {
-    //   return () => {
-    //     console.log(context)
-    //     return context.container.get<BaseCommand>(ServiceTypes.Command)
-    //   }
-    // })
-
     console.log(`${ commands.length } command${ commands.length === 1 ? '': 's' } registered.`)
   }
 
@@ -111,14 +105,14 @@ class R6StatsBot {
     for (let cmd of commands) {
 
       const cmdInstance = container.get<BaseCommand>(cmd)
-      console.log(cmdInstance)
-      cmdInstance.hydrate(command, args, message)
 
-      if (cmdInstance.shouldInvoke()) {
+      const ctx = new MessageContext(message, command, args)
+
+      if (cmdInstance.shouldInvoke(ctx)) {
         const channel = message.channel
         const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
         console.log(`Invoking command ${ command } ${name} with args ${args.join(',')}`)
-        cmdInstance.invoke()
+        cmdInstance.invoke(ctx)
         break
       }
     }

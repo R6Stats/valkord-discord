@@ -1,4 +1,4 @@
-export const playtime = (seconds: number, timeView: string): string => {
+const playtime = (seconds: number, timeView: string = 'days'): string => {
   let hours
   let minutes
   let days
@@ -20,3 +20,19 @@ export const playtime = (seconds: number, timeView: string): string => {
 
   return timeStr.length > 0 ? timeStr : 'N/A'
 }
+
+const formatListField = (title: string , items) => {
+  const rows = []
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+    rows.push(`**${item.key}**: ${item.value}${i < items.length ? '\n' : ''}`)
+  }
+
+  return {
+    name: title,
+    inline: true,
+    value: rows.join('')
+  }
+}
+
+export { playtime, formatListField }

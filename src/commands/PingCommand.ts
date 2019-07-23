@@ -1,13 +1,14 @@
 import BaseCommand from '../BaseCommand'
+import MessageContext from '../MessageContext'
 
 class PingCommand extends BaseCommand {
 
-  shouldInvoke () {
-    return this.command === 'ping'
+  shouldInvoke (ctx: MessageContext) {
+    return ctx.command === 'ping'
   }
 
-  invoke () {
-    this.reply('Pong!')
+  invoke (ctx: MessageContext) {
+    ctx.reply('Pong!')
   }
 
 }

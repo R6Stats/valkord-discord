@@ -2,9 +2,10 @@ export enum ResolvableType {
   PLATFORM = 'PLATFORMS',
   GAMEMODE = 'GAMEMODES',
   ROLE = 'ROLES',
+  REGION = 'REGIONS',
 }
 
-interface Resolvable {
+export interface Resolvable {
   key: string
   name: string
 }
@@ -16,3 +17,5 @@ export interface Platform extends Resolvable {
 export interface Gamemode extends Resolvable {}
 
 export interface OperatorRole extends Resolvable {}
+
+export interface RankedRegion extends Resolvable {}

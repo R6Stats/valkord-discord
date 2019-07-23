@@ -1,13 +1,14 @@
 import BaseCommand from '../BaseCommand'
+import MessageContext from '../MessageContext'
 
 class InviteCommand extends BaseCommand {
 
-  shouldInvoke () {
-    return this.command === 'invite'
+  shouldInvoke (ctx: MessageContext) {
+    return ctx.command === 'invite'
   }
 
-  invoke () {
-    this.reply({
+  invoke (ctx: MessageContext) {
+    ctx.reply({
       embed: {
         color: 3447003,
         title: 'R6Stats Bot Invite',

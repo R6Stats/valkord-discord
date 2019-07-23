@@ -1,10 +1,15 @@
 import BaseCommand from '../BaseCommand'
+import MessageContext from '../MessageContext'
+
+import { injectable, inject } from 'inversify'
+import { ServiceTypes } from '../types'
 
 import { resolvePlatform, resolveGamemode } from '../utilities/resolvers'
-import { playtime } from '../utilities/formatters'
-import R6StatsAPI from 'r6stats';
-import { injectable, inject } from 'inversify';
-import { ServiceTypes } from '../types';
+import { playtime, formatListField } from '../utilities/formatters'
+import { parseUsername } from '../utilities/parsers'
+import { GAMEMODES } from '../constants'
+
+import R6StatsAPI from 'r6stats'
 
 @injectable()
 class StatsCommand extends BaseCommand {
@@ -13,146 +18,124 @@ class StatsCommand extends BaseCommand {
   constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
   ) {
-    console.log('called')
     super()
 
     this.api = api
   }
 
-  shouldInvoke () {
-    return this.command === 'stats'
+  shouldInvoke (ctx: MessageContext) {
+    return ctx.command === 'stats'
   }
 
-  async invoke () {
-
-    if (this.args.length < 2) {
-      return this.reply('Usage: stats <username> <platform> {queue}')
+  async invoke (ctx: MessageContext) {
+    if (ctx.args.length < 2) {
+      return ctx.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    // const { username, platform, queue } = this.getParameters(this.args)
+    try {
+      var { username, platform, queue } = this.getParameters(ctx.args)
+    } catch (e) {
+      return ctx.reply(e.message)
+    }
 
-    // try {
-    //   var { data: players } = await this._api.playerSearch({ username: username, platform: platform.name })
-    //   if (!(players && players.length && players.length >= 1)) return this.reply('No players found.')
+    const player = await this.api.playerStats({ username: username, platform: platform.key })
 
-    //   var player = players[0]
+    let {
+      assists, headshots, revives,
+      suicides, barricades_deployed,
+      reinforcements_deployed,
+      melee_kills, penetration_kills,
+      blind_kills, rappel_breaches,
+      dbnos, playtime: timePlayed,
+      kills, deaths, wins, losses
+    } = player.stats.general
 
-    //   var { data: rawStats } = await this._api.playerStats({ uuid: player.ubisoft_id })
-    //   if (!(rawStats)) return this.reply('Stats not found.')
-    // } catch (e) {
-    //   return this.reply('Stats not found.')
-    // }
+    if (queue.key === 'ranked' || queue.key === 'casual') {
+      // this is terrible syntax imo...
+      // but allows for reassigning deconstructed variables
+      ;({ kills, deaths, wins, losses } = player.stats.queue[queue.key])
+    }
 
-    // const stats = rawStats.stats[0]
-    // const progression = rawStats.progression
+    const kd = deaths > 0 ? (kills / deaths).toFixed(2) : 'N/A'
+    const wlr = losses > 0 ? (wins / losses).toFixed(2) : 'N/A'
 
-    // if (this.queue === 'general') {
-    //   var { kills, deaths, wins, losses } = stats.general
-    // } else if (this.queue === 'ranked') {
-    //   var { kills, deaths, wins, losses } = stats.queue.ranked
-    // } else if (this.queue === 'casual') {
-    //   var { kills, deaths, wins, losses } = stats.queue.casual
-    // }
+    const {
+      level, lootbox_probability
+    } = player.progression
 
-    // let kd = deaths > 0 ? (kills / deaths).toFixed(2) : 'N/A'
-    // let wlr = losses > 0 ? (wins / losses).toFixed(2) : 'N/A'
+    const statsUrl = 'https://r6stats.com/stats/' + player.ubisoft_id
 
-    // let {
-    //   assists, headshots, revives,
-    //   suicides, barricades_deployed,
-    //   reinforcements_deployed,
-    //   melee_kills, penetration_kills,
-    //   blind_kills, rappel_breaches,
-    //   dbnos, playtime: timePlayed
-    // } = stats.general
+    const about = formatListField('About', [
+      { key: 'Level', value: level },
+      { key: 'Playtime', value: playtime(timePlayed) },
+      { key: 'Lootbox Chance', value: `${(lootbox_probability)}%` },
+    ])
 
-    // let {
-    //   level, lootbox_probability
-    // } = progression
+    const killDeath = formatListField('Kills/Deaths', [
+      { key: 'Kills', value: kills },
+      { key: 'Deaths', value: deaths },
+      { key: 'Assists', value: assists },
+      { key: 'K/D', value: kd },
+    ])
 
-    // const statsUrl = 'https://r6stats.com/stats/' + player.ubisoft_id
+    const winLoss = formatListField('Wins/Losses', [
+      { key: 'Wins', value: wins },
+      { key: 'Losses', value: losses },
+      { key: 'W/L', value: wlr },
+    ])
 
-    // const title = this.queue.charAt(0).toUpperCase() + this.queue.slice(1)
-    // this.reply({
-    //   embed: {
-    //     color: 3447003,
-    //     author: {
-    //       name: player.username,
-    //       url: statsUrl,
-    //       icon_url: this.platform.image
-    //     },
-    //     thumbnail: {
-    //       url: `https://ubisoft-avatars.akamaized.net/${player.ubisoft_id}/default_146_146.png`
-    //     },
-    //     title: title + ' Player Stats',
-    //     description: `[View Full Stats for ${player.username}](${statsUrl})`,
-    //     fields: [
-    //       {
-    //         name: 'About',
-    //         inline: true,
-    //         value: '**Level**: ' + level + '\n'
-    //           + '**Playtime**: ' + playtime(timePlayed) + '\n'
-    //           + '**Lootbox Chance**: ' + (lootbox_probability / 100) + '%'
-    //       },
-    //       {
-    //         name: 'Kill/Deaths',
-    //         inline: true,
-    //         value: '**Kills**: ' + kills + '\n'
-    //           + '**Deaths**: ' + deaths + '\n'
-    //           + '**Assists**: ' + assists + '\n'
-    //           + '**K/D**: ' + kd
-    //       },
-    //       {
-    //         name: 'Win/Loss',
-    //         inline: true,
-    //         value: '**Wins**: ' + wins + '\n'
-    //           + '**Losses**: ' + losses + '\n'
-    //           + '**W/L**: ' + wlr
-    //       },
-    //       {
-    //         name: 'Kills Breakdown',
-    //         inline: true,
-    //         value: '**Headshots**: ' + headshots + '\n'
-    //           + '**Blind Kills**: ' + blind_kills + '\n'
-    //           + '**Melee Kills**: ' + melee_kills + '\n'
-    //           + '**Penetration Kills**: ' + penetration_kills
-    //       },
-    //       {
-    //         name: 'Misc.',
-    //         inline: true,
-    //         value: '**Revives**: ' + revives + '\n'
-    //           + '**Suicides**: ' + suicides + '\n'
-    //           + '**Barricades**: ' + barricades_deployed + '\n'
-    //           + '**Reinforcements**: ' + reinforcements_deployed + '\n'
-    //           + '**Rappel Breaches**: ' + rappel_breaches + '\n'
-    //           + '**DBNOs**: ' + dbnos
-    //       },
-    //     ],
-    //     footer: {
-    //       icon_url: 'https://r6stats.com/img/logos/r6stats-100.png',
-    //       text: 'Stats Provided by R6Stats.com',
-    //       url: 'https://r6stats.com'
-    //     }
-    //   }
-    // })
+    const killBreakdown = formatListField('Kill Breakdown', [
+      { key: 'Headshots', value: headshots },
+      { key: 'Blind Kills', value: blind_kills },
+      { key: 'Melee Kills', value: melee_kills },
+      { key: 'Penetration Kills', value: penetration_kills },
+    ])
 
-  }
+    const miscStats = formatListField('Misc.', [
+      { key: 'Revives', value: revives },
+      { key: 'Suicides', value: suicides },
+      { key: 'Barricades', value: barricades_deployed },
+      { key: 'Reinforcements', value: reinforcements_deployed },
+      { key: 'Rappel Breaches', value: rappel_breaches },
+      { key: 'DBNOs', value: dbnos }
+    ])
 
-  getParameters (args: Array<string>) {
-    let username = args[0]
-    var i = 1
-    if (username.startsWith('"') || username.startsWith('“') || username.startsWith('”')) {
-      while (!(username.endsWith('"') || username.endsWith('“') || username.endsWith('”')) && i < args.length - 1) {
-        username += ' ' + args[i]
-        i++
+    ctx.reply({
+      embed: {
+        color: 3447003,
+        author: {
+          name: player.username,
+          url: statsUrl,
+          icon_url: platform.logo
+        },
+        thumbnail: {
+          url: player.avatar_url_146
+        },
+        title: queue.name + ' Player Stats',
+        description: `[View Full Stats for ${player.username}](${statsUrl})`,
+        fields: [
+          about,
+          killDeath,
+          winLoss,
+          killBreakdown,
+          miscStats
+        ],
+        footer: {
+          icon_url: 'https://r6stats.com/img/logos/r6stats-100.png',
+          text: 'Stats Provided by R6Stats.com',
+          url: 'https://r6stats.com'
+        }
       }
-      username = username.replace(/"/g, '').replace(/“/g, '').replace(/”/g, '')
-    }
-    let platform = resolvePlatform(args[i].toLowerCase())
-    let queue = resolveGamemode(args[i + 1] ? args[i + 1].toLowerCase() : null) || 'general'
-    if (!platform) {
-      return this.reply(`The platform ${args[i]} is invalid. Specify pc, xbox, or ps4.`)
-    }
+    })
+
+  }
+
+  getParameters (args: string[]) {
+    const { username, end: i } = parseUsername(args)
+    const platform = resolvePlatform(args[i + 1])
+    const queue = resolveGamemode(args[i + 2], GAMEMODES.OVERALL)
+
+    if (!platform) throw new Error(`The platform ${args[i + 1]} is invalid. Specify pc, xbox, or ps4.`)
 
     return { platform, queue, username }
   }

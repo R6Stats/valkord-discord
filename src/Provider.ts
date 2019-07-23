@@ -1,6 +1,6 @@
 'use strict'
 
 interface Provider {
-  boot (): void;
-  register ();
+  boot (): void
+  register ()
 }
