@@ -7,7 +7,7 @@ import { ServiceTypes } from '../types'
 import { Client, Message, TextChannel } from 'discord.js'
 
 import CommandRegistrar from '../CommandRegistrar'
-import BaseCommand from '../BaseCommand'
+import { BotCommand } from '../BotCommand'
 import MessageContext from '../MessageContext'
 import EventHandler from './EventHandler'
 
@@ -16,7 +16,7 @@ import BotCommandException from '../exceptions/BotCommandException'
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
 @injectable()
-class CommandHandler implements EventHandler {
+class CommandHandler extends EventHandler {
   private registrar: CommandRegistrar;
   private client: Client;
 
@@ -24,6 +24,8 @@ class CommandHandler implements EventHandler {
     @inject(ServiceTypes.DiscordClient) client: Client,
     @inject(ServiceTypes.CommandRegistrar) registrar: CommandRegistrar
   ) {
+    super()
+
     this.client = client
     this.registrar = registrar
   }
@@ -43,7 +45,7 @@ class CommandHandler implements EventHandler {
     const commands = this.registrar.getCommands()
 
     for (let cmd of commands) {
-      const cmdInstance = container.get<BaseCommand>(cmd)
+      const cmdInstance = container.get<BotCommand>(cmd)
 
       const ctx = new MessageContext(message, command, args)
 

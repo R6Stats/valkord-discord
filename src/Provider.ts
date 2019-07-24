@@ -1,6 +1,13 @@
 'use strict'
 
-interface Provider {
-  boot (): void
-  register ()
+class Provider {
+  boot (): void {
+
+  }
+
+  register () {
+
+  }
 }
+
+export default Provider

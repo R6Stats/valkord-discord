@@ -7,7 +7,7 @@ import { Client } from 'discord.js'
 import BotConfig from './BotConfig'
 
 import ConfigProvider from './providers/ConfigProvider'
-import R6StatsAPIProvider from './providers/R6StatsAPIProvider'
+import R6StatsAPIProvider from './plugins/r6stats/providers/R6StatsAPIProvider'
 import CommandRegistrar from './CommandRegistrar'
 
 import CommandHandler from './handlers/CommandHandler'
@@ -66,7 +66,9 @@ class R6StatsBot {
   async loadCommands () {
     const registrar = container.get<CommandRegistrar>(ServiceTypes.CommandRegistrar)
 
-    registrar.registerDirectory('commands')
+    await registrar.registerDirectory('commands')
+
+    registrar.bootCommands()
   }
 
 }

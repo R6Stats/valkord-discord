@@ -1,18 +1,18 @@
-import BaseCommand from '../BaseCommand'
-import MessageContext from '../MessageContext'
+import BaseCommand from '../../../BaseCommand'
+import MessageContext from '../../../MessageContext'
 import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../types'
+import { ServiceTypes } from '../../../types'
 
-import { RANKS } from '../constants'
-import { parseUsername } from '../utilities/parsers'
-import { resolveRankedRegion, resolvePlatform } from '../utilities/resolvers'
+import { RANKS } from '../../../constants'
+import { parseUsername } from '../../../utilities/parsers'
+import { resolveRankedRegion, resolvePlatform } from '../../../utilities/resolvers'
 
 import R6StatsAPI from 'r6stats'
-import { formatListField } from '../utilities/formatters'
-import { RankedRegion } from '../types/Resolvable'
-import InvalidArgumentException from '../exceptions/InvalidArgumentException'
+import { formatListField } from '../../../utilities/formatters'
+import { RankedRegion } from '../../../types/Resolvable'
+import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
 
 @injectable()
 class RankCommand extends BaseCommand {

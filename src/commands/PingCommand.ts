@@ -1,8 +1,8 @@
-import BaseCommand from '../BaseCommand'
+import { BotCommand } from '../BotCommand'
 import MessageContext from '../MessageContext'
 import { Message } from 'discord.js'
 
-class PingCommand extends BaseCommand {
+class PingCommand extends BotCommand {
 
   command: string = 'ping'
   category: string = 'Other'

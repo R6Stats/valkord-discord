@@ -1,7 +1,9 @@
 'use strict'
 
-interface EventHandler {
-  setup (): void
+class EventHandler {
+  setup (): void {
+
+  }
 }
 
 export default EventHandler

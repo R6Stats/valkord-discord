@@ -1,8 +1,8 @@
-import BaseCommand from '../BaseCommand'
+import { BotCommand } from '../BotCommand'
 import MessageContext from '../MessageContext'
 import { Message } from 'discord.js'
 
-class HelpCommand extends BaseCommand {
+class HelpCommand extends BotCommand {
 
   command: string = 'help'
 

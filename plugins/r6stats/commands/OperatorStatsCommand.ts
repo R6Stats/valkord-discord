@@ -1,16 +1,16 @@
-import BaseCommand from '../BaseCommand'
-import MessageContext from '../MessageContext'
+import BaseCommand from '../../../BaseCommand'
+import MessageContext from '../../../MessageContext'
 import { Message } from 'discord.js'
 
-import { ServiceTypes } from '../types'
+import { ServiceTypes } from '../../../types'
 import { inject } from 'inversify'
 
-import { parseUsername } from '../utilities/parsers'
-import { resolvePlatform } from '../utilities/resolvers'
-import { playtime, formatListField } from '../utilities/formatters'
+import { parseUsername } from '../../../utilities/parsers'
+import { resolvePlatform } from '../../../utilities/resolvers'
+import { playtime, formatListField } from '../../../utilities/formatters'
 
 import R6StatsAPI from 'r6stats'
-import InvalidArgumentException from '../exceptions/InvalidArgumentException'
+import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
 
 class OperatorStatsCommand extends BaseCommand {
   private api: R6StatsAPI

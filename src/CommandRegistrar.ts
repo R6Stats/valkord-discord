@@ -6,18 +6,27 @@ import { injectable } from 'inversify'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import BaseCommand from './BaseCommand'
+import { BotCommand } from './BotCommand'
 
 @injectable()
 class CommandRegistrar {
-  private commands: typeof BaseCommand[] = []
+  private commands: BotCommand[] = []
 
-  public registerCommand (cmd: typeof BaseCommand) {
-    container.bind<BaseCommand>(cmd).toSelf()
+  public registerCommand (cmd: BotCommand) {
+    container.bind<BotCommand>(cmd).toSelf()
 
     this.commands.push(cmd)
 
     console.log(`Registered command ${cmd.name}...`)
+  }
+
+  public bootCommands () {
+    console.log(container)
+    const cmds = container.get<BotCommand>(BotCommand)
+
+    for (const cmd of cmds) {
+      if (!cmd.isBooted()) cmd.boot()
+    }
   }
 
   public async registerDirectory (dir: string) {

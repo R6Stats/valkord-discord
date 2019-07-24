@@ -4,12 +4,14 @@ import { ServiceTypes } from '../types'
 import { inject, injectable } from 'inversify'
 
 @injectable()
-class ErrorHandler implements EventHandler {
+class ErrorHandler extends EventHandler {
   private client: Client;
 
   constructor (
     @inject(ServiceTypes.DiscordClient) client: Client
   ) {
+    super()
+
     this.client = client
   }
 

@@ -1,17 +1,17 @@
-import BaseCommand from '../BaseCommand'
-import MessageContext from '../MessageContext'
+import BaseCommand from '../../../BaseCommand'
+import MessageContext from '../../../MessageContext'
 import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../types'
+import { ServiceTypes } from '../../../types'
 
-import { resolvePlatform, resolveGamemode } from '../utilities/resolvers'
-import { playtime, formatListField } from '../utilities/formatters'
-import { parseUsername } from '../utilities/parsers'
-import { GAMEMODES } from '../constants'
+import { resolvePlatform, resolveGamemode } from '../../../utilities/resolvers'
+import { playtime, formatListField } from '../../../utilities/formatters'
+import { parseUsername } from '../../../utilities/parsers'
+import { GAMEMODES } from '../../../constants'
 
 import R6StatsAPI from 'r6stats'
-import InvalidArgumentException from '../exceptions/InvalidArgumentException'
+import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
 
 @injectable()
 class StatsCommand extends BaseCommand {

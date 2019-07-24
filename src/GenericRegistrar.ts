@@ -1,7 +1,9 @@
-interface GenericRegistrar<T, U> {
+interface GenericRegistrar<T> {
+  registry: T[];
+
   register(clazz: T): void
   unregister(clazz: T): void
-  getRegistered(): U[]
+  getRegistered(): T[]
 }
 
 export default GenericRegistrar

@@ -1,7 +1,11 @@
 class CommandSignature {
-  arguments: CommandArgument[] = []
+  arguments: CommandSignatureArgument[]
+  rawSignature: string;
 
   constructor (signature: string) {
+    this.arguments = []
+    this.rawSignature = signature
+
     this.parseSignature(signature)
   }
 
@@ -15,12 +19,16 @@ class CommandSignature {
       const key = split[0]
       const type = split.length > 1 ? split[1] : 'string'
 
-      this.arguments.push(new CommandArgument(key, type, optional))
+      this.arguments.push(new CommandSignatureArgument(key, type, optional))
     }
+  }
+
+  getMinLength () {
+    return this.arguments.length
   }
 }
 
-class CommandArgument {
+class CommandSignatureArgument {
   key: string
   type: string
   optional: boolean
@@ -32,4 +40,4 @@ class CommandArgument {
   }
 }
 
-export { CommandSignature, CommandArgument }
+export { CommandSignature, CommandSignatureArgument }
