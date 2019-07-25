@@ -7,7 +7,7 @@ import { Client } from 'discord.js'
 import BotConfig from './BotConfig'
 
 import ConfigProvider from './providers/ConfigProvider'
-import R6StatsAPIProvider from './plugins/r6stats/providers/R6StatsAPIProvider'
+// import R6StatsAPIProvider from './plugins/r6stats/providers/R6StatsAPIProvider'
 import CommandRegistrar from './CommandRegistrar'
 
 import CommandHandler from './handlers/CommandHandler'
@@ -15,6 +15,7 @@ import ErrorHandler from './handlers/ErrorHandler'
 import ReadyHandler from './handlers/ReadyHandler'
 import { CommandSignature } from './arguments/CommandSignature';
 import ArgumentParser from './arguments/ArgumentParser';
+import { BotCommand, IBotCommand } from './BotCommand';
 
 class R6StatsBot {
   client: Client
@@ -23,9 +24,6 @@ class R6StatsBot {
     this.client = new Client()
 
     decorate(injectable(), Client)
-
-    let sign = new CommandSignature('<user:username> <test> {platform}')
-    console.log(sign.arguments)
 
     container.bind<Client>(ServiceTypes.DiscordClient).toConstantValue(this.client)
     container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).toConstantValue(new CommandRegistrar())
@@ -48,7 +46,7 @@ class R6StatsBot {
   registerProviders () {
     const PROVIDERS = [
       ConfigProvider,
-      R6StatsAPIProvider
+      // R6StatsAPIProvider
     ]
 
     PROVIDERS.forEach(ProviderClass => {
@@ -67,8 +65,6 @@ class R6StatsBot {
     const registrar = container.get<CommandRegistrar>(ServiceTypes.CommandRegistrar)
 
     await registrar.registerDirectory('commands')
-
-    registrar.bootCommands()
   }
 
 }

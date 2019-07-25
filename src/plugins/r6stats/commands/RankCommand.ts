@@ -1,5 +1,3 @@
-import BaseCommand from '../../../BaseCommand'
-import MessageContext from '../../../MessageContext'
 import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
@@ -13,9 +11,11 @@ import R6StatsAPI from 'r6stats'
 import { formatListField } from '../../../utilities/formatters'
 import { RankedRegion } from '../../../types/Resolvable'
 import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
+import { BotCommand } from '../../../BotCommand';
+import CommandContext from '../../../CommandContext';
 
 @injectable()
-class RankCommand extends BaseCommand {
+class RankCommand extends BotCommand {
   private api: R6StatsAPI
 
   command: string = 'rank'
@@ -30,7 +30,7 @@ class RankCommand extends BaseCommand {
     this.api = api
   }
 
-  async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
+  public async invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: rank <username> <platform> {region} {season}')
     }

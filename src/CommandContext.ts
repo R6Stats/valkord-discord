@@ -2,7 +2,7 @@
 
 import { Message } from 'discord.js'
 
-class MessageContext {
+class CommandContext {
   message: Message
   command: string
   args: string[]
@@ -18,4 +18,4 @@ class MessageContext {
   }
 }
 
-export default MessageContext
+export default CommandContext

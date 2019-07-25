@@ -6,27 +6,22 @@ import { injectable } from 'inversify'
 import * as fs from 'fs'
 import * as path from 'path'
 
-import { BotCommand } from './BotCommand'
+import { IBotCommand, BotCommand } from './BotCommand'
+import GenericRegistrar from './GenericRegistrar';
+import { ServiceTypes } from './types';
 
 @injectable()
-class CommandRegistrar {
-  private commands: BotCommand[] = []
+class CommandRegistrar implements GenericRegistrar<new () => BotCommand> {
+  registry: any[];
 
-  public registerCommand (cmd: BotCommand) {
-    container.bind<BotCommand>(cmd).toSelf()
-
-    this.commands.push(cmd)
+  public register (cmd: new () => BotCommand) {
+    container.bind<IBotCommand>(ServiceTypes.Command).to(cmd)
 
     console.log(`Registered command ${cmd.name}...`)
   }
 
-  public bootCommands () {
-    console.log(container)
-    const cmds = container.get<BotCommand>(BotCommand)
-
-    for (const cmd of cmds) {
-      if (!cmd.isBooted()) cmd.boot()
-    }
+  unregister(cmd: new () => BotCommand): void {
+    throw new Error('Method not implemented.');
   }
 
   public async registerDirectory (dir: string) {
@@ -36,12 +31,8 @@ class CommandRegistrar {
     for (const file of files) {
       const { default: clazz } = await import(path.join(basePath, file))
 
-      this.registerCommand(clazz)
+      this.register(clazz)
     }
-  }
-
-  public getCommands () {
-    return this.commands
   }
 
 }

@@ -7,9 +7,9 @@ import { ServiceTypes } from '../types'
 import { Client, Message, TextChannel } from 'discord.js'
 
 import CommandRegistrar from '../CommandRegistrar'
-import { BotCommand } from '../BotCommand'
-import MessageContext from '../MessageContext'
-import EventHandler from './EventHandler'
+import { IBotCommand } from '../BotCommand'
+import CommandContext from '../CommandContext'
+import { EventHandler } from './EventHandler'
 
 import BotCommandException from '../exceptions/BotCommandException'
 
@@ -38,22 +38,19 @@ class CommandHandler extends EventHandler {
     if (message.author.bot) return
     if (!this.isOwnCommand(message.content)) return
 
-    let split = message.content.split(' ')
+    const split = message.content.split(' ')
     if (split.length <= 1) return
-    let command = split[1].toLowerCase()
-    let args = split.slice(2)
-    const commands = this.registrar.getCommands()
+    const command = split[1].toLowerCase()
+    const args = split.slice(2)
+    const commands = container.getAll<IBotCommand>(ServiceTypes.Command)
+    const ctx = new CommandContext(message, command, args)
 
-    for (let cmd of commands) {
-      const cmdInstance = container.get<BotCommand>(cmd)
-
-      const ctx = new MessageContext(message, command, args)
-
-      if (cmdInstance.shouldInvoke(ctx)) {
+    for (const cmd of commands) {
+      if (cmd.shouldInvoke(ctx)) {
         const channel = message.channel
         const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
         console.log(`Invoking command ${ command } ${name} with args ${args.join(',')}`)
-        cmdInstance.invoke(ctx)
+        cmd.invoke(ctx)
           .catch((err: Error) => {
             if (err instanceof BotCommandException) {
               const cmdException = err as BotCommandException;

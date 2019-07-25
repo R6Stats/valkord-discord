@@ -5,7 +5,7 @@ import R6StatsAPI from 'r6stats'
 import BotConfig from '../../../BotConfig'
 import { decorate, injectable } from 'inversify'
 import { ServiceTypes } from '../../../types'
-import Provider from '../../../Provider';
+import { Provider } from '../../../Provider';
 
 class R6StatsAPIProvider extends Provider {
   api: R6StatsAPI

@@ -1,4 +1,4 @@
-import EventHandler from './EventHandler'
+import { EventHandler } from './EventHandler'
 import { Client } from 'discord.js'
 import { ServiceTypes } from '../types'
 import { inject, injectable } from 'inversify'

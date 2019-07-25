@@ -1,5 +1,3 @@
-import BaseCommand from '../../../BaseCommand'
-import MessageContext from '../../../MessageContext'
 import { Message } from 'discord.js'
 
 import { injectable, inject } from 'inversify'
@@ -12,9 +10,11 @@ import { GAMEMODES } from '../../../constants'
 
 import R6StatsAPI from 'r6stats'
 import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
+import { BotCommand } from '../../../BotCommand';
+import CommandContext from '../../../CommandContext';
 
 @injectable()
-class StatsCommand extends BaseCommand {
+class StatsCommand extends BotCommand {
   private api: R6StatsAPI
 
   command: string = 'stats'
@@ -28,7 +28,7 @@ class StatsCommand extends BaseCommand {
     this.api = api
   }
 
-  async invoke (ctx: MessageContext): Promise<void|Message|Message[]> {
+  async invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: stats <username> <platform> {queue}')
     }

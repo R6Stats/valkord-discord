@@ -1,13 +1,19 @@
 'use strict'
 
-class Provider {
+interface IProvider {
+  boot (): void
+
+  register (): void
+}
+
+class Provider implements IProvider {
   boot (): void {
 
   }
 
-  register () {
+  register (): void {
 
   }
 }
 
-export default Provider
+export { IProvider, Provider }
