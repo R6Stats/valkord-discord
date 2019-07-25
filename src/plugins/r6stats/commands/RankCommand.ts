@@ -120,7 +120,7 @@ class RankCommand extends BotCommand {
 
     if (!platform) throw new InvalidArgumentException(`The platform "${args[i + 1]}" is invalid. Specify pc, xbox, or ps4.`)
 
-    let region: RankedRegion, season
+    let region: RankedRegion, season: number|null
 
     if (args.length === i + 1) {
       const intVal = parseInt(args[i + 2])

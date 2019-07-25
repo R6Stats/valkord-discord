@@ -2,6 +2,7 @@
 
 import container from '../inversify.config'
 import { injectable } from 'inversify'
+import chalk from 'chalk'
 
 import * as fs from 'fs'
 import * as path from 'path'
@@ -17,7 +18,7 @@ class CommandRegistrar implements GenericRegistrar<new () => BotCommand> {
   public register (cmd: new () => BotCommand) {
     container.bind<IBotCommand>(ServiceTypes.Command).to(cmd)
 
-    console.log(`Registered command ${cmd.name}...`)
+    console.log(chalk.green(`Registered command ${cmd.name}!`))
   }
 
   unregister(cmd: new () => BotCommand): void {
