@@ -1,32 +1,55 @@
-import { IBotCommand } from '../BotCommand'
+import { BotCommand } from '../BotCommand'
 import { IProvider } from '../Provider'
-import { IEventHandler } from '../handlers/EventHandler'
+import { EventHandler } from '../handlers/EventHandler'
 
+type PluginClass<T> = new (...args: any[]) => T
 
-class BotPlugin {
+interface IBotPlugin {
+  name: string
+  description: string
+  commands: PluginClass<BotCommand>[]
+  providers: PluginClass<IProvider>[]
+  handlers: PluginClass<EventHandler>[]
+
+  getCommands (): PluginClass<BotCommand>[]
+  getProviders (): PluginClass<IProvider>[]
+
+  register (): void
+  boot (): void
+}
+
+class BotPlugin implements IBotPlugin {
   public name: string;
   public description: string;
 
-  public commands: IBotCommand[] = [
+  public commands: PluginClass<BotCommand>[] = [
     // ...
   ]
 
-  public providers: IProvider[] = [
+  public providers: PluginClass<IProvider>[] = [
     // ...
   ]
 
-  public handlers: IEventHandler[] = [
+  public handlers: PluginClass<EventHandler>[] = [
     // ...
   ]
 
-  public register () {
+  public getCommands () {
+    return this.commands
+  }
+
+  public getProviders () {
+    return this.providers
+  }
+
+  public register (): void {
 
   }
 
-  public boot () {
+  public boot (): void {
 
   }
 
 }
 
-export default BotPlugin
+export { BotPlugin, PluginClass }

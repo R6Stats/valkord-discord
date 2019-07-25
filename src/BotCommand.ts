@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import CommandContext from './CommandContext'
 import { Message } from 'discord.js'
-import { CommandSignature } from './arguments/CommandSignature';
+import { CommandSignature } from './arguments/CommandSignature'
 
 interface IBotCommand {
   readonly command: string

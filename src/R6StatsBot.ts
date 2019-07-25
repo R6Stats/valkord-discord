@@ -7,15 +7,14 @@ import { Client } from 'discord.js'
 import BotConfig from './BotConfig'
 
 import ConfigProvider from './providers/ConfigProvider'
-// import R6StatsAPIProvider from './plugins/r6stats/providers/R6StatsAPIProvider'
 import CommandRegistrar from './CommandRegistrar'
 
 import CommandHandler from './handlers/CommandHandler'
 import ErrorHandler from './handlers/ErrorHandler'
 import ReadyHandler from './handlers/ReadyHandler'
-import { CommandSignature } from './arguments/CommandSignature';
-import ArgumentParser from './arguments/ArgumentParser';
-import { BotCommand, IBotCommand } from './BotCommand';
+import PluginRegistrar from './plugins/PluginRegistrar';
+import ProviderRegistrar from './ProviderRegistrar';
+import R6StatsPlugin from './plugins/r6stats/R6StatsPlugin';
 
 class R6StatsBot {
   client: Client
@@ -26,7 +25,9 @@ class R6StatsBot {
     decorate(injectable(), Client)
 
     container.bind<Client>(ServiceTypes.DiscordClient).toConstantValue(this.client)
+    container.bind<ProviderRegistrar>(ServiceTypes.ProviderRegistrar).to(ProviderRegistrar)
     container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).toConstantValue(new CommandRegistrar())
+    container.bind<PluginRegistrar>(ServiceTypes.PluginRegistrar).to(PluginRegistrar)
     container.bind<CommandHandler>(CommandHandler).toSelf()
     container.bind<ErrorHandler>(ErrorHandler).toSelf()
     container.bind<ReadyHandler>(ReadyHandler).toSelf()
@@ -34,6 +35,7 @@ class R6StatsBot {
     this.setupHandlers()
     this.registerProviders()
     this.loadCommands()
+    this.registerPlugins()
     this.login()
   }
 
@@ -44,16 +46,17 @@ class R6StatsBot {
   }
 
   registerProviders () {
+    const providerRegistrar = container.get<ProviderRegistrar>(ServiceTypes.ProviderRegistrar)
     const PROVIDERS = [
       ConfigProvider,
-      // R6StatsAPIProvider
     ]
 
-    PROVIDERS.forEach(ProviderClass => {
-      const instance = new ProviderClass()
-      instance.boot()
-      instance.register()
-    })
+    PROVIDERS.forEach(c => providerRegistrar.register(c))
+  }
+
+  registerPlugins () {
+    const pluginRegistrar = container.get<PluginRegistrar>(ServiceTypes.PluginRegistrar)
+    pluginRegistrar.register(R6StatsPlugin)
   }
 
   login () {

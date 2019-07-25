@@ -10,11 +10,11 @@ import { GAMEMODES } from '../../../constants'
 
 import R6StatsAPI from 'r6stats'
 import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
-import { BotCommand } from '../../../BotCommand';
+import { BotCommand, IBotCommand } from '../../../BotCommand';
 import CommandContext from '../../../CommandContext';
 
 @injectable()
-class StatsCommand extends BotCommand {
+class StatsCommand extends BotCommand implements IBotCommand {
   private api: R6StatsAPI
 
   command: string = 'stats'
