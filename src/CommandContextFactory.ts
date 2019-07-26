@@ -5,6 +5,7 @@ import { IBotCommand } from './BotCommand';
 import { Message } from 'discord.js';
 import CommandContext from './CommandContext';
 import GenericArgument from './arguments/GenericArgument';
+import { CommandSignature } from './arguments/CommandSignature';
 
 @injectable()
 class CommandContextFactory {
@@ -16,15 +17,20 @@ class CommandContextFactory {
     this.parser = parser
   }
 
-  public create (message: Message, command: IBotCommand, args: string[]) {
-    const signature = command.parsedSignature
-    let parsed: Map<string, GenericArgument<any>>|null
+  private parseSignatureForArguments (signature: CommandSignature, args: string[]): Map<string, GenericArgument<any>>|null {
+    if (signature) return this.parser.parse(signature, args)
+    return null
+  }
 
-    if (signature) {
-      parsed = this.parser.parse(signature, args)
-    }
+  public create (message: Message, commandStr: string, args: string[]): CommandContext {
+    return new CommandContext(message, commandStr, args)
+  }
 
-    return new CommandContext(message, command, args, parsed)
+  public inject (ctx: CommandContext, command: IBotCommand): void {
+    ctx.command = command
+    const signature = ctx.command.parsedSignature
+    const parsedArgs = this.parseSignatureForArguments(signature, ctx.args)
+    ctx.setParsedArguments(parsedArgs)
   }
 }
 

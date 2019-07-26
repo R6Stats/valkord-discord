@@ -7,13 +7,11 @@ import GenericArgument from './GenericArgument'
 import BotException from '../exceptions/BotException';
 
 interface IArgumentParser {
-  registrar: ArgumentRegistrar<any>
-
   parse (signature: CommandSignature, args: string[]): Map<string, GenericArgument<any>>
 }
 
 @injectable()
-class ArgumentParser {
+class ArgumentParser implements IArgumentParser {
   private registrar: ArgumentRegistrar<any>
 
   constructor (

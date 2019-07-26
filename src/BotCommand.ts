@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import CommandContext from './CommandContext'
+import ParsedCommandContext from './CommandContext'
 import { Message } from 'discord.js'
 import { CommandSignature } from './arguments/CommandSignature'
 
@@ -12,9 +12,9 @@ interface IBotCommand {
   readonly usage?: string
   readonly aliases?: string[]
 
-  shouldInvoke (ctx: CommandContext): boolean
+  shouldInvoke (ctx: ParsedCommandContext): boolean
 
-  invoke (ctx: CommandContext): Promise<void|Message|Message[]>
+  invoke (ctx: ParsedCommandContext): Promise<void|Message|Message[]>
 
 }
 
@@ -32,11 +32,11 @@ abstract class BotCommand implements IBotCommand {
     if (this.signature) this.parsedSignature = new CommandSignature(this.signature)
   }
 
-  public shouldInvoke (ctx: CommandContext): boolean {
-    return ctx.command === this.command || this.aliases.some((alias) => alias === ctx.command)
+  public shouldInvoke (ctx: ParsedCommandContext): boolean {
+    return ctx.commandStr === this.command || this.aliases.some((alias) => alias === ctx.commandStr)
   }
 
-  public abstract async invoke (ctx: CommandContext): Promise<void|Message|Message[]>
+  public abstract async invoke (ctx: ParsedCommandContext): Promise<void|Message|Message[]>
 
 }
 
