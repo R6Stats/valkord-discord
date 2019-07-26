@@ -15,6 +15,12 @@ import ReadyHandler from './handlers/ReadyHandler'
 import PluginRegistrar from './plugins/PluginRegistrar';
 import ProviderRegistrar from './ProviderRegistrar';
 import R6StatsPlugin from './plugins/r6stats/R6StatsPlugin';
+import ArgumentRegistrar from './arguments/ArgumentRegistrar';
+import ArgumentParser from './arguments/ArgumentParser';
+import ArgumentProvider from './arguments/ArgumentProvider';
+import { CommandSignature } from './arguments/CommandSignature';
+import { parse } from 'path';
+import CommandContextFactory from './CommandContextFactory';
 
 class R6StatsBot {
   client: Client
@@ -27,6 +33,9 @@ class R6StatsBot {
     container.bind<Client>(ServiceTypes.DiscordClient).toConstantValue(this.client)
     container.bind<ProviderRegistrar>(ServiceTypes.ProviderRegistrar).to(ProviderRegistrar)
     container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).toConstantValue(new CommandRegistrar())
+    container.bind<ArgumentRegistrar<any>>(ServiceTypes.ArgumentRegistrar).toConstantValue(new ArgumentRegistrar<any>())
+    container.bind<ArgumentParser>(ServiceTypes.ArgumentParser).to(ArgumentParser)
+    container.bind<CommandContextFactory>(ServiceTypes.CommandContextFactory).to(CommandContextFactory)
     container.bind<PluginRegistrar>(ServiceTypes.PluginRegistrar).to(PluginRegistrar)
     container.bind<CommandHandler>(CommandHandler).toSelf()
     container.bind<ErrorHandler>(ErrorHandler).toSelf()
@@ -37,6 +46,12 @@ class R6StatsBot {
     this.loadCommands()
     this.registerPlugins()
     this.login()
+
+    const sig = new CommandSignature('<username:username> <platform:platform> <region>')
+    const parser = container.get<ArgumentParser>(ServiceTypes.ArgumentParser)
+    const vals = parser.parse(sig, ['"Zamhomie', 'Sniper', 'Dog', 'xone'])
+    console.log(vals)
+
   }
 
   setupHandlers () {
@@ -49,6 +64,7 @@ class R6StatsBot {
     const providerRegistrar = container.get<ProviderRegistrar>(ServiceTypes.ProviderRegistrar)
     const PROVIDERS = [
       ConfigProvider,
+      ArgumentProvider
     ]
 
     PROVIDERS.forEach(c => providerRegistrar.register(c))

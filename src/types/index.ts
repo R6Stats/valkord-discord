@@ -5,6 +5,9 @@ const ServiceTypes = {
   CommandRegistrar: Symbol('CommandRegistrar'),
   ProviderRegistrar: Symbol('ProviderRegistrar'),
   PluginRegistrar: Symbol('PluginRegistrar'),
+  ArgumentParser: Symbol('ArgumentParser'),
+  ArgumentRegistrar: Symbol('ArgumentRegistrar'),
+  CommandContextFactory: Symbol('CommandContextFactory'),
   CommandHandler: Symbol('CommandHandler'),
   DiscordClient: Symbol('DiscordClient'),
 }

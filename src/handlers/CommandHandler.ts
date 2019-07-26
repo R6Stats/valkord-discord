@@ -12,22 +12,23 @@ import CommandContext from '../CommandContext'
 import { EventHandler } from './EventHandler'
 
 import BotCommandException from '../exceptions/BotCommandException'
+import CommandContextFactory from '../CommandContextFactory';
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
 @injectable()
 class CommandHandler extends EventHandler {
-  private registrar: CommandRegistrar;
+  private cmdFactory: CommandContextFactory;
   private client: Client;
 
   constructor (
     @inject(ServiceTypes.DiscordClient) client: Client,
-    @inject(ServiceTypes.CommandRegistrar) registrar: CommandRegistrar
+    @inject(ServiceTypes.CommandContextFactory) cmdFactory: CommandContextFactory
   ) {
     super()
 
     this.client = client
-    this.registrar = registrar
+    this.cmdFactory = cmdFactory
   }
 
   public setup (): void {
@@ -47,17 +48,22 @@ class CommandHandler extends EventHandler {
 
     for (const cmd of commands) {
       if (cmd.shouldInvoke(ctx)) {
-        const channel = message.channel
-        const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
-        console.log(`Invoking command ${ command } ${name} with args ${args.join(',')}`)
-        cmd.invoke(ctx)
-          .catch((err: Error) => {
-            if (err instanceof BotCommandException) {
-              const cmdException = err as BotCommandException;
-              cmdException.render(ctx)
-            }
-          })
+        this.invokeCommand(cmd, ctx)
         break
+      }
+    }
+  }
+
+  private async invokeCommand (cmd: IBotCommand, ctx: CommandContext) {
+    const channel = ctx.message.channel
+    const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
+    console.log(`Invoking command ${ cmd } ${name} with args ${ctx.args.join(',')}`)
+    try {
+      cmd.invoke(ctx)
+    } catch (err) {
+      if (err instanceof BotCommandException) {
+        const cmdException = err as BotCommandException;
+        cmdException.render(ctx)
       }
     }
   }
