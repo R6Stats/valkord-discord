@@ -12,6 +12,8 @@ const ServiceTypes = {
   DiscordClient: Symbol('DiscordClient'),
 }
 
-export interface IBotConfig {}
+export interface IBotConfig {
+  [key: string]: any;
+}
 
 export { ServiceTypes }

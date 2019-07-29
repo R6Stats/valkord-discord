@@ -1,10 +1,10 @@
-import { ArgumentType } from "./ArgumentType";
+import { ArgumentType } from './ArgumentType'
 import GenericArgument from '../GenericArgument'
 
 class StringArgumentType extends ArgumentType<string> {
-  identifier = 'string'
+  public identifier = 'string'
 
-  parse (args: string[], begin: number): GenericArgument<string> {
+  public parse (args: string[], begin: number): GenericArgument<string> {
     return new GenericArgument(args[begin], 1)
   }
 

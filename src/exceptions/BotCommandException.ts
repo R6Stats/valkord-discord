@@ -4,13 +4,13 @@ import { IMessageContext } from '../CommandContext'
 class BotCommandException extends BotException {
   private err: string
 
-  constructor (err: string) {
+  public constructor (err: string) {
     super(err)
 
     this.err = err
   }
 
-  render (ctx: IMessageContext) {
+  public render (ctx: IMessageContext): void {
     ctx.reply(this.err)
   }
 }

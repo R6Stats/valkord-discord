@@ -1,12 +1,12 @@
-import { ArgumentType } from "./ArgumentType";
-import { resolvePlatform } from '../../utilities/resolvers';
-import { Platform } from '../../types/Resolvable';
+import { ArgumentType } from './ArgumentType'
+import { resolvePlatform } from '../../utilities/resolvers'
+import { Platform } from '../../types/Resolvable'
 import GenericArgument from '../GenericArgument'
 
 class PlatformArgumentType extends ArgumentType<Platform> {
-  identifier: string = 'platform'
+  public identifier: string = 'platform'
 
-  parse (args: string[], begin: number): GenericArgument<Platform> {
+  public parse (args: string[], begin: number): GenericArgument<Platform> {
     const raw = args[begin]
 
     const platform = resolvePlatform(raw)

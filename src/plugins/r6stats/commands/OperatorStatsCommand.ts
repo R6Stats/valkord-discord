@@ -1,24 +1,26 @@
 import { Message } from 'discord.js'
-
-import { ServiceTypes } from '../../../types'
 import { inject } from 'inversify'
-
-import { parseUsername } from '../../../utilities/parsers'
-import { resolvePlatform } from '../../../utilities/resolvers'
-import { playtime, formatListField } from '../../../utilities/formatters'
-
 import R6StatsAPI from 'r6stats'
-import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
-import { BotCommand } from '../../../BotCommand';
-import { ICommandContext } from '../../../CommandContext';
+import GenericArgument from '../../../arguments/GenericArgument'
+import { BotCommand } from '../../../BotCommand'
+import { ICommandContext } from '../../../CommandContext'
+import { ServiceTypes } from '../../../types'
+import { Platform } from '../../../types/Resolvable'
+import { formatListField, playtime } from '../../../utilities/formatters'
+
+interface StatsCommandArguments {
+  username: GenericArgument<string>;
+  platform: GenericArgument<Platform>;
+  operator: GenericArgument<string>;
+}
 
 class OperatorStatsCommand extends BotCommand {
   private api: R6StatsAPI
 
-  command: string = 'operator'
-  category: string = 'Stats'
+  public command: string = 'operator'
+  public category: string = 'Stats'
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
   ) {
     super()
@@ -26,16 +28,20 @@ class OperatorStatsCommand extends BotCommand {
     this.api = api
   }
 
-  async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
+  public async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 3) {
       return ctx.reply('Usage: operator <username> <platform> <operator>')
     }
 
-    const { username, platform, operator: operatorSearch } = this.getParameters(ctx.args)
+    const {
+      username: { value: username },
+      platform: { value: platform },
+      operator: { value: operatorSearch }
+    } = ctx.getArguments<StatsCommandArguments>()
 
     const player = await this.api.operatorStats({ username, platform: platform.key })
 
-    const operator = player.operators.find(op => this.normalizeOperator(op.name) === operatorSearch.toLowerCase())
+    const operator = player.operators.find((op): {} => this.normalizeOperator(op.name) === operatorSearch.toLowerCase())
 
     if (!operator) return ctx.reply(`Operator "${operatorSearch}" not found.`)
 
@@ -62,7 +68,7 @@ class OperatorStatsCommand extends BotCommand {
       { key: 'W/L', value: wl },
     ])
 
-    const specials = formatListField('Abilities', abilities.map(a => { return { key: a.ability, value: a.value } }))
+    const specials = formatListField('Abilities', abilities.map((a) => { return { key: a.ability, value: a.value } }))
 
     return ctx.reply({
       embed: {
@@ -96,20 +102,9 @@ class OperatorStatsCommand extends BotCommand {
    *
    * @param {string} name
    */
-  normalizeOperator (name: string) {
+  public normalizeOperator (name: string): string {
     return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
   }
-
-  getParameters (args: string[]) {
-    const { username, end: i } = parseUsername(args)
-    const platform = resolvePlatform(args[i + 1])
-    const operator = args[i + 2]
-
-    if (!platform) throw new InvalidArgumentException(`The platform ${args[i + 1]} is invalid. Specify pc, xbox, or ps4.`)
-
-    return { username, platform, operator }
-  }
-
 }
 
 export default OperatorStatsCommand

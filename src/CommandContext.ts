@@ -1,21 +1,22 @@
-'use strict'
-
 import { Message } from 'discord.js'
 import { IBotCommand } from './BotCommand'
 import GenericArgument from './arguments/GenericArgument'
-interface IMessageContext {
-  message: Message
-  commandStr: string
-  args: string[]
 
-  reply (msg: string | object): Promise<Message | Message[]>
+interface ParsedArguments { [key: string]: GenericArgument<any> }
+
+interface IMessageContext {
+  message: Message;
+  commandStr: string;
+  args: string[];
+
+  reply (msg: string | object): Promise<Message | Message[]>;
 }
 
 interface ICommandContext extends IMessageContext {
-  command: IBotCommand
-  parsed: Map<string, GenericArgument<any>>|null
+  command: IBotCommand;
+  parsed: ParsedArguments;
 
-  getArguments (arr: string[])
+  getArguments <T = {}>(): T;
 }
 
 class MessageContext {
@@ -23,7 +24,7 @@ class MessageContext {
   public readonly commandStr: string
   public readonly args: string[]
 
-  constructor (message: Message, commandStr: string, args: string[], command?: IBotCommand, parsed?: Map<string, GenericArgument<any>>) {
+  public constructor (message: Message, commandStr: string, args: string[]) {
     this.message = message
     this.commandStr = commandStr
     this.args = args
@@ -36,20 +37,18 @@ class MessageContext {
 
 class CommandContext extends MessageContext implements ICommandContext {
   public readonly command: IBotCommand
-  public readonly parsed: Map<string, GenericArgument<any>>|null
+  public readonly parsed: ParsedArguments;
 
-  constructor (message: Message, commandStr: string, args: string[], command?: IBotCommand, parsed?: Map<string, GenericArgument<any>>) {
+  public constructor (message: Message, commandStr: string, args: string[], command: IBotCommand, parsed: ParsedArguments) {
     super(message, commandStr, args)
+
     this.command = command
-    this.parsed = parsed
+    this.parsed = parsed || {}
   }
 
-  getArguments (arr: string[]) {
-    const ret = {}
-    arr.forEach(arg => ret[arg] = this.parsed.get(arg))
-
-    return ret
+  public getArguments <T extends {}>(): T {
+    return this.parsed as T
   }
 }
 
-export { IMessageContext, MessageContext, ICommandContext, CommandContext }
+export { IMessageContext, MessageContext, ICommandContext, CommandContext, ParsedArguments }

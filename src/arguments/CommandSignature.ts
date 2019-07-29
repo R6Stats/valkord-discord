@@ -1,14 +1,26 @@
-class CommandSignature {
-  arguments: CommandSignatureArgument[] = []
-  rawSignature: string;
+class CommandSignatureArgument {
+  public key: string
+  public type: string
+  public optional: boolean
 
-  constructor (signature: string) {
+  public constructor (key: string, type: string, optional: boolean) {
+    this.key = key
+    this.type = type
+    this.optional = optional
+  }
+}
+
+class CommandSignature {
+  public arguments: CommandSignatureArgument[] = []
+  public rawSignature: string;
+
+  public constructor (signature: string) {
     this.rawSignature = signature
 
     this.parse(signature)
   }
 
-  parse (signature: string) {
+  public parse (signature: string): void {
     this.arguments = []
 
     const args = signature.split(' ')
@@ -24,21 +36,11 @@ class CommandSignature {
     }
   }
 
-  getMinLength () {
+  public getMinLength (): number {
     return this.arguments.length
   }
 }
 
-class CommandSignatureArgument {
-  key: string
-  type: string
-  optional: boolean
 
-  constructor (key: string, type: string, optional: boolean) {
-    this.key = key
-    this.type = type
-    this.optional = optional
-  }
-}
 
 export { CommandSignature, CommandSignatureArgument }

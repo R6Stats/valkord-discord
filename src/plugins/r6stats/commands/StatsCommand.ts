@@ -1,14 +1,18 @@
 import { Message } from 'discord.js'
-
-import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../../../types'
-
-import { playtime, formatListField } from '../../../utilities/formatters'
-import { Platform, Gamemode } from '../../../types/Resolvable'
-
+import { inject, injectable } from 'inversify'
 import R6StatsAPI from 'r6stats'
-import { BotCommand } from '../../../BotCommand';
-import { ICommandContext } from '../../../CommandContext';
+import GenericArgument from '../../../arguments/GenericArgument'
+import { BotCommand } from '../../../BotCommand'
+import { ICommandContext } from '../../../CommandContext'
+import { ServiceTypes } from '../../../types'
+import { Gamemode, Platform } from '../../../types/Resolvable'
+import { formatListField, playtime } from '../../../utilities/formatters'
+
+interface StatsCommandArguments {
+  username: GenericArgument<string>;
+  platform: GenericArgument<Platform>;
+  queue: GenericArgument<Gamemode>;
+}
 
 @injectable()
 class StatsCommand extends BotCommand {
@@ -18,7 +22,7 @@ class StatsCommand extends BotCommand {
   public signature: string = '<username:username> <platform:platform> {queue:gamemode}'
   public category: string = 'Stats'
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
   ) {
     super()
@@ -26,12 +30,16 @@ class StatsCommand extends BotCommand {
     this.api = api
   }
 
-  async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
+  public async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    const { username, platform, queue }: { username: string, platform: Platform, queue: Gamemode } = ctx.getArguments(['username', 'platform', 'queue'])
+    const {
+      username: { value: username },
+      platform: { value: platform },
+      queue: { value: queue }
+    } = ctx.getArguments<StatsCommandArguments>()
 
     const player = await this.api.playerStats({ username: username, platform: platform.key })
 
@@ -55,7 +63,7 @@ class StatsCommand extends BotCommand {
     const wlr = losses > 0 ? (wins / losses).toFixed(2) : 'N/A'
 
     const {
-      level, lootbox_probability
+      level, lootbox_probability: lootboxProbability
     } = player.progression
 
     const statsUrl = 'https://r6stats.com/stats/' + player.ubisoft_id
@@ -63,7 +71,7 @@ class StatsCommand extends BotCommand {
     const about = formatListField('About', [
       { key: 'Level', value: level },
       { key: 'Playtime', value: playtime(timePlayed) },
-      { key: 'Lootbox Chance', value: `${(lootbox_probability)}%` },
+      { key: 'Lootbox Chance', value: `${(lootboxProbability)}%` },
     ])
 
     const killDeath = formatListField('Kills/Deaths', [

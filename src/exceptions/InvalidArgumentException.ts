@@ -1,7 +1,7 @@
 import BotCommandException from './BotCommandException'
 
 class InvalidArgumentException extends BotCommandException {
-  constructor (err: string) {
+  public constructor (err: string) {
     super(err)
   }
 }

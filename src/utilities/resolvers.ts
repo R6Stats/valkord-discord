@@ -1,7 +1,7 @@
 import { RESOLVABLES } from '../constants'
 import { ResolvableType, Resolvable, Platform, Gamemode, OperatorRole, RankedRegion } from '../types/Resolvable'
 
-const resolveType = (alias: string, type: ResolvableType, def?: Resolvable) => {
+const resolveType = (alias: string, type: ResolvableType, def?: Resolvable): Resolvable => {
   if (!alias) return def
 
   alias = alias.toLowerCase()
@@ -15,17 +15,17 @@ const resolveType = (alias: string, type: ResolvableType, def?: Resolvable) => {
 }
 
 export const resolvePlatform = (platform: string, def?: Platform): Platform => {
-  return <Platform>resolveType(platform, ResolvableType.PLATFORM, def)
+  return resolveType(platform, ResolvableType.PLATFORM, def) as Platform
 }
 
 export const resolveGamemode = (gamemode: string, def?: Gamemode): Gamemode => {
-  return <Gamemode>resolveType(gamemode, ResolvableType.GAMEMODE, def)
+  return resolveType(gamemode, ResolvableType.GAMEMODE, def) as Gamemode
 }
 
 export const resolveOperatorRole = (role: string, def?: OperatorRole): OperatorRole => {
-  return <OperatorRole>resolveType(role, ResolvableType.ROLE, def)
+  return resolveType(role, ResolvableType.ROLE, def) as OperatorRole
 }
 
 export const resolveRankedRegion = (region: string, def?: RankedRegion): RankedRegion => {
-  return <RankedRegion>resolveType(region, ResolvableType.REGION, def)
+  return resolveType(region, ResolvableType.REGION, def) as RankedRegion
 }

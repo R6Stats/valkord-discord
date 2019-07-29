@@ -8,11 +8,11 @@ import chalk from 'chalk'
 
 @injectable()
 class PluginRegistrar implements GenericRegistrar<new () => BotPlugin> {
-  registry: any[];
+  public registry: any[];
   private cmds: CommandRegistrar
   private providers: ProviderRegistrar
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.CommandRegistrar) cmdRegistrar: CommandRegistrar,
     @inject(ServiceTypes.ProviderRegistrar) providerRegistrar: ProviderRegistrar
   ) {
@@ -20,20 +20,20 @@ class PluginRegistrar implements GenericRegistrar<new () => BotPlugin> {
     this.providers = providerRegistrar
   }
 
-  register(clazz: new () => BotPlugin): void {
+  public register (clazz: new () => BotPlugin): void {
     console.log(chalk.cyan(`Registering plugin ${clazz.name}...`))
     const plugin = new clazz()
     const pluginProviders = plugin.getProviders()
     const pluginCommands = plugin.getCommands()
 
-    pluginProviders.forEach(p => this.providers.register(p))
-    pluginCommands.forEach(c => this.cmds.register(c))
+    pluginProviders.forEach((p): void => this.providers.register(p))
+    pluginCommands.forEach((c): void => this.cmds.register(c))
     console.log(chalk.green(`Registered plugin ${clazz.name}!`))
   }
 
 
-  unregister(clazz: new () => BotPlugin): void {
-    throw new Error("Method not implemented.");
+  public unregister (): void {
+    throw new Error("Method not implemented.")
   }
 
 

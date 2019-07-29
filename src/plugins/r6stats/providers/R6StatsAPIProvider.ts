@@ -1,16 +1,14 @@
-'use strict'
-
 import container from '../../../../inversify.config'
 import R6StatsAPI from 'r6stats'
 import BotConfig from '../../../BotConfig'
 import { decorate, injectable } from 'inversify'
 import { ServiceTypes } from '../../../types'
-import { Provider } from '../../../Provider';
+import { Provider } from '../../../Provider'
 
 class R6StatsAPIProvider extends Provider {
-  api: R6StatsAPI
+  private api: R6StatsAPI
 
-  boot (): void {
+  public boot (): void {
     decorate(injectable(), R6StatsAPI)
 
     const config = container.get<BotConfig>(ServiceTypes.Config)
@@ -19,7 +17,7 @@ class R6StatsAPIProvider extends Provider {
     this.api = new R6StatsAPI({ apiKey })
   }
 
-  register () {
+  public register (): void {
     container.bind<R6StatsAPI>(ServiceTypes.R6StatsAPI).toConstantValue(this.api)
   }
 }

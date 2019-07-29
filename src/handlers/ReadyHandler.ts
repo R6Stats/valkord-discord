@@ -7,7 +7,7 @@ import { inject, injectable } from 'inversify'
 class ReadyHandler extends EventHandler {
   private client: Client
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.DiscordClient) client: Client
   ) {
     super()
@@ -16,10 +16,10 @@ class ReadyHandler extends EventHandler {
   }
 
   public setup (): void {
-    this.client.on('ready', () => this.handleReady())
+    this.client.on('ready', (): void => this.handleReady())
   }
 
-  handleReady () {
+  public handleReady (): void {
     if (this.client.shard) {
       console.log(`Shard ${this.client.shard.id} online and ready to handle ${this.client.guilds.size} guilds!`)
     } else {

@@ -6,12 +6,12 @@ export enum ResolvableType {
 }
 
 export interface Resolvable {
-  key: string
-  name: string
+  key: string;
+  name: string;
 }
 
 export interface Platform extends Resolvable {
-  logo: string
+  logo: string;
 }
 
 export interface Gamemode extends Resolvable {}

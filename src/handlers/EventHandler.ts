@@ -1,14 +1,12 @@
-'use strict'
-
-import { injectable } from 'inversify';
+import { injectable } from 'inversify'
 
 interface IEventHandler {
-  setup (): void
+  setup (): void;
 }
 
 @injectable()
 class EventHandler implements IEventHandler {
-  setup (): void {
+  public setup (): void {
 
   }
 }

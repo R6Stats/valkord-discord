@@ -1,17 +1,14 @@
-'use strict'
-
 interface IProvider {
-  boot (): void
-
-  register (): void
+  boot (): void;
+  register (): void;
 }
 
 class Provider implements IProvider {
-  boot (): void {
+  public boot (): void {
 
   }
 
-  register (): void {
+  public register (): void {
 
   }
 }

@@ -1,27 +1,23 @@
-'use strict'
-
-import container from '../../inversify.config'
-import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../types'
-
 import { Client, Message, TextChannel } from 'discord.js'
-import { EventHandler } from './EventHandler'
-
+import { inject, injectable } from 'inversify'
+import container from '../../inversify.config'
 import { IBotCommand } from '../BotCommand'
 import { IMessageContext } from '../CommandContext'
+import ContextFactory from '../ContextFactory'
 import BotCommandException from '../exceptions/BotCommandException'
-import CommandContextFactory from '../CommandContextFactory';
+import { ServiceTypes } from '../types'
+import { EventHandler } from './EventHandler'
 
 const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
 @injectable()
 class CommandHandler extends EventHandler {
-  private cmdFactory: CommandContextFactory;
+  private cmdFactory: ContextFactory;
   private client: Client;
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.DiscordClient) client: Client,
-    @inject(ServiceTypes.CommandContextFactory) cmdFactory: CommandContextFactory
+    @inject(ServiceTypes.CommandContextFactory) cmdFactory: ContextFactory
   ) {
     super()
 
@@ -30,10 +26,10 @@ class CommandHandler extends EventHandler {
   }
 
   public setup (): void {
-    this.client.on('message', (message: Message) => this.handleMessage(message))
+    this.client.on('message', (message: Message): Promise<void> => this.handleMessage(message))
   }
 
-  private handleMessage (message: Message) {
+  private handleMessage (message: Message): Promise<void> {
     if (message.author.bot) return
     if (!this.isOwnCommand(message.content)) return
 
@@ -52,7 +48,7 @@ class CommandHandler extends EventHandler {
     }
   }
 
-  private async invokeCommand (cmd: IBotCommand, msgCtx: IMessageContext) {
+  private async invokeCommand (cmd: IBotCommand, msgCtx: IMessageContext): Promise<void> {
     const channel = msgCtx.message.channel
     const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
     console.log(`Invoking command ${ cmd } ${name} with args ${msgCtx.args.join(',')}`)
@@ -62,13 +58,13 @@ class CommandHandler extends EventHandler {
       cmd.invoke(cmdCtx)
     } catch (err) {
       if (err instanceof BotCommandException) {
-        const cmdException = err as BotCommandException;
+        const cmdException = err as BotCommandException
         cmdException.render(msgCtx)
       }
     }
   }
 
-  private isOwnCommand (str: string) {
+  private isOwnCommand (str: string): boolean {
     const split = str.split(' ')
     if (split.length === 0) return false
     const cmd = split[0].toLowerCase()

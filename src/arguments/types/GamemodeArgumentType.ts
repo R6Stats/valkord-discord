@@ -1,12 +1,12 @@
-import { ArgumentType } from './ArgumentType'
-import { resolveGamemode } from '../../utilities/resolvers'
 import { Gamemode } from '../../types/Resolvable'
+import { resolveGamemode } from '../../utilities/resolvers'
 import GenericArgument from '../GenericArgument'
+import { ArgumentType } from './ArgumentType'
 
 class GamemodeArumentType extends ArgumentType<Gamemode> {
-  identifier: string = 'gamemode'
+  public identifier: string = 'gamemode'
 
-  parse (args: string[], begin: number): GenericArgument<Gamemode> {
+  public parse (args: string[], begin: number): GenericArgument<Gamemode> {
     const raw = args[begin]
 
     const gamemode = resolveGamemode(raw)

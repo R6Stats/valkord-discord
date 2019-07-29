@@ -1,9 +1,9 @@
 class GenericArgument<T> {
-  value: T
-  length: number
-  errorMessage: string
+  public value: T
+  public length: number
+  public errorMessage: string
 
-  constructor (value: T, length: number = 1, errorMessage: string = 'Could not parse argument') {
+  public constructor (value: T, length: number = 1, errorMessage: string = 'Could not parse argument') {
     this.value = value
     this.length = length
     this.errorMessage = errorMessage

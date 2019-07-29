@@ -1,31 +1,27 @@
-'use strict'
-
-import container from '../inversify.config'
-import { injectable } from 'inversify'
 import chalk from 'chalk'
-
 import * as fs from 'fs'
+import { injectable } from 'inversify'
 import * as path from 'path'
-
-import { IBotCommand, BotCommand } from './BotCommand'
-import GenericRegistrar from './GenericRegistrar';
-import { ServiceTypes } from './types';
+import container from '../inversify.config'
+import { BotCommand, IBotCommand } from './BotCommand'
+import GenericRegistrar from './GenericRegistrar'
+import { ServiceTypes } from './types'
 
 @injectable()
 class CommandRegistrar implements GenericRegistrar<new () => BotCommand> {
-  registry: any[];
+  public registry: any[];
 
-  public register (cmd: new () => BotCommand) {
+  public register (cmd: new () => BotCommand): void {
     container.bind<IBotCommand>(ServiceTypes.Command).to(cmd)
 
     console.log(chalk.green(`Registered command ${cmd.name}!`))
   }
 
-  unregister(cmd: new () => BotCommand): void {
-    throw new Error('Method not implemented.');
+  public unregister(): void {
+    throw new Error('Method not implemented.')
   }
 
-  public async registerDirectory (dir: string) {
+  public async registerDirectory (dir: string): Promise<void> {
     const basePath = path.join(__dirname, dir)
     const files = fs.readdirSync(basePath)
 
@@ -35,7 +31,6 @@ class CommandRegistrar implements GenericRegistrar<new () => BotCommand> {
       this.register(clazz)
     }
   }
-
 }
 
 export default CommandRegistrar

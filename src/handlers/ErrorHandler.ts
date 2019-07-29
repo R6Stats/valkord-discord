@@ -7,7 +7,7 @@ import { inject, injectable } from 'inversify'
 class ErrorHandler extends EventHandler {
   private client: Client;
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.DiscordClient) client: Client
   ) {
     super()
@@ -16,10 +16,10 @@ class ErrorHandler extends EventHandler {
   }
 
   public setup (): void {
-    this.client.on('error', (err) => this.handleError(err))
+    this.client.on('error', (err): void => this.handleError(err))
   }
 
-  private handleError (e: Error) {
+  private handleError (e: Error): void {
     console.log(e)
   }
 }

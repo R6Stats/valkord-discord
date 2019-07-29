@@ -1,10 +1,10 @@
-import { ArgumentType } from "./ArgumentType";
+import { ArgumentType } from './ArgumentType'
 import GenericArgument from '../GenericArgument'
 
 class UsernameArgumentType extends ArgumentType<string> {
-  identifier: string = 'username'
+  public identifier: string = 'username'
 
-  parse (args: string[], begin: number): GenericArgument<string> {
+  public parse (args: string[], begin: number): GenericArgument<string> {
     let index = 1
     let username = args[begin]
 

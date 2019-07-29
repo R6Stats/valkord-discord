@@ -1,28 +1,28 @@
 import { CommandSignature } from './CommandSignature'
 import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../types';
-import ArgumentRegistrar from './ArgumentRegistrar';
-import InvalidArgumentException from '../exceptions/InvalidArgumentException';
-import GenericArgument from './GenericArgument'
-import BotException from '../exceptions/BotException';
+import { ServiceTypes } from '../types'
+import ArgumentRegistrar from './ArgumentRegistrar'
+import InvalidArgumentException from '../exceptions/InvalidArgumentException'
+import BotException from '../exceptions/BotException'
+import { ParsedArguments } from '../CommandContext'
 
 interface IArgumentParser {
-  parse (signature: CommandSignature, args: string[]): Map<string, GenericArgument<any>>
+  parse (signature: CommandSignature, args: string[]): ParsedArguments;
 }
 
 @injectable()
 class ArgumentParser implements IArgumentParser {
   private registrar: ArgumentRegistrar<any>
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.ArgumentRegistrar) argumentRegistar: ArgumentRegistrar<any>
   ) {
     this.registrar = argumentRegistar
   }
 
-  public parse (signature: CommandSignature, args: string[]): Map<string, GenericArgument<any>> {
+  public parse (signature: CommandSignature, args: string[]): ParsedArguments {
     const actualArguments = signature.arguments
-    const values: Map<string, GenericArgument<any>> = new Map()
+    const values: ParsedArguments = {}
 
     let curIndex = 0
     for (const arg of actualArguments) {
@@ -33,8 +33,7 @@ class ArgumentParser implements IArgumentParser {
       const val = argumentType.parse(args, curIndex)
 
       if (!val.value && !arg.optional) throw new InvalidArgumentException(val.errorMessage)
-
-      values.set(arg.key, val.value)
+      values[arg.key] = val.value
       curIndex += val.length
     }
 

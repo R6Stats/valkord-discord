@@ -5,17 +5,17 @@ import { EventHandler } from '../handlers/EventHandler'
 type PluginClass<T> = new (...args: any[]) => T
 
 interface IBotPlugin {
-  name: string
-  description: string
-  commands: PluginClass<BotCommand>[]
-  providers: PluginClass<IProvider>[]
-  handlers: PluginClass<EventHandler>[]
+  name: string;
+  description: string;
+  commands: PluginClass<BotCommand>[];
+  providers: PluginClass<IProvider>[];
+  handlers: PluginClass<EventHandler>[];
 
-  getCommands (): PluginClass<BotCommand>[]
-  getProviders (): PluginClass<IProvider>[]
+  getCommands (): PluginClass<BotCommand>[];
+  getProviders (): PluginClass<IProvider>[];
 
-  register (): void
-  boot (): void
+  register (): void;
+  boot (): void;
 }
 
 class BotPlugin implements IBotPlugin {
@@ -34,11 +34,11 @@ class BotPlugin implements IBotPlugin {
     // ...
   ]
 
-  public getCommands () {
+  public getCommands (): PluginClass<BotCommand>[] {
     return this.commands
   }
 
-  public getProviders () {
+  public getProviders (): PluginClass<IProvider>[] {
     return this.providers
   }
 

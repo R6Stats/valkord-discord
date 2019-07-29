@@ -1,26 +1,25 @@
-import GenericRegistrar from '../GenericRegistrar';
-import { ArgumentType } from './types/ArgumentType';
-import UsernameArgumentType from './types/UsernameArgumentType';
+import GenericRegistrar from '../GenericRegistrar'
+import { ArgumentType } from './types/ArgumentType'
 
 class ArgumentRegistrar<T> implements GenericRegistrar<new () => ArgumentType<T>> {
-  registry: (new () => ArgumentType<T>)[];
+  public registry: (new () => ArgumentType<T>)[];
   private registeredTypes: Map<string, ArgumentType<T>> = new Map()
 
-  register(clazz: new () => ArgumentType<T>): void {
+  public register(clazz: new () => ArgumentType<T>): void {
     const ref = new clazz()
 
     this.registeredTypes.set(ref.identifier, ref)
   }
 
-  unregister(clazz: new () => ArgumentType<T>): void {
-    throw new Error('Method not implemented.');
+  public unregister(): void {
+    throw new Error('Method not implemented.')
   }
 
-  public getAvailableTypes () {
+  public getAvailableTypes (): Map<string, ArgumentType<T>> {
     return this.registeredTypes
   }
 
-  public getTypeForIdentifier (identifier: string) {
+  public getTypeForIdentifier (identifier: string): ArgumentType<T> {
     return this.registeredTypes.get(identifier)
   }
 }

@@ -1,29 +1,25 @@
-import container from '../inversify.config'
-import { decorate, injectable } from 'inversify'
-import { ServiceTypes } from './types'
-
 import { Client } from 'discord.js'
-
+import { decorate, injectable } from 'inversify'
+import container from '../inversify.config'
+import ArgumentParser from './arguments/ArgumentParser'
+import ArgumentProvider from './arguments/ArgumentProvider'
+import ArgumentRegistrar from './arguments/ArgumentRegistrar'
 import BotConfig from './BotConfig'
-
-import ConfigProvider from './providers/ConfigProvider'
 import CommandRegistrar from './CommandRegistrar'
-
+import ContextFactory from './ContextFactory'
 import CommandHandler from './handlers/CommandHandler'
 import ErrorHandler from './handlers/ErrorHandler'
 import ReadyHandler from './handlers/ReadyHandler'
-import PluginRegistrar from './plugins/PluginRegistrar';
-import ProviderRegistrar from './ProviderRegistrar';
-import R6StatsPlugin from './plugins/r6stats/R6StatsPlugin';
-import ArgumentRegistrar from './arguments/ArgumentRegistrar';
-import ArgumentParser from './arguments/ArgumentParser';
-import ArgumentProvider from './arguments/ArgumentProvider';
-import CommandContextFactory from './CommandContextFactory';
+import PluginRegistrar from './plugins/PluginRegistrar'
+import R6StatsPlugin from './plugins/r6stats/R6StatsPlugin'
+import ProviderRegistrar from './ProviderRegistrar'
+import ConfigProvider from './providers/ConfigProvider'
+import { ServiceTypes } from './types'
 
 class R6StatsBot {
-  client: Client
+  public client: Client
 
-  constructor () {
+  public constructor () {
     this.client = new Client()
 
     decorate(injectable(), Client)
@@ -33,7 +29,7 @@ class R6StatsBot {
     container.bind<CommandRegistrar>(ServiceTypes.CommandRegistrar).toConstantValue(new CommandRegistrar())
     container.bind<ArgumentRegistrar<any>>(ServiceTypes.ArgumentRegistrar).toConstantValue(new ArgumentRegistrar<any>())
     container.bind<ArgumentParser>(ServiceTypes.ArgumentParser).to(ArgumentParser)
-    container.bind<CommandContextFactory>(ServiceTypes.CommandContextFactory).to(CommandContextFactory)
+    container.bind<ContextFactory>(ServiceTypes.CommandContextFactory).to(ContextFactory)
     container.bind<PluginRegistrar>(ServiceTypes.PluginRegistrar).to(PluginRegistrar)
     container.bind<CommandHandler>(CommandHandler).toSelf()
     container.bind<ErrorHandler>(ErrorHandler).toSelf()
@@ -46,38 +42,37 @@ class R6StatsBot {
     this.login()
   }
 
-  setupHandlers () {
+  public setupHandlers (): void {
     container.get<CommandHandler>(CommandHandler).setup()
     container.get<ErrorHandler>(ErrorHandler).setup()
     container.get<ReadyHandler>(ReadyHandler).setup()
   }
 
-  registerProviders () {
+  public registerProviders (): void {
     const providerRegistrar = container.get<ProviderRegistrar>(ServiceTypes.ProviderRegistrar)
     const PROVIDERS = [
       ConfigProvider,
       ArgumentProvider
     ]
 
-    PROVIDERS.forEach(c => providerRegistrar.register(c))
+    PROVIDERS.forEach((c): void => providerRegistrar.register(c))
   }
 
-  registerPlugins () {
+  public registerPlugins (): void {
     const pluginRegistrar = container.get<PluginRegistrar>(ServiceTypes.PluginRegistrar)
     pluginRegistrar.register(R6StatsPlugin)
   }
 
-  login () {
+  public login (): void {
     const config = container.get<BotConfig>(ServiceTypes.Config)
     this.client.login(config.discordToken)
   }
 
-  async loadCommands () {
+  public async loadCommands (): Promise<void> {
     const registrar = container.get<CommandRegistrar>(ServiceTypes.CommandRegistrar)
 
     await registrar.registerDirectory('commands')
   }
-
 }
 
 export default new R6StatsBot()

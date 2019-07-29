@@ -1,21 +1,20 @@
 import { injectable } from 'inversify'
 import { Message } from 'discord.js'
 import { CommandSignature } from './arguments/CommandSignature'
-import { IMessageContext, ICommandContext } from './CommandContext';
+import { IMessageContext, ICommandContext } from './CommandContext'
 
 interface IBotCommand {
-  readonly command: string
-  readonly signature?: string
-  readonly parsedSignature?: CommandSignature
-  readonly category?: string
-  readonly name?: string
-  readonly usage?: string
-  readonly aliases?: string[]
+  readonly command: string;
+  readonly signature?: string;
+  readonly parsedSignature?: CommandSignature;
+  readonly category?: string;
+  readonly name?: string;
+  readonly usage?: string;
+  readonly aliases?: string[];
 
-  shouldInvoke (ctx: IMessageContext): boolean
+  shouldInvoke (ctx: IMessageContext): boolean;
 
-  invoke (ctx: ICommandContext): Promise<void|Message|Message[]>
-
+  invoke (ctx: ICommandContext): Promise<void|Message|Message[]>;
 }
 
 @injectable()
@@ -28,20 +27,17 @@ abstract class BotCommand implements IBotCommand {
   public readonly usage?: string
   public readonly aliases?: string[] = []
 
-  constructor () {
-    console.log(this.command)
+  public constructor () {
     if (this.signature) {
-      console.log('parsing', this)
       this.parsedSignature = new CommandSignature(this.signature)
     }
   }
 
   public shouldInvoke (ctx: IMessageContext): boolean {
-    return ctx.commandStr === this.command || this.aliases.some((alias) => alias === ctx.commandStr)
+    return ctx.commandStr === this.command || this.aliases.some((alias): boolean => alias === ctx.commandStr)
   }
 
   public abstract async invoke (ctx: ICommandContext): Promise<void|Message|Message[]>
-
 }
 
 export { IBotCommand, BotCommand }

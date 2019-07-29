@@ -1,28 +1,31 @@
 import { Message } from 'discord.js'
-
-import { injectable, inject } from 'inversify'
-import { ServiceTypes } from '../../../types'
-
-import { RANKS } from '../../../constants'
-import { parseUsername } from '../../../utilities/parsers'
-import { resolveRankedRegion, resolvePlatform } from '../../../utilities/resolvers'
-
+import { inject, injectable } from 'inversify'
 import R6StatsAPI from 'r6stats'
+import GenericArgument from '../../../arguments/GenericArgument'
+import { BotCommand } from '../../../BotCommand'
+import { ICommandContext } from '../../../CommandContext'
+import { RANKS } from '../../../constants'
+import { ServiceTypes } from '../../../types'
+import { Platform, RankedRegion } from '../../../types/Resolvable'
 import { formatListField } from '../../../utilities/formatters'
-import { RankedRegion } from '../../../types/Resolvable'
-import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
-import { BotCommand } from '../../../BotCommand';
-import { ICommandContext } from '../../../CommandContext';
+import { resolveRankedRegion } from '../../../utilities/resolvers'
+
+interface RankCommandArguments {
+  username: GenericArgument<string>;
+  platform: GenericArgument<Platform>;
+  region: GenericArgument<RankedRegion>;
+  season: GenericArgument<number>;
+}
 
 @injectable()
 class RankCommand extends BotCommand {
   private api: R6StatsAPI
 
-  command: string = 'rank'
-  aliases: string[] = ['season', 'seasonal']
-  category: string = 'Stats'
+  public command: string = 'rank'
+  public aliases: string[] = ['season', 'seasonal']
+  public category: string = 'Stats'
 
-  constructor (
+  public constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
   ) {
     super()
@@ -35,7 +38,12 @@ class RankCommand extends BotCommand {
       return ctx.reply('Usage: rank <username> <platform> {region} {season}')
     }
 
-    const { username, platform, region, season: seasonId } = this.getParameters(ctx.args)
+    const {
+      username: { value: username },
+      platform: { value: platform },
+      region: { value: region },
+      season: { value: seasonId }
+    } = ctx.getArguments<RankCommandArguments>()
 
     const player = await this.api.seasonalStats({ username, platform: platform.key })
 
@@ -111,32 +119,7 @@ class RankCommand extends BotCommand {
         }
       }
     })
-
   }
-
-  getParameters (args: string[]) {
-    const { username, end: i } = parseUsername(args)
-    const platform = resolvePlatform(args[i + 1])
-
-    if (!platform) throw new InvalidArgumentException(`The platform "${args[i + 1]}" is invalid. Specify pc, xbox, or ps4.`)
-
-    let region: RankedRegion, season: number|null
-
-    if (args.length === i + 1) {
-      const intVal = parseInt(args[i + 2])
-      if (!Number.isNaN(intVal)) {
-        season = intVal
-      } else {
-        region = resolveRankedRegion(args[i + 2])
-      }
-    } else if (args.length > i + 1) {
-      region = resolveRankedRegion(args[i + 2])
-      season = parseInt(args[i + 3])
-    }
-
-    return { username, platform, region, season }
-  }
-
 }
 
 export default RankCommand

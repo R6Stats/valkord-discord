@@ -1,5 +1,5 @@
 class BotException extends Error {
-  constructor (err: string) {
+  public constructor (err: string) {
     super(err)
   }
 }
