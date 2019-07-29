@@ -6,14 +6,14 @@ import { IMessageContext, ICommandContext } from './CommandContext'
 interface IBotCommand {
   readonly command: string;
   readonly signature?: string;
-  readonly parsedSignature?: CommandSignature;
   readonly category?: string;
   readonly name?: string;
   readonly usage?: string;
   readonly aliases?: string[];
+  parsedSignature?: CommandSignature;
 
+  boot (): void;
   shouldInvoke (ctx: IMessageContext): boolean;
-
   invoke (ctx: ICommandContext): Promise<void|Message|Message[]>;
 }
 
@@ -21,13 +21,13 @@ interface IBotCommand {
 abstract class BotCommand implements IBotCommand {
   public readonly command: string
   public readonly signature?: string
-  public readonly parsedSignature?: CommandSignature
   public readonly category?: string
   public readonly name?: string
   public readonly usage?: string
   public readonly aliases?: string[] = []
+  public parsedSignature?: CommandSignature
 
-  public constructor () {
+  public boot (): void {
     if (this.signature) {
       this.parsedSignature = new CommandSignature(this.signature)
     }

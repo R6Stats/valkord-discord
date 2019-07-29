@@ -72,6 +72,8 @@ class R6StatsBot {
     const registrar = container.get<CommandRegistrar>(ServiceTypes.CommandRegistrar)
 
     await registrar.registerDirectory('commands')
+
+    registrar.bootAll()
   }
 }
 

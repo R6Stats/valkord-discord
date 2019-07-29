@@ -12,17 +12,17 @@ const SUPPORTED_RESPONDERS = ['!r6s', '!r6stats', '!r6', 'r6s', 'r6stats', 'r6']
 
 @injectable()
 class CommandHandler extends EventHandler {
-  private cmdFactory: ContextFactory;
+  private ctxFactory: ContextFactory;
   private client: Client;
 
   public constructor (
     @inject(ServiceTypes.DiscordClient) client: Client,
-    @inject(ServiceTypes.CommandContextFactory) cmdFactory: ContextFactory
+    @inject(ServiceTypes.CommandContextFactory) ctxFactory: ContextFactory
   ) {
     super()
 
     this.client = client
-    this.cmdFactory = cmdFactory
+    this.ctxFactory = ctxFactory
   }
 
   public setup (): void {
@@ -38,7 +38,7 @@ class CommandHandler extends EventHandler {
     const command = split[1].toLowerCase()
     const args = split.slice(2)
     const commands = container.getAll<IBotCommand>(ServiceTypes.Command)
-    const ctx = this.cmdFactory.create(message, command, args)
+    const ctx = this.ctxFactory.create(message, command, args)
 
     for (const cmd of commands) {
       if (cmd.shouldInvoke(ctx)) {
@@ -50,11 +50,10 @@ class CommandHandler extends EventHandler {
 
   private async invokeCommand (cmd: IBotCommand, msgCtx: IMessageContext): Promise<void> {
     const channel = msgCtx.message.channel
-    const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
-    console.log(`Invoking command ${ cmd } ${name} with args ${msgCtx.args.join(',')}`)
+    const source = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
+    console.log(`Invoking command ${ cmd.name } ${source} with args ${msgCtx.args.join(',')}`)
     try {
-      const cmdCtx = this.cmdFactory.fromMessageContext(msgCtx, cmd)
-      console.log(cmdCtx)
+      const cmdCtx = this.ctxFactory.fromMessageContext(msgCtx, cmd)
       cmd.invoke(cmdCtx)
     } catch (err) {
       if (err instanceof BotCommandException) {

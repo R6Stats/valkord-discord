@@ -17,8 +17,13 @@ class CommandRegistrar implements GenericRegistrar<new () => BotCommand> {
     console.log(chalk.green(`Registered command ${cmd.name}!`))
   }
 
-  public unregister(): void {
+  public unregister (): void {
     throw new Error('Method not implemented.')
+  }
+
+  public bootAll (): void {
+    const cmds = container.getAll<IBotCommand>(ServiceTypes.Command)
+    cmds.forEach((c): void => c.boot())
   }
 
   public async registerDirectory (dir: string): Promise<void> {

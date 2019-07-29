@@ -11,11 +11,10 @@ class CommandSignatureArgument {
 }
 
 class CommandSignature {
-  public arguments: CommandSignatureArgument[] = []
-  public rawSignature: string;
+  public arguments: CommandSignatureArgument[]
 
   public constructor (signature: string) {
-    this.rawSignature = signature
+    this.arguments = []
 
     this.parse(signature)
   }
