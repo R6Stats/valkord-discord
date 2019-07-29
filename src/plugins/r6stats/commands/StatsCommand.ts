@@ -3,22 +3,20 @@ import { Message } from 'discord.js'
 import { injectable, inject } from 'inversify'
 import { ServiceTypes } from '../../../types'
 
-import { resolvePlatform, resolveGamemode } from '../../../utilities/resolvers'
 import { playtime, formatListField } from '../../../utilities/formatters'
-import { parseUsername } from '../../../utilities/parsers'
-import { GAMEMODES } from '../../../constants'
+import { Platform, Gamemode } from '../../../types/Resolvable'
 
 import R6StatsAPI from 'r6stats'
-import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
-import { BotCommand, IBotCommand } from '../../../BotCommand';
-import CommandContext from '../../../CommandContext';
+import { BotCommand } from '../../../BotCommand';
+import { ICommandContext } from '../../../CommandContext';
 
 @injectable()
-class StatsCommand extends BotCommand implements IBotCommand {
+class StatsCommand extends BotCommand {
   private api: R6StatsAPI
 
-  command: string = 'stats'
-  category: string = 'Stats'
+  public command: string = 'stats'
+  public signature: string = '<username:username> <platform:platform> {queue:gamemode}'
+  public category: string = 'Stats'
 
   constructor (
     @inject(ServiceTypes.R6StatsAPI) api: R6StatsAPI
@@ -28,12 +26,12 @@ class StatsCommand extends BotCommand implements IBotCommand {
     this.api = api
   }
 
-  async invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
+  async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: stats <username> <platform> {queue}')
     }
 
-    const { username, platform, queue } = this.getParameters(ctx.args)
+    const { username, platform, queue }: { username: string, platform: Platform, queue: Gamemode } = ctx.getArguments(['username', 'platform', 'queue'])
 
     const player = await this.api.playerStats({ username: username, platform: platform.key })
 
@@ -125,16 +123,6 @@ class StatsCommand extends BotCommand implements IBotCommand {
       }
     })
 
-  }
-
-  getParameters (args: string[]) {
-    const { username, end: i } = parseUsername(args)
-    const platform = resolvePlatform(args[i + 1])
-    const queue = resolveGamemode(args[i + 2], GAMEMODES.OVERALL)
-
-    if (!platform) throw new InvalidArgumentException(`The platform "${args[i + 1]}" is invalid. Specify pc, xbox, or ps4.`)
-
-    return { platform, queue, username }
   }
 
 }

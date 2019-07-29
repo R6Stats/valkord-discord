@@ -1,5 +1,5 @@
 import { BotCommand } from '../BotCommand'
-import CommandContext from '../CommandContext'
+import { ICommandContext } from '../CommandContext'
 import { Message } from 'discord.js'
 
 class PingCommand extends BotCommand {
@@ -7,7 +7,7 @@ class PingCommand extends BotCommand {
   command: string = 'ping'
   category: string = 'Other'
 
-  invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
+  invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     return ctx.reply('Pong!')
   }
 

@@ -5,12 +5,10 @@ import { injectable, inject } from 'inversify'
 import { ServiceTypes } from '../types'
 
 import { Client, Message, TextChannel } from 'discord.js'
-
-import CommandRegistrar from '../CommandRegistrar'
-import { IBotCommand } from '../BotCommand'
-import CommandContext from '../CommandContext'
 import { EventHandler } from './EventHandler'
 
+import { IBotCommand } from '../BotCommand'
+import { IMessageContext } from '../CommandContext'
 import BotCommandException from '../exceptions/BotCommandException'
 import CommandContextFactory from '../CommandContextFactory';
 
@@ -44,7 +42,7 @@ class CommandHandler extends EventHandler {
     const command = split[1].toLowerCase()
     const args = split.slice(2)
     const commands = container.getAll<IBotCommand>(ServiceTypes.Command)
-    const ctx = new CommandContext(message, command, args)
+    const ctx = this.cmdFactory.create(message, command, args)
 
     for (const cmd of commands) {
       if (cmd.shouldInvoke(ctx)) {
@@ -54,16 +52,18 @@ class CommandHandler extends EventHandler {
     }
   }
 
-  private async invokeCommand (cmd: IBotCommand, ctx: CommandContext) {
-    const channel = ctx.message.channel
+  private async invokeCommand (cmd: IBotCommand, msgCtx: IMessageContext) {
+    const channel = msgCtx.message.channel
     const name = channel instanceof TextChannel ? `in #${channel.name}` : 'via DM'
-    console.log(`Invoking command ${ cmd } ${name} with args ${ctx.args.join(',')}`)
+    console.log(`Invoking command ${ cmd } ${name} with args ${msgCtx.args.join(',')}`)
     try {
-      cmd.invoke(ctx)
+      const cmdCtx = this.cmdFactory.fromMessageContext(msgCtx, cmd)
+      console.log(cmdCtx)
+      cmd.invoke(cmdCtx)
     } catch (err) {
       if (err instanceof BotCommandException) {
         const cmdException = err as BotCommandException;
-        cmdException.render(ctx)
+        cmdException.render(msgCtx)
       }
     }
   }

@@ -10,7 +10,7 @@ import { playtime, formatListField } from '../../../utilities/formatters'
 import R6StatsAPI from 'r6stats'
 import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
 import { BotCommand } from '../../../BotCommand';
-import CommandContext from '../../../CommandContext';
+import { ICommandContext } from '../../../CommandContext';
 
 class OperatorStatsCommand extends BotCommand {
   private api: R6StatsAPI
@@ -26,7 +26,7 @@ class OperatorStatsCommand extends BotCommand {
     this.api = api
   }
 
-  async invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
+  async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 3) {
       return ctx.reply('Usage: operator <username> <platform> <operator>')
     }

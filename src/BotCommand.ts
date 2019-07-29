@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
-import ParsedCommandContext from './CommandContext'
 import { Message } from 'discord.js'
 import { CommandSignature } from './arguments/CommandSignature'
+import { IMessageContext, ICommandContext } from './CommandContext';
 
 interface IBotCommand {
   readonly command: string
@@ -12,9 +12,9 @@ interface IBotCommand {
   readonly usage?: string
   readonly aliases?: string[]
 
-  shouldInvoke (ctx: ParsedCommandContext): boolean
+  shouldInvoke (ctx: IMessageContext): boolean
 
-  invoke (ctx: ParsedCommandContext): Promise<void|Message|Message[]>
+  invoke (ctx: ICommandContext): Promise<void|Message|Message[]>
 
 }
 
@@ -29,14 +29,18 @@ abstract class BotCommand implements IBotCommand {
   public readonly aliases?: string[] = []
 
   constructor () {
-    if (this.signature) this.parsedSignature = new CommandSignature(this.signature)
+    console.log(this.command)
+    if (this.signature) {
+      console.log('parsing', this)
+      this.parsedSignature = new CommandSignature(this.signature)
+    }
   }
 
-  public shouldInvoke (ctx: ParsedCommandContext): boolean {
+  public shouldInvoke (ctx: IMessageContext): boolean {
     return ctx.commandStr === this.command || this.aliases.some((alias) => alias === ctx.commandStr)
   }
 
-  public abstract async invoke (ctx: ParsedCommandContext): Promise<void|Message|Message[]>
+  public abstract async invoke (ctx: ICommandContext): Promise<void|Message|Message[]>
 
 }
 

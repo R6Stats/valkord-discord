@@ -1,12 +1,12 @@
 import { BotCommand } from '../BotCommand'
-import CommandContext from '../CommandContext'
+import { ICommandContext } from '../CommandContext'
 import { Message } from 'discord.js'
 
 class HelpCommand extends BotCommand {
 
   command: string = 'help'
 
-  invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
+  invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     return ctx.reply({
       embed: {
         color: 3447003,

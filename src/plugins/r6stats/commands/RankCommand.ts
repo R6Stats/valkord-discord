@@ -12,7 +12,7 @@ import { formatListField } from '../../../utilities/formatters'
 import { RankedRegion } from '../../../types/Resolvable'
 import InvalidArgumentException from '../../../exceptions/InvalidArgumentException'
 import { BotCommand } from '../../../BotCommand';
-import CommandContext from '../../../CommandContext';
+import { ICommandContext } from '../../../CommandContext';
 
 @injectable()
 class RankCommand extends BotCommand {
@@ -30,7 +30,7 @@ class RankCommand extends BotCommand {
     this.api = api
   }
 
-  public async invoke (ctx: CommandContext): Promise<void|Message|Message[]> {
+  public async invoke (ctx: ICommandContext): Promise<void|Message|Message[]> {
     if (ctx.args.length < 2) {
       return ctx.reply('Usage: rank <username> <platform> {region} {season}')
     }

@@ -1,5 +1,5 @@
 import BotException from './BotException'
-import CommandContext from '../CommandContext'
+import { IMessageContext } from '../CommandContext'
 
 class BotCommandException extends BotException {
   private err: string
@@ -10,7 +10,7 @@ class BotCommandException extends BotException {
     this.err = err
   }
 
-  render (ctx: CommandContext) {
+  render (ctx: IMessageContext) {
     ctx.reply(this.err)
   }
 }

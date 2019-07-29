@@ -1,15 +1,16 @@
 class CommandSignature {
-  arguments: CommandSignatureArgument[]
+  arguments: CommandSignatureArgument[] = []
   rawSignature: string;
 
   constructor (signature: string) {
-    this.arguments = []
     this.rawSignature = signature
 
-    this.parseSignature(signature)
+    this.parse(signature)
   }
 
-  parseSignature (signature: string) {
+  parse (signature: string) {
+    this.arguments = []
+
     const args = signature.split(' ')
     for (const arg of args) {
       if (arg.length < 3) continue

@@ -18,8 +18,6 @@ import R6StatsPlugin from './plugins/r6stats/R6StatsPlugin';
 import ArgumentRegistrar from './arguments/ArgumentRegistrar';
 import ArgumentParser from './arguments/ArgumentParser';
 import ArgumentProvider from './arguments/ArgumentProvider';
-import { CommandSignature } from './arguments/CommandSignature';
-import { parse } from 'path';
 import CommandContextFactory from './CommandContextFactory';
 
 class R6StatsBot {
@@ -46,12 +44,6 @@ class R6StatsBot {
     this.loadCommands()
     this.registerPlugins()
     this.login()
-
-    const sig = new CommandSignature('<username:username> <platform:platform> <region>')
-    const parser = container.get<ArgumentParser>(ServiceTypes.ArgumentParser)
-    const vals = parser.parse(sig, ['"Zamhomie', 'Sniper', 'Dog', 'xone'])
-    console.log(vals)
-
   }
 
   setupHandlers () {
