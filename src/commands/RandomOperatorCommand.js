@@ -37,7 +37,7 @@ class RandomOperatorCommand extends BaseCommand {
     }
 
     operators = operators.filter(op => op.role === role || op.role === 'recruit')
-    const random = operators[Math.random(Math.floor(Math.random() * operators.length))]
+    const random = operators[(Math.floor(Math.random() * operators.length))]
 
     const { name, images: { badge: badge_url } } = random
 
