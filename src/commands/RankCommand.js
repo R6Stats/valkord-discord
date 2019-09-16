@@ -113,8 +113,6 @@ class RankCommand extends BaseCommand {
     const title = `Operation ${season.name} Stats for ${player.username} in ${REGION_CONVERTS[regionKey]}`
     const statsUrl = `https://r6stats.com/stats/${player.ubisoft_id}/seasons`
 
-    console.log(this.rankIconThumbnail(season_id, max_rank, champions_rank_position))
-
     this.reply({
       embed: {
         color: 3447003,
