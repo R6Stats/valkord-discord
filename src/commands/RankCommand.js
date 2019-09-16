@@ -20,10 +20,37 @@ const RANKS = [
   { name: 'Gold III', img: 'gold-3.svg' },
   { name: 'Gold II', img: 'gold-2.svg' },
   { name: 'Gold I', img: 'gold-1.svg' },
+  { name: 'Platinum III', img: 'platinum-3-old.svg' },
+  { name: 'Platinum II', img: 'platinum-2-old.svg' },
+  { name: 'Platinum I', img: 'platinum-1-old.svg' },
+  { name: 'Diamond', img: 'diamond-old.svg' }
+]
+
+const RANKS_EMBER_RISE = [
+  { name: 'Unranked', img: 'unranked.svg' },
+  { name: 'Copper V', img: 'copper-5.svg' },
+  { name: 'Copper IV', img: 'copper-4.svg' },
+  { name: 'Copper III', img: 'copper-3.svg' },
+  { name: 'Copper II', img: 'copper-2.svg' },
+  { name: 'Copper I', img: 'copper-1.svg' },
+  { name: 'Bronze V', img: 'bronze-5.svg' },
+  { name: 'Bronze IV', img: 'bronze-4.svg' },
+  { name: 'Bronze III', img: 'bronze-3.svg' },
+  { name: 'Bronze II', img: 'bronze-2.svg' },
+  { name: 'Bronze I', img: 'bronze-1.svg' },
+  { name: 'Silver V', img: 'silver-5.svg' },
+  { name: 'Silver IV', img: 'silver-4.svg' },
+  { name: 'Silver III', img: 'silver-3.svg' },
+  { name: 'Silver II', img: 'silver-2.svg' },
+  { name: 'Silver I', img: 'silver-1.svg' },
+  { name: 'Gold III', img: 'gold-3.svg' },
+  { name: 'Gold II', img: 'gold-2.svg' },
+  { name: 'Gold I', img: 'gold-1.svg' },
   { name: 'Platinum III', img: 'platinum-3.svg' },
   { name: 'Platinum II', img: 'platinum-2.svg' },
   { name: 'Platinum I', img: 'platinum-1.svg' },
-  { name: 'Diamond', img: 'diamond.svg' }
+  { name: 'Diamond', img: 'diamond.svg' },
+  { name: 'Champions', img: 'champions.svg' },
 ]
 
 class RankCommand extends BaseCommand {
@@ -34,7 +61,11 @@ class RankCommand extends BaseCommand {
   }
 
   shouldInvoke() {
-    return this._command === 'rank' || this._command === 'season' || this._command === 'seasonal'
+    return (
+      this._command === 'rank' ||
+      this._command === 'season' ||
+      this._command === 'seasonal'
+    )
   }
 
   async invoke() {
@@ -77,10 +108,12 @@ class RankCommand extends BaseCommand {
 
     const REGION_CONVERTS = { ncsa: 'America', na: 'America', emea: 'Europe', eu: 'Europe', apac: 'Asia', asia: 'Asia' }
 
-    let { region: regionKey, wins, losses, abandons, max_mmr, mmr, prev_rank_mmr, next_rank_mmr, skill_mean, skill_standard_deviation, rank, max_rank } = region
+    let { region: regionKey, wins, losses, abandons, max_mmr, mmr, prev_rank_mmr, next_rank_mmr, skill_mean, skill_standard_deviation, rank, max_rank, champions_rank_position, season_id } = region
 
     const title = `Operation ${season.name} Stats for ${player.username} in ${REGION_CONVERTS[regionKey]}`
     const statsUrl = `https://r6stats.com/stats/${player.ubisoft_id}/seasons`
+
+    console.log(this.rankIconThumbnail(season_id, max_rank, champions_rank_position))
 
     this.reply({
       embed: {
@@ -91,7 +124,7 @@ class RankCommand extends BaseCommand {
           icon_url: this.platform.image
         },
         thumbnail: {
-          url: `https://cdn.r6stats.com/seasons/rank-imgs/${RANKS[max_rank].img.replace('svg', 'png')}`
+          url: this.rankIconThumbnail(season_id, max_rank, champions_rank_position),
         },
         title,
         description: `[View Full Stats for ${player.username}](${statsUrl})`,
@@ -100,9 +133,9 @@ class RankCommand extends BaseCommand {
             name: 'Rank',
             inline: true,
             value: '**Current MMR**: ' + mmr + '\n'
-              + '**Current Rank**: ' + RANKS[rank].name + '\n'
+              + '**Current Rank**: ' + this.currentRankName(season_id, rank, champions_rank_position) + '\n'
               + '**Max MMR**: ' + Number(max_mmr).toFixed(2) + '\n'
-              + '**Max Rank**: ' + RANKS[max_rank].name + '\n'
+              + '**Max Rank**: ' + this.currentRankName(season_id, max_rank, champions_rank_position) + '\n'
               + '**Skill**: ' + Number(skill_mean).toFixed(2) + '±' + Number(skill_standard_deviation).toFixed(2),
           },
           {
@@ -110,7 +143,7 @@ class RankCommand extends BaseCommand {
             inline: true,
             value: '**Previous Rank**: ' + prev_rank_mmr + '\n'
               + '**Current MMR**: ' + mmr + '\n'
-              + '**Next Rank**: ' + next_rank_mmr
+              + '**Next Rank**: ' + ((next_rank_mmr === 0) ? 'N/A' : next_rank_mmr)
           },
           {
             name: 'Matches',
@@ -119,7 +152,7 @@ class RankCommand extends BaseCommand {
               + '**Losses**: ' + losses + '\n'
               + '**W/L**: ' + (losses === 0 ? 'n/a' : Number(wins / losses).toFixed(2)) + '\n'
               + '**Abandons**: ' + abandons
-          }
+          },
         ],
         footer: {
           icon_url: 'https://r6stats.com/img/logos/r6stats-100.png',
@@ -157,6 +190,26 @@ class RankCommand extends BaseCommand {
     this.region = region
     this.season = season
     this.username = username
+  }
+
+  rankIconThumbnail (season, rank, championsRankPosition) {
+    if (season >= 15) {
+      return (rank === 23)
+        ? `https://r6stats.com/api/dynamic/champions-rank-image/${championsRankPosition}`
+        : `https://cdn.r6stats.com/seasons/rank-imgs/${RANKS_EMBER_RISE[rank].img.replace('svg', 'png')}`
+    } else {
+      return `https://cdn.r6stats.com/seasons/rank-imgs/${RANKS[rank].img.replace('svg', 'png')}`
+    }
+  }
+
+  currentRankName (season, rank, championsRankPosition) {
+    if (season >= 15) {
+      return (rank === 23)
+        ? `Champions (#${championsRankPosition})`
+        : RANKS_EMBER_RISE[rank].name
+    } else {
+      return RANKS[rank].name
+    }
   }
 
 }

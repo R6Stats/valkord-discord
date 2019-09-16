@@ -3,9 +3,9 @@ module.exports = {
 		login: 'ItsEpi',
 		password: 'lordchanka',
     user_agent: 'R6Stats Discord Bot v3',
-    base_url: ''
+    base_url: '',
 	},
 	discord: {
-		token: 'xxxxx'
-	}
+		token: 'xxxxx',
+	},
 }
