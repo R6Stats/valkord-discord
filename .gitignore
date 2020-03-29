@@ -5,3 +5,6 @@ config.js
 
 .vscode/
 .vs/
+
+dist/
+

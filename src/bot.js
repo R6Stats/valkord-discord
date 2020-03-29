@@ -1,11 +1,12 @@
 const Discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
-const config = require('./config')
+const config = require('../config')
+const R6StatsAPI = require('r6stats')
 
 const client = new Discord.Client()
 
-import R6StatsAPI from 'r6stats'
+// import R6StatsAPI from 'r6stats'
 
 const api = new R6StatsAPI({
   loginId: config.r6stats.login,
@@ -39,10 +40,10 @@ client.on('message', messageHandler)
 client.login(config.discord.token)
 
 async function loadCommands () {
-  const files = fs.readdirSync(path.join(__dirname, 'src', 'commands'))
+  const files = fs.readdirSync(path.join(__dirname, 'commands'))
 
   for (let file of files) {
-    const { default: clazz } = await require(path.join(__dirname, 'src', 'commands', file))
+    const { default: clazz } = await require(path.join(__dirname, 'commands', file))
     console.log(`Registering command ${ clazz.name }...`)
     commands.push(clazz)
   }

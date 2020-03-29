@@ -14,7 +14,8 @@
   "author": "Jake <support@r6stats.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "babel-node index.js",
+    "build": "babel src --out-dir dist",
+    "start": "node dist",
     "dev": "nodemon --exec npm run start"
   },
   "dependencies": {
@@ -22,8 +23,10 @@
     "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
     "nodemon": "^1.19.2"
   }
 }
