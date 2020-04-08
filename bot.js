@@ -28,7 +28,7 @@ try {
 
 setTimeout(() => {
   client.ws.connection.triggerReady()
-}, 30000)
+}, 22500)
 
 client.on('ready', () => {
   console.log(`Shard ${client.shard.id} online and ready to handle ${client.guilds.size} guilds!`)
