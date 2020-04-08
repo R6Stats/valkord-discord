@@ -4,3 +4,6 @@ config.js
 
 .vscode/
 .vs/
+
+.env
+dist/
