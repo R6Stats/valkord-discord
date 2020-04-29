@@ -27,8 +27,13 @@ try {
   console.error(e, 'Error authenticating R6Stats API Client')
 }
 
+client.on('debug', (info) => {
+  console.log(info)
+})
+
 client.on('ready', () => {
-  console.log(`Shard ${client.shard.id} online and ready to handle ${client.guilds.size} guilds!`)
+  // console.log(client.shard.ids)
+  console.log(`Shard ${client.shard.ids[0]} online and ready to handle ${client.guilds.cache.size} guilds!`)
 })
 
 client.on('error', e => {
