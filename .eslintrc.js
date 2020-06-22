@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = {
   root: true,
   env: {
@@ -11,6 +9,10 @@ module.exports = {
     parser: 'babel-eslint',
     sourceType: 'module'
   },
+  parser: '@typescript-eslint/parser',
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+  ],
   rules: {
     'semi': ['error', 'never'],
     'no-mixed-spaces-and-tabs': 'error',
@@ -21,5 +23,10 @@ module.exports = {
     'func-call-spacing': ['error', 'never'],
     'no-multi-spaces': 'error',
     'no-unused-vars': ['error', { 'vars': 'all', 'args': 'none', 'ignoreRestSiblings': true }],
+    '@typescript-eslint/indent': ['error', 2],
+    'camelcase': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-inferrable-types': 'off',
   }
 }

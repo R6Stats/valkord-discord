@@ -1,6 +1,6 @@
 {
   "name": "r6stats-discord-bot",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "R6Stats Discord Bot",
   "main": "index.js",
   "private": true,
@@ -18,12 +18,20 @@
     "dev": "nodemon --exec npm run start"
   },
   "dependencies": {
-    "discord.js": "^11.5.1",
-    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2"
+    "discord.js": "^12.2.0",
+    "inversify": "^5.0.1",
+    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@types/node": "^14.0.13",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "nodemon": "^1.19.2"
+    "eslint": "^7.3.0",
+    "nodemon": "^1.19.2",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.5"
   }
 }
