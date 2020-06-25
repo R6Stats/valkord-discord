@@ -40,7 +40,7 @@ export class Container {
 
   }
 
-  public init (): void {
+  public bootModules (): void {
     this.booted = true
 
     const services = Array.from(this.services.values())

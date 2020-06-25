@@ -13,6 +13,7 @@ export class ConfigService {
   private load (): ClientConfig {
     return {
       token: env('DISCORD_TOKEN'),
+      prefixes: env('PREFIXES', 'rt').split(','),
     }
   }
 
@@ -20,7 +21,7 @@ export class ConfigService {
     return this.config
   }
 
-  public get (key: keyof ClientConfig): string {
+  public get <T = any>(key: keyof ClientConfig): T {
     return this.config[key]
   }
 }
