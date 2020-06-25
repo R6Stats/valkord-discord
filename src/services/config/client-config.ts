@@ -3,4 +3,6 @@ export interface ClientConfig {
 
   token: string
   prefixes: string[]
+
+  r6stats_token: string
 }

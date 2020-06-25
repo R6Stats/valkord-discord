@@ -14,6 +14,7 @@ export class ConfigService {
     return {
       token: env('DISCORD_TOKEN'),
       prefixes: env('PREFIXES', 'rt').split(','),
+      r6stats_token: env('R6STATS_TOKEN'),
     }
   }
 

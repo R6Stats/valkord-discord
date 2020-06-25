@@ -18,10 +18,10 @@
     "dev": "ts-node src/"
   },
   "dependencies": {
+    "@r6stats/node": "^3.0.6",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "inversify": "^5.0.1",
-    "r6stats": "git://github.com/R6Stats/r6stats-node.git#v2",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.10.2"
   },
