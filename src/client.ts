@@ -3,12 +3,14 @@ import { Container } from './container'
 import { Injectable } from './decorators/injectable.decorator'
 import { CommandHandler } from './handlers/command.handler'
 import { ConfigService } from './services/config/config.service'
+import { CommandRegistrar } from './commands/command'
 
 @Injectable()
 export class CopperClient {
   private client: Client
   private config: ConfigService
   private handler: CommandHandler
+  private commands: CommandRegistrar
   private container: Container
 
   public constructor (config: ConfigService, container: Container) {
@@ -20,6 +22,7 @@ export class CopperClient {
 
   public async setup (): Promise<void> {
     this.handler = this.container.resolve(CommandHandler)
+    this.commands = this.container.resolve(CommandRegistrar)
   }
 
   public async connect (): Promise<string> {
@@ -34,6 +37,10 @@ export class CopperClient {
 
   public getCommandHandler (): CommandHandler {
     return this.handler
+  }
+
+  public getCommandRegistry (): CommandRegistrar {
+    return this.commands
   }
 
 }

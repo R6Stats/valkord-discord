@@ -1,10 +1,9 @@
 import { Message } from 'discord.js'
 import { CopperClient } from '../client'
-import { Command, CommandContext } from '../commands/command'
+import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../commands/command'
 import { Container } from '../container'
 import { Injectable } from '../decorators/injectable.decorator'
 import { ConfigService } from '../services/config/config.service'
-import { Constructor } from '../types'
 import { Handler } from './handler'
 
 @Injectable()
@@ -12,17 +11,16 @@ export class CommandHandler extends Handler {
   private readonly container: Container
   private readonly config: ConfigService
 
-  private readonly commands: Set<Command> = new Set()
+  private readonly commands: CommandRegistrar
+  private readonly parser: CommandSignatureParser
 
-  public constructor (container: Container, config: ConfigService) {
+  public constructor (container: Container, config: ConfigService, commands: CommandRegistrar, parser: CommandSignatureParser) {
     super()
 
     this.container = container
     this.config = config
-  }
-
-  public registerCommand (cmd: Constructor<Command>): void {
-    this.commands.add(this.container.resolve(cmd))
+    this.commands = commands
+    this.parser = parser
   }
 
   public setup (): void {
@@ -39,11 +37,15 @@ export class CommandHandler extends Handler {
 
     if (!cmd) return
 
-    const commands = Array.from(this.commands)
-    const ctx = new CommandContext(message, cmd.toLowerCase(), args)
+    const commands = this.commands.getCommands()
+
+    const midCtx = new MiddlewareContext(message, cmd.toLowerCase(), args)
 
     for (const command of commands) {
-      if (command.shouldHandle(ctx)) {
+      if (command.shouldHandle(midCtx)) {
+        const parsed = this.parser.parse(command.getSignature(), args)
+        const ctx = new CommandContext(message, cmd.toLowerCase(), args, parsed)
+
         command.handle(ctx)
       }
     }
