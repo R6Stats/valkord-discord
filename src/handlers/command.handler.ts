@@ -1,11 +1,11 @@
-import { Injectable } from '../decorators/injectable.decorator'
 import { Message } from 'discord.js'
 import { CopperClient } from '../client'
-import { Container } from '../container'
-import { Handler } from './handler'
 import { Command, CommandContext } from '../commands/command'
-import { Constructor } from '../types'
+import { Container } from '../container'
+import { Injectable } from '../decorators/injectable.decorator'
 import { ConfigService } from '../services/config/config.service'
+import { Constructor } from '../types'
+import { Handler } from './handler'
 
 @Injectable()
 export class CommandHandler extends Handler {

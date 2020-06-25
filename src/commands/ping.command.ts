@@ -1,6 +1,6 @@
-import { Command, CommandContext } from './command'
 import { Message } from 'discord.js'
 import { Injectable } from '../decorators/injectable.decorator'
+import { Command, CommandContext } from './command'
 
 @Injectable()
 export class PingCommand extends Command {

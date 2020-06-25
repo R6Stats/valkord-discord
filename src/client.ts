@@ -1,8 +1,8 @@
-import { Injectable } from './decorators/injectable.decorator'
 import { Client } from 'discord.js'
-import { ConfigService } from './services/config/config.service'
-import { CommandHandler } from './handlers/command.handler'
 import { Container } from './container'
+import { Injectable } from './decorators/injectable.decorator'
+import { CommandHandler } from './handlers/command.handler'
+import { ConfigService } from './services/config/config.service'
 
 @Injectable()
 export class CopperClient {
@@ -18,7 +18,7 @@ export class CopperClient {
     this.client = new Client()
   }
 
-  public async setup () {
+  public async setup (): Promise<void> {
     this.handler = this.container.resolve(CommandHandler)
   }
 

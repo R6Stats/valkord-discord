@@ -1,7 +1,7 @@
 import 'reflect-metadata'
-import { Container } from './container'
 import { CopperClient } from './client'
 import { PingCommand } from './commands/ping.command'
+import { Container } from './container'
 
 const run = async () => {
   const container = new Container()
