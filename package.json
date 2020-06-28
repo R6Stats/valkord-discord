@@ -15,7 +15,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "babel-node index.js",
-    "dev": "ts-node src/"
+    "dev": "ts-node-dev src/"
   },
   "dependencies": {
     "@r6stats/node": "^3.0.6",
@@ -32,7 +32,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^7.3.0",
-    "nodemon": "^1.19.2",
+    "ts-node-dev": "^1.0.0-pre.49",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"
   }

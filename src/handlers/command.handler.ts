@@ -43,10 +43,14 @@ export class CommandHandler extends Handler {
 
     for (const command of commands) {
       if (command.shouldHandle(midCtx)) {
-        const parsed = this.parser.parse(command.getSignature(), args)
-        const ctx = new CommandContext(message, cmd.toLowerCase(), args, parsed)
+        try {
+          const parsed = this.parser.parse(command.getSignature(), args)
+          const ctx = new CommandContext(message, cmd.toLowerCase(), args, parsed)
 
-        command.handle(ctx)
+          command.handle(ctx)
+        } catch (e) {
+          command.handleException(midCtx, e)
+        }
       }
     }
   }

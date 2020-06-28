@@ -1,9 +1,11 @@
-import { Message } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../decorators/injectable.decorator'
 import { InvalidArgumentException } from '../exceptions/invalid-argument.exception'
 import { MissingArgumentException } from '../exceptions/missing-argument.exception'
 import { Container, OnModuleBoot } from '../container'
 import { Constructor } from '../types'
+import { Logger } from '../logger'
+import { ClientException } from '../exceptions/client.exception'
 
 export abstract class Command {
   public command: string = ''
@@ -37,6 +39,10 @@ export abstract class Command {
     return this.command === ctx.command
   }
 
+  public handleException (ctx: MiddlewareContext, ex: ClientException): Promise<void | Message | Message[]> {
+    return ctx.reply(ex.message)
+  }
+
   public setReady (state: boolean): void {
     this.ready = state
   }
@@ -57,6 +63,8 @@ export class CommandRegistrar implements OnModuleBoot {
 
   private booted: boolean = false
 
+  private readonly logger = new Logger(CommandRegistrar.name)
+
   public constructor (container: Container) {
     this.container = container
 
@@ -68,7 +76,7 @@ export class CommandRegistrar implements OnModuleBoot {
     const instance = this.container.resolve<Command>(command)
     this.commands.push(instance)
 
-    console.log(`[CommandRegistrar] Registered command ${command.name}`)
+    this.logger.log(`Registered command ${command.name}`)
 
     if (this.booted) {
       this.setupCommand(instance)
@@ -126,7 +134,7 @@ export class CommandSignatureParser {
       const type = arg.getType()
       const value = type.parse(index, args, arg)
 
-      if (!value && !arg.isOptional()) {
+      if (!value.getValue() && !arg.isOptional()) {
         throw new MissingArgumentException(arg.getKey())
       }
 
@@ -147,8 +155,6 @@ export class ParsedCommandSignature {
 
   public constructor (values: CommandSignatureArgumentValue[]) {
     this.values = values
-
-
   }
 
   public getValues (): CommandSignatureArgumentValue[] {
@@ -175,6 +181,8 @@ export class CommandSignatureFactory {
   }
 
   public parse (signature: string): CommandSignature {
+    if (!signature) return new CommandSignature([])
+
     const parsed = []
 
     const args = signature.split(' ')
@@ -253,7 +261,7 @@ export class CommandSignatureArgument<T extends CommandSignatureArgumentType = C
 }
 
 export class CommandSignatureArgumentValue {
-  private readonly value: any
+  public readonly value: any
   private readonly length: number
   private readonly arg: CommandSignatureArgument
 
@@ -287,7 +295,7 @@ export class MiddlewareContext {
     this.args = args
   }
 
-  public async reply (message: Message | string): Promise<Message> {
+  public async reply (message: Message | MessageEmbed | string): Promise<Message> {
     return this.original.reply(message)
   }
 }
