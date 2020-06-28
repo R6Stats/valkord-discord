@@ -18,7 +18,7 @@
     "dev": "ts-node src/"
   },
   "dependencies": {
-    "@r6stats/node": "^3.0.1",
+    "@r6stats/node": "^3.0.6",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "inversify": "^5.0.1",
