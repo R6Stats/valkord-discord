@@ -1,7 +1,7 @@
 import { Injectable } from '../decorators/injectable.decorator'
 import { ConfigService } from './config/config.service'
 import { OnModuleBoot } from '../container'
-import R6StatsAPI from '@r6stats/node'
+import R6StatsAPI, { GenericStatsResponse, OperatorStatsResponse } from '@r6stats/node'
 
 @Injectable()
 export class StatsService implements OnModuleBoot {
@@ -20,7 +20,11 @@ export class StatsService implements OnModuleBoot {
     this.client = api
   }
 
-  public async search (username: string, platform: string) {
+  public async getStats (username: string, platform: string): Promise<GenericStatsResponse> {
     return this.client.playerStats({ username, platform })
+  }
+
+  public async getOperatorStats (username: string, platform: string): Promise<OperatorStatsResponse> {
+    return this.client.operatorStats({ username, platform })
   }
 }

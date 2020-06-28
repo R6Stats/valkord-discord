@@ -4,7 +4,7 @@ export class MissingArgumentException extends ClientException {
   private readonly argument: string
 
   public constructor (argument: string) {
-    super(`The argument ${argument} is required!`)
+    super(`The ${argument} argument is required!`)
 
     this.argument = argument
   }

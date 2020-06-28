@@ -1,6 +1,8 @@
 import { Constructor } from './types'
+import { Logger } from './logger'
 
 export class Container {
+  private readonly logger = new Logger(Container.name)
   private readonly services: Map<Constructor<any>, any>
 
   private booted: boolean = false
@@ -14,23 +16,23 @@ export class Container {
   public resolve <T>(service: Constructor<any>): T {
     const existingInstance = this.services.get(service)
 
-    // console.log('[Container]', service)
-    console.log(`[Container] Resolving ${service?.name}`)
+    // this.logger.log('[Container]', service)
+    this.logger.log(`Resolving ${service?.name}`)
 
     if (existingInstance) {
-      console.log(`[Container] Resolved ${service?.name}`)
+      this.logger.log(`Resolved ${service?.name}`)
 
       return existingInstance
     }
 
     const tokens = Reflect.getMetadata('design:paramtypes', service) || []
-    console.log(`[Container] Making ${service?.name}\n\t=> `, tokens.map(t => t?.name).join(', '))
+    this.logger.log(`Making ${service?.name}\n\t=> `, tokens.map(t => t?.name).join(', '))
     const injections = tokens.map((token: Constructor<any>) => this.resolve<any>(token))
 
     const newInstance = new service(...injections)
 
     if (this.booted && typeof newInstance.boot === 'function') {
-      console.log(`[Container] Booting ${newInstance.constructor.name}`)
+      this.logger.log(`Booting ${newInstance.constructor.name}`)
       newInstance.boot()
     }
 
@@ -47,7 +49,7 @@ export class Container {
 
     for (const service of services) {
       if (typeof service.boot === 'function') {
-        console.log(`[Container] Booting ${service.constructor.name}`)
+        this.logger.log(`Booting ${service.constructor.name}`)
         service.boot()
       }
     }

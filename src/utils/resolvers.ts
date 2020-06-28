@@ -36,3 +36,14 @@ export const getRole = (role: string): string => {
 
   return role
 }
+
+export const getPlatformImage = (platform: string): string => {
+  switch (platform) {
+    case 'pc':
+      return 'https://cdn.r6stats.com/platforms/pc.png'
+    case 'xbox':
+      return 'https://cdn.r6stats.com/platforms/xbox.png'
+    case 'ps4':
+      return 'https://cdn.r6stats.com/platforms/ps4.png'
+  }
+}

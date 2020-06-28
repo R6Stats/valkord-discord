@@ -16,3 +16,15 @@ export const playtime = (seconds: number, timeView: string): string => {
 
   return timeStr.length > 0 ? timeStr : 'N/A'
 }
+
+export const formatNumber = (value: string | number): string => {
+  if (value == null) {
+    return null
+  }
+
+  while (/(\d+)(\d{3})/.test(value.toString())) {
+    value = value.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+
+  return String(value)
+}

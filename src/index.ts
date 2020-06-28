@@ -1,8 +1,10 @@
 import 'reflect-metadata'
 import { CopperClient } from './client'
-import { PingCommand } from './commands/ping.command'
-import { Container } from './container'
 import { CommandSignatureArgumentTypeString } from './commands/command'
+import { PingCommand } from './commands/invite.command'
+import { StatsCommand } from './commands/stats.command'
+import { OperatorStatsCommand } from './commands/operator-stats.command'
+import { Container } from './container'
 
 const run = async () => {
   const container = new Container()
@@ -17,6 +19,8 @@ const run = async () => {
 
   handler.registerArgumentType(CommandSignatureArgumentTypeString)
 
+  handler.registerCommand(StatsCommand)
+  handler.registerCommand(OperatorStatsCommand)
   handler.registerCommand(PingCommand)
 
   await bot.connect()
