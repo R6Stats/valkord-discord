@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
 import { Injectable } from '../../../application/container'
-import { ClientCommand, CommandContext } from '../../../domain/commands'
+import { ClientCommand, CommandContext } from '../../../application/commands'
 
 @Injectable()
 export class PingCommand extends ClientCommand {

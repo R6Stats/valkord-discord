@@ -1,4 +1,4 @@
-import { CommandRegistrar, ClientCommand } from '../../domain/commands'
+import { CommandRegistrar, ClientCommand } from '../commands'
 import { Injectable } from '../container'
 import * as path from 'path'
 import * as fs from 'fs'

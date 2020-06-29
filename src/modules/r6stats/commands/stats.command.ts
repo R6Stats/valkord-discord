@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { LOGO_URL } from '../constants'
-import { ClientCommand, CommandContext } from '../../../domain/commands'
+import { ClientCommand, CommandContext } from '../../../application/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../../../utils/embeds'
 import { formatNumber, playtime } from '../utils/formatting'

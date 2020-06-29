@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext, CommandRegistrar } from '../../../domain/commands'
+import { ClientCommand, CommandContext, CommandRegistrar } from '../../../application/commands'
 import { EmbedField } from '../../../utils/embeds'
 
 @Injectable()

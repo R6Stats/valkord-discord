@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Container } from './application/container/container'
 import { CopperClient } from './client'
-import { CommandSignatureArgumentTypeString } from './domain/commands'
+import { CommandSignatureArgumentTypeString } from './application/commands'
 
 const run = async () => {
   const container = new Container()

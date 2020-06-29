@@ -1,8 +1,8 @@
-import { Injectable } from '../../application/container'
-import { Container, OnModuleBoot } from '../../application/container/container'
+import { Injectable } from '../container'
+import { Container, OnModuleBoot } from '../container/container'
 import { Constructor } from '../../types'
 import { Logger } from '../../utils/logger'
-import { ClientCommand, CommandSignatureFactory } from './'
+import { ClientCommand, CommandSignatureFactory } from '.'
 import { CommandSignatureArgumentType } from './command-signature-argument-type'
 
 @Injectable()

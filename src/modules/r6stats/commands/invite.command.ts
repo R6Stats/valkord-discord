@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { INVITE_URL, LOGO_URL } from '../constants'
-import { ClientCommand, CommandContext } from '../../../domain/commands'
+import { ClientCommand, CommandContext } from '../../../application/commands'
 
 @Injectable()
 export class InviteCommand extends ClientCommand {
