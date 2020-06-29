@@ -10,7 +10,10 @@ import { ClientException } from '../exceptions/client.exception'
 export abstract class Command {
   public command: string = ''
   public aliases: string[] = []
+  public group: string = ''
   public signature: string | undefined
+  public name: string | undefined
+  public shortHelp: string = ''
   public parsed: CommandSignature
 
   protected ready: boolean = false
@@ -215,6 +218,10 @@ export class CommandSignature {
 
   public getArguments (): CommandSignatureArgument[] {
     return this.args
+  }
+
+  public getUserReadableString (): string {
+    return this.args.map(a => `${a.isOptional() ? '{' : '<'}${a.getKey()}${a.isOptional() ? '}' : '>'}`).join(' ')
   }
 }
 

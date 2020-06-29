@@ -6,6 +6,7 @@ import { StatsCommand } from './commands/stats.command'
 import { OperatorStatsCommand } from './commands/operator-stats.command'
 import { Container } from './container'
 import { PingCommand } from './commands/ping.command'
+import { HelpCommand } from './commands/help.command'
 
 const run = async () => {
   const container = new Container()
@@ -24,6 +25,7 @@ const run = async () => {
   handler.registerCommand(OperatorStatsCommand)
   handler.registerCommand(InviteCommand)
   handler.registerCommand(PingCommand)
+  handler.registerCommand(HelpCommand)
 
   await bot.connect()
 }

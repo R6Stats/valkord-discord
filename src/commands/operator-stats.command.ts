@@ -11,6 +11,9 @@ import { LOGO_URL } from '../constants'
 export class OperatorStatsCommand extends Command {
   public command = 'operator'
   public signature = '<username:string> <platform:string> <operator:string>'
+  public readonly name = 'Operator Stats'
+  public readonly group = 'Stats'
+  public readonly shortHelp = 'r6s stats <username> <platform> <operator>'
 
   private readonly stats: StatsService
 
