@@ -3,6 +3,9 @@ import { Injectable } from '../container'
 import * as path from 'path'
 import * as fs from 'fs'
 import { Logger } from '../../utils/logger'
+import { ModuleMetadataException } from './exceptions/module-metadata.exception'
+import { ModuleMetadata } from './module'
+import { ModuleLoadException } from './exceptions/module-load.exception'
 
 export const DEFAULT_COMMANDS_DIRECTORY = 'commands'
 
@@ -20,6 +23,23 @@ export class ModuleLoader {
 
     const files = fs.readdirSync(modulePath)
 
+    const metadataFile = files.find(f => f.endsWith('.module.ts') || f.endsWith('.module.js'))
+    const metadataPath = path.join(modulePath, metadataFile)
+
+    if (!metadataFile) {
+      throw new ModuleMetadataException(dir)
+    }
+
+    const metadata = await this.loadMetadata(metadataPath)
+
+    const { name } = metadata
+
+    if (!name) {
+      throw new ModuleLoadException(dir)
+    }
+
+    this.logger.log(`Loading module ${name}`)
+
     const cmdPath = path.join(modulePath, DEFAULT_COMMANDS_DIRECTORY)
     const hasLoadableCmds = files.includes(DEFAULT_COMMANDS_DIRECTORY) && fs.lstatSync(cmdPath).isDirectory()
 
@@ -28,6 +48,29 @@ export class ModuleLoader {
       await this.loadCommands(cmdPath)
       this.logger.log('Auto loaded module commands!')
     }
+  }
+
+  public async loadMetadata (file: string): Promise<ModuleMetadata | null> {
+    const imports = await import(file)
+
+    const keys = Object.keys(imports)
+    for (const key of keys) {
+      const imported = imports[key]
+      const isModule = Reflect.hasMetadata('module', imported)
+
+      if (!isModule) continue
+
+      const metadata: ModuleMetadata = { name: null }
+      const metadataKeys = Reflect.getMetadataKeys(imported).filter(k => k !== 'module')
+
+      for (const mKey of metadataKeys) {
+        metadata[mKey] = Reflect.getMetadata(mKey, imported)
+      }
+
+      return metadata
+    }
+
+    return null
   }
 
   public async loadCommands (dir: string): Promise<void> {
