@@ -5,6 +5,7 @@ import { Container } from './application/container/container'
 import { CommandRegistrar } from './domain/commands'
 import { CommandHandler } from './handlers/command.handler'
 import { ModuleLoader } from './application/modules'
+import { ReadyHandler } from './handlers/ready.handler'
 
 @Injectable()
 export class CopperClient {
@@ -26,6 +27,8 @@ export class CopperClient {
     this.handler = this.container.resolve(CommandHandler)
     this.commands = this.container.resolve(CommandRegistrar)
     this.modules = this.container.resolve(ModuleLoader)
+
+    this.container.resolve(ReadyHandler)
   }
 
   public async connect (): Promise<string> {
