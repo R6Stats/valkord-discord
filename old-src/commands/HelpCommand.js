@@ -1,7 +1,7 @@
 import BaseCommand from '../BaseCommand'
 
 class HelpCommand extends BaseCommand {
-  constructor ({ }) {
+  constructor ({}) {
     super(...arguments)
   }
 

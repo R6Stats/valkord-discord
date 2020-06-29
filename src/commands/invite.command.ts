@@ -6,6 +6,9 @@ import { LOGO_URL, INVITE_URL } from '../constants'
 @Injectable()
 export class InviteCommand extends Command {
   public readonly command = 'invite'
+  public readonly name = 'Invite Link'
+  public readonly group = 'Other'
+  public readonly shortHelp = 'r6s invite'
 
   public async handle (ctx: CommandContext): Promise<Message | Message[] | void> {
     const embed = new MessageEmbed()
