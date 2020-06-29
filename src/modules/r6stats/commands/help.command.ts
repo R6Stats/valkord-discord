@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../application/container'
+import { Injectable } from '../../../application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext, CommandRegistrar } from '../domain/commands'
-import { EmbedField } from '../utils/embeds'
+import { ClientCommand, CommandContext, CommandRegistrar } from '../../../domain/commands'
+import { EmbedField } from '../../../utils/embeds'
 
 @Injectable()
 export class HelpCommand extends ClientCommand {

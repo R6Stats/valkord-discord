@@ -37,14 +37,6 @@ export abstract class ClientCommand {
     return this.parsed
   }
 
-  public shouldHandle (ctx: MiddlewareContext): boolean {
-    return this.command === ctx.command
-  }
-
-  public handleException (ctx: MiddlewareContext, ex: ClientException): Promise<void | Message | Message[]> {
-    return ctx.reply(ex.message)
-  }
-
   public setReady (state: boolean): void {
     this.ready = state
   }
@@ -53,6 +45,34 @@ export abstract class ClientCommand {
     return this.ready
   }
 
+  /**
+   * Determine if the command should be executed based on the provided context
+   *
+   * @param {MiddlewareContext} ctx
+   * @return {boolean}
+   */
+  public shouldHandle (ctx: MiddlewareContext): boolean {
+    return this.command === ctx.command || this.aliases.includes(ctx.command)
+  }
+
+  /**
+   * Handles the command and returns the sent messages or nothing if no messages will be sent
+   *
+   * @param {CommandContext} ctx
+   * @return {Promise<void | Message | Message[]>}
+   */
   abstract handle (ctx: CommandContext): Promise<void | Message | Message[]>
+
+  /**
+   * Override this method to provide custom error handling for ClientExceptions. The overriding
+   * method should call the super method if nothing will be done with the error.
+   *
+   * @param {MiddlewareContext} ctx The CommandContext, providing info about the command executed
+   * @param {ClientException} ex The exception that occurred
+   * @return {Promise<void | Message | Message[]>}
+   */
+  public handleException (ctx: MiddlewareContext, ex: ClientException): Promise<void | Message | Message[]> {
+    return ctx.reply(ex.message)
+  }
 }
 

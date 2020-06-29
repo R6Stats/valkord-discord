@@ -25,7 +25,7 @@ export class CommandSignatureFactory {
       const optional = arg.startsWith(CommandSignatureFactory.OPTIONAL_ARGUMENT_TOKEN)
       const identifier = arg.substr(1, arg.length - 2)
       const [key, type] = identifier.split(':')
-      const resolvedType = this.registrar.resolveArgumentForKey(type)
+      const resolvedType = this.registrar.resolveArgumentForKey(type ?? 'string')
 
       if (!resolvedType) {
         throw new InvalidArgumentException(type)
