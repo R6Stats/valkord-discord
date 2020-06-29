@@ -27,7 +27,7 @@ export const getRole = (role: string): string => {
     case 'def':
     case 'defender':
     case 'defend':
-    case 'denfense':
+    case 'defense':
       role = 'def'
       break
     default:

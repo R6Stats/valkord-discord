@@ -25,7 +25,7 @@ export class EmbedField {
   }
 
   public build (): EmbedFieldData {
-    const value = this._values.map((v, i, arr) => `**${v.title}**: ${v.value}`)
+    const value = this._values.map((v) => `**${v.title}**: ${v.value}`)
 
     return {
       name: this._name,
