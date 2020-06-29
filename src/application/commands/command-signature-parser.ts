@@ -1,5 +1,5 @@
-import { Injectable } from '../../application/container/decorators/injectable.decorator'
-import { ParsedCommandSignature } from '../../domain/commands'
+import { Injectable } from '../container/decorators/injectable.decorator'
+import { ParsedCommandSignature } from '.'
 import { MissingArgumentException } from '../../exceptions/missing-argument.exception'
 import { CommandSignature } from './command-signature'
 

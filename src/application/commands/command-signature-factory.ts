@@ -1,4 +1,4 @@
-import { Injectable } from '../../application/container'
+import { Injectable } from '../container'
 import { InvalidArgumentException } from '../../exceptions/invalid-argument.exception'
 import { CommandRegistrar } from './command-registrar'
 import { CommandSignature } from './command-signature'
