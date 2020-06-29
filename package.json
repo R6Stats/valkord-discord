@@ -14,7 +14,9 @@
   "author": "Jake <support@r6stats.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "start": "babel-node index.js",
+    "build": "rm -rf dist/ && tsc",
+    "start:compiled": "babel-node dist/index",
+    "start": "ts-node src/",
     "dev": "ts-node-dev src/"
   },
   "dependencies": {

@@ -5,41 +5,27 @@ This bot is built with [discordjs](https://discord.js.org/#/) to retrieve and di
 ## Installation
 First-time run installation
 
-### Install Yarn
-Go to [yarn download page](https://yarnpkg.com/en/docs/install#windows-stable) and choose the platform that fits your needs, for example Windows.
+## Configuring the Bot
 
-### Run Yarn in the project
-Go into the folder where you placed the bot using a command-line tool and run (freshly opened after installing yarn)
 ```bash
-yarn
+DISCORD_TOKEN=    # the discord client token
+PREFIXES=r6s,r6   # the prefixes that activate the bot
+R6STATS_API_KEY=  # the r6stats public api key
 ```
-
-### Setup the config
-Copy the `config.example.js` and create a `config.js`
-replace `login` with your uplay email adres
-replace `password` with your uplay password
-replace `base_url` with the API endpoint of r6stats
-replace `token` with your discord bot token, if you do not have one, create one [here](https://discordapp.com/developers/applications/)
 
 ## Running in Production
 
 ```bash
-yarn start
+# compile the files to js and run
+npm run build
+npm run start:compiled
+
+# or run ts directly with ts-node
+npm run start
 ```
 
 ## Development & Testing
 
 ```bash
-yarn run dev
+npm run dev
 ```
-
-## Debugging
-If you run into an error that says
-```
-The term 'yarn' is not recognized as the name of a cmdlet, function, script file, or operable program.
-```
-
-Check your PATH system enviroment variables.
-Make sure you closed all the command-lines.
-
-If the error still accures, restart your device, it should work after.
