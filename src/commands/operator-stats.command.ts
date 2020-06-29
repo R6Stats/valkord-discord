@@ -1,14 +1,20 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../decorators/injectable.decorator'
-import { Command, CommandContext, } from './command'
+import { Injectable } from '../application/container'
+import { LOGO_URL } from '../constants'
+import { ClientCommand, CommandContext, CommandSignatureArgumentValue } from '../domain/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../utils/embeds'
-import { playtime, formatNumber } from '../utils/formatting'
+import { formatNumber, playtime } from '../utils/formatting'
 import { getPlatformImage } from '../utils/resolvers'
-import { LOGO_URL } from '../constants'
+
+export interface OperatorStatsCommandArguments {
+  username: CommandSignatureArgumentValue<string>
+  platform: CommandSignatureArgumentValue<string>
+  operator: CommandSignatureArgumentValue<string>
+}
 
 @Injectable()
-export class OperatorStatsCommand extends Command {
+export class OperatorStatsCommand extends ClientCommand {
   public command = 'operator'
   public signature = '<username:string> <platform:string> <operator:string>'
   public readonly name = 'Operator Stats'
@@ -24,7 +30,7 @@ export class OperatorStatsCommand extends Command {
   }
 
   public async handle (ctx: CommandContext): Promise<Message | Message[] | void> {
-    const { username: { value: username }, platform: { value: platform }, operator: { value: operatorSearch } } = ctx.signature.get()
+    const { username: { value: username }, platform: { value: platform }, operator: { value: operatorSearch } } = ctx.signature.get<OperatorStatsCommandArguments>()
 
     const player = await this.stats.getOperatorStats(username, platform)
 

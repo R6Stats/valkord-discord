@@ -1,5 +1,5 @@
-import { Constructor } from './types'
-import { Logger } from './logger'
+import { Constructor } from '../../types'
+import { Logger } from '../../utils/logger'
 
 export class Container {
   private readonly logger = new Logger(Container.name)

@@ -1,12 +1,12 @@
 import { Message } from 'discord.js'
+import { ConfigService } from '../application/config/config.service'
+import { Injectable } from '../application/container'
+import { Container } from '../application/container/container'
 import { CopperClient } from '../client'
-import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../commands/command'
-import { Container } from '../container'
-import { Injectable } from '../decorators/injectable.decorator'
-import { ConfigService } from '../services/config/config.service'
-import { Handler } from './handler'
+import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../domain/commands'
 import { ClientException } from '../exceptions/client.exception'
-import { Logger } from '../logger'
+import { Logger } from '../utils/logger'
+import { Handler } from './handler'
 
 @Injectable()
 export class CommandHandler extends Handler {
@@ -36,7 +36,13 @@ export class CommandHandler extends Handler {
     const [prefix, cmd, ...args] = message.content.split(' ')
     const prefixes = this.config.get<string[]>('prefixes')
 
-    if (!prefixes.includes(prefix)) return
+    console.log(message.content)
+    // allow bot to be mentioned
+    const client = this.container.resolve<CopperClient>(CopperClient).getClient()
+    const user = client.user
+    const userPrefix = `<@!${user.id}>`
+
+    if (!prefixes.includes(prefix) && prefix !== userPrefix) return
 
     if (!cmd) return
 

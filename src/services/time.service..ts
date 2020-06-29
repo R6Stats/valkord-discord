@@ -1,4 +1,4 @@
-import { Injectable } from '../decorators/injectable.decorator'
+import { Injectable } from '../application/container'
 
 @Injectable()
 export class TimeService {

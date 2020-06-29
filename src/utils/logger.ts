@@ -9,7 +9,7 @@ export class Logger {
     return this.name ? `[${this.name}]` : null
   }
 
-  public log (...message: any[]): void {
+  public log (...message: unknown[]): void {
     return console.log(this.prefix, ...message)
   }
 }
