@@ -33,16 +33,16 @@ export class CommandHandler extends Handler {
   }
 
   public handleMessage (message: Message): void {
-    const [prefix, cmd, ...args] = message.content.split(' ')
-    const prefixes = this.config.get<string[]>('prefixes')
-
-    console.log(message.content)
-    // allow bot to be mentioned
     const client = this.container.resolve<CopperClient>(CopperClient).getClient()
+    const [prefix, cmd, ...args] = message.content.split(' ')
     const user = client.user
-    const userPrefix = `<@!${user.id}>`
 
-    if (!prefixes.includes(prefix) && prefix !== userPrefix) return
+    const configPrefixes = this.config.get<string[]>('prefixes')
+    const userPrefixes = [`<@!${user.id}>`, `<@${user.id}>`]
+
+    const allPrefixes = [...configPrefixes, ...userPrefixes]
+
+    if (!allPrefixes.includes(prefix)) return
 
     if (!cmd) return
 
