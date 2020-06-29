@@ -1,12 +1,12 @@
 import 'reflect-metadata'
+import { Container } from './application/container/container'
 import { CopperClient } from './client'
-import { CommandSignatureArgumentTypeString } from './commands/command'
-import { InviteCommand } from './commands/invite.command'
-import { StatsCommand } from './commands/stats.command'
-import { OperatorStatsCommand } from './commands/operator-stats.command'
-import { Container } from './container'
-import { PingCommand } from './commands/ping.command'
 import { HelpCommand } from './commands/help.command'
+import { InviteCommand } from './commands/invite.command'
+import { OperatorStatsCommand } from './commands/operator-stats.command'
+import { PingCommand } from './commands/ping.command'
+import { StatsCommand } from './commands/stats.command'
+import { CommandSignatureArgumentTypeString } from './domain/commands'
 
 const run = async () => {
   const container = new Container()

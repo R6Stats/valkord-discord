@@ -1,9 +1,9 @@
-import { Injectable } from '../decorators/injectable.decorator'
-import { Command, CommandContext } from './command'
 import { Message } from 'discord.js'
+import { Injectable } from '../application/container'
+import { ClientCommand, CommandContext } from '../domain/commands'
 
 @Injectable()
-export class PingCommand extends Command {
+export class PingCommand extends ClientCommand {
   public readonly command = 'ping'
   public readonly name = 'Ping'
   public readonly group = 'Other'

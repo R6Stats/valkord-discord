@@ -1,9 +1,9 @@
 import { Client } from 'discord.js'
-import { Container } from './container'
-import { Injectable } from './decorators/injectable.decorator'
+import { ConfigService } from './application/config/config.service'
+import { Injectable } from './application/container'
+import { Container } from './application/container/container'
+import { CommandRegistrar } from './domain/commands'
 import { CommandHandler } from './handlers/command.handler'
-import { ConfigService } from './services/config/config.service'
-import { CommandRegistrar } from './commands/command'
 
 @Injectable()
 export class CopperClient {

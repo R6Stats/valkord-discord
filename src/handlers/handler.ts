@@ -1,4 +1,4 @@
-import { OnModuleBoot } from '../container'
+import { OnModuleBoot } from '../application/container/container'
 
 export abstract class Handler implements OnModuleBoot {
   abstract setup (): void

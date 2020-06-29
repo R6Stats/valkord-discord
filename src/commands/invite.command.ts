@@ -1,10 +1,10 @@
-import { Injectable } from '../decorators/injectable.decorator'
-import { Command, CommandContext } from './command'
 import { Message, MessageEmbed } from 'discord.js'
-import { LOGO_URL, INVITE_URL } from '../constants'
+import { Injectable } from '../application/container'
+import { INVITE_URL, LOGO_URL } from '../constants'
+import { ClientCommand, CommandContext } from '../domain/commands'
 
 @Injectable()
-export class InviteCommand extends Command {
+export class InviteCommand extends ClientCommand {
   public readonly command = 'invite'
   public readonly name = 'Invite Link'
   public readonly group = 'Other'

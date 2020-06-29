@@ -1,14 +1,14 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../decorators/injectable.decorator'
-import { Command, CommandContext, } from './command'
+import { Injectable } from '../application/container'
+import { LOGO_URL } from '../constants'
+import { ClientCommand, CommandContext } from '../domain/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../utils/embeds'
-import { playtime, formatNumber } from '../utils/formatting'
+import { formatNumber, playtime } from '../utils/formatting'
 import { getPlatformImage } from '../utils/resolvers'
-import { LOGO_URL } from '../constants'
 
 @Injectable()
-export class StatsCommand extends Command {
+export class StatsCommand extends ClientCommand {
   public command = 'stats'
   public signature = '<username:string> <platform:string> {queue:string}'
   public readonly name = 'Core Stats'

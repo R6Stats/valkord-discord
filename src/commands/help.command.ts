@@ -1,11 +1,11 @@
-import { Command, CommandContext, CommandRegistrar } from './command'
-import { Injectable } from '../decorators/injectable.decorator'
 import { Message, MessageEmbed } from 'discord.js'
-import { PRIMARY_COLOR, LOGO_URL } from '../constants'
+import { Injectable } from '../application/container'
+import { LOGO_URL, PRIMARY_COLOR } from '../constants'
+import { ClientCommand, CommandContext, CommandRegistrar } from '../domain/commands'
 import { EmbedField } from '../utils/embeds'
 
 @Injectable()
-export class HelpCommand extends Command {
+export class HelpCommand extends ClientCommand {
   public readonly command: string = 'help'
 
   private readonly commands: CommandRegistrar
