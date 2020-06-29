@@ -5,14 +5,17 @@ import { Container } from '../container'
 import { Injectable } from '../decorators/injectable.decorator'
 import { ConfigService } from '../services/config/config.service'
 import { Handler } from './handler'
+import { ClientException } from '../exceptions/client.exception'
+import { Logger } from '../logger'
 
 @Injectable()
 export class CommandHandler extends Handler {
   private readonly container: Container
   private readonly config: ConfigService
-
   private readonly commands: CommandRegistrar
   private readonly parser: CommandSignatureParser
+
+  private readonly logger = new Logger(CommandHandler.name)
 
   public constructor (container: Container, config: ConfigService, commands: CommandRegistrar, parser: CommandSignatureParser) {
     super()
@@ -49,7 +52,11 @@ export class CommandHandler extends Handler {
 
           command.handle(ctx)
         } catch (e) {
-          command.handleException(midCtx, e)
+          if (e instanceof ClientException) {
+            command.handleException(midCtx, e)
+          } else {
+            this.logger.log(`An error occurred while processing a command: ${e.message}`)
+          }
         }
       }
     }

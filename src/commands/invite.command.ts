@@ -1,12 +1,20 @@
 import { Injectable } from '../decorators/injectable.decorator'
 import { Command, CommandContext } from './command'
-import { Message } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
+import { LOGO_URL, INVITE_URL } from '../constants'
 
 @Injectable()
-export class PingCommand extends Command {
-  public readonly command = 'ping'
+export class InviteCommand extends Command {
+  public readonly command = 'invite'
 
   public async handle (ctx: CommandContext): Promise<Message | Message[] | void> {
-    return ctx.reply('Pong!')
+    const embed = new MessageEmbed()
+      .setColor('#f4bb0c')
+      .setTitle('R6Stats Bot Invite')
+      .setDescription(`Invite the **R6Stats** bot to your server [here](${INVITE_URL}).`)
+      .setThumbnail(LOGO_URL)
+      .setFooter('Stats Provided by R6Stats.com', LOGO_URL)
+
+    return ctx.reply(embed)
   }
 }
