@@ -22,7 +22,7 @@ export class ConfigService {
     return this.config
   }
 
-  public get <T = any>(key: keyof ClientConfig): T {
+  public get <T = unknown>(key: keyof ClientConfig): T {
     return this.config[key]
   }
 }

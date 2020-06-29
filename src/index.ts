@@ -1,11 +1,6 @@
 import 'reflect-metadata'
 import { Container } from './application/container/container'
 import { CopperClient } from './client'
-import { HelpCommand } from './commands/help.command'
-import { InviteCommand } from './commands/invite.command'
-import { OperatorStatsCommand } from './commands/operator-stats.command'
-import { PingCommand } from './commands/ping.command'
-import { StatsCommand } from './commands/stats.command'
 import { CommandSignatureArgumentTypeString } from './domain/commands'
 
 const run = async () => {
@@ -21,11 +16,8 @@ const run = async () => {
 
   handler.registerArgumentType(CommandSignatureArgumentTypeString)
 
-  handler.registerCommand(StatsCommand)
-  handler.registerCommand(OperatorStatsCommand)
-  handler.registerCommand(InviteCommand)
-  handler.registerCommand(PingCommand)
-  handler.registerCommand(HelpCommand)
+  const modules = bot.getModuleLoader()
+  modules.load('./modules/r6stats')
 
   await bot.connect()
 }

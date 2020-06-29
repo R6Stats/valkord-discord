@@ -4,6 +4,7 @@ import { Injectable } from './application/container'
 import { Container } from './application/container/container'
 import { CommandRegistrar } from './domain/commands'
 import { CommandHandler } from './handlers/command.handler'
+import { ModuleLoader } from './application/modules'
 
 @Injectable()
 export class CopperClient {
@@ -12,6 +13,7 @@ export class CopperClient {
   private handler: CommandHandler
   private commands: CommandRegistrar
   private container: Container
+  private modules: ModuleLoader
 
   public constructor (config: ConfigService, container: Container) {
     this.config = config
@@ -23,10 +25,11 @@ export class CopperClient {
   public async setup (): Promise<void> {
     this.handler = this.container.resolve(CommandHandler)
     this.commands = this.container.resolve(CommandRegistrar)
+    this.modules = this.container.resolve(ModuleLoader)
   }
 
   public async connect (): Promise<string> {
-    const token = this.config.get('token')
+    const token = this.config.get<string>('token')
 
     return this.client.login(token)
   }
@@ -41,6 +44,10 @@ export class CopperClient {
 
   public getCommandRegistry (): CommandRegistrar {
     return this.commands
+  }
+
+  public getModuleLoader (): ModuleLoader {
+    return this.modules
   }
 
 }
