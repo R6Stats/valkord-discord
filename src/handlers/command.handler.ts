@@ -2,7 +2,7 @@ import { Message } from 'discord.js'
 import { ConfigService } from '../application/config/config.service'
 import { Injectable } from '../application/container'
 import { Container } from '../application/container/container'
-import { CopperClient } from '../client'
+import { ValkClient } from '../client'
 import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../application/commands'
 import { ClientException } from '../exceptions/client.exception'
 import { Logger } from '../utils/logger'
@@ -27,13 +27,13 @@ export class CommandHandler extends Handler {
   }
 
   public setup (): void {
-    const client = this.container.resolve<CopperClient>(CopperClient).getClient()
+    const client = this.container.resolve<ValkClient>(ValkClient).getClient()
 
     client.on('message', (message: Message) => this.handleMessage(message))
   }
 
   public handleMessage (message: Message): void {
-    const client = this.container.resolve<CopperClient>(CopperClient).getClient()
+    const client = this.container.resolve<ValkClient>(ValkClient).getClient()
     const [prefix, cmd, ...args] = message.content.split(' ')
     const user = client.user
 

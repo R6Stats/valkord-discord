@@ -1,12 +1,12 @@
 import 'reflect-metadata'
 import { Container } from './application/container/container'
-import { CopperClient } from './client'
+import { ValkClient } from './client'
 import { CommandSignatureArgumentTypeString } from './application/commands'
 
 const run = async () => {
   const container = new Container()
 
-  const bot = container.resolve<CopperClient>(CopperClient)
+  const bot = container.resolve<ValkClient>(ValkClient)
 
   container.bootModules()
 

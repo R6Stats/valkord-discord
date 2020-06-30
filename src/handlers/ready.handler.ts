@@ -1,6 +1,6 @@
 import { Injectable } from '../application/container'
 import { Container } from '../application/container/container'
-import { CopperClient } from '../client'
+import { ValkClient } from '../client'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
 
@@ -8,7 +8,7 @@ import { Handler } from './handler'
 export class ReadyHandler extends Handler {
   private readonly container: Container
 
-  private readonly logger = new Logger(CopperClient.name)
+  private readonly logger = new Logger(ValkClient.name)
 
   public constructor (container: Container) {
     super()
@@ -17,7 +17,7 @@ export class ReadyHandler extends Handler {
   }
 
   public setup (): void {
-    const client = this.container.resolve<CopperClient>(CopperClient).getClient()
+    const client = this.container.resolve<ValkClient>(ValkClient).getClient()
 
     client.on('ready', () => {
       if (client.shard) {

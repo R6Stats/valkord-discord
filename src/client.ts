@@ -8,7 +8,7 @@ import { ModuleLoader } from './application/modules'
 import { ReadyHandler } from './handlers/ready.handler'
 
 @Injectable()
-export class CopperClient {
+export class ValkClient {
   private client: Client
   private config: ConfigService
   private handler: CommandHandler
