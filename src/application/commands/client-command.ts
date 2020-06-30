@@ -17,26 +17,6 @@ export abstract class ClientCommand {
 
   protected ready: boolean = false
 
-  public getAliases (): string[] {
-    return this.aliases
-  }
-
-  public getCommand (): string {
-    return this.command
-  }
-
-  public hasCommand (input: string): boolean {
-    return this.command === input || this.aliases.some(a => a === input)
-  }
-
-  public getRawSignature (): string | undefined {
-    return this.signature
-  }
-
-  public getSignature (): CommandSignature {
-    return this.parsed
-  }
-
   public setReady (state: boolean): void {
     this.ready = state
   }

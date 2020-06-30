@@ -7,6 +7,8 @@ export class MissingArgumentException extends ClientException {
     super(`The ${argument} argument is required!`)
 
     this.argument = argument
+
+    Object.setPrototypeOf(this, MissingArgumentException.prototype)
   }
 
   public getArgument (): string {
