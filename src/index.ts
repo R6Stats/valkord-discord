@@ -1,25 +1,16 @@
 import 'reflect-metadata'
-import { Container } from './application/container/container'
-import { ValkClient } from './client'
-import { CommandSignatureArgumentTypeString } from './application/commands'
 
-const run = async () => {
-  const container = new Container()
+export * from './client'
+export * from './factory'
 
-  const bot = container.resolve<ValkClient>(ValkClient)
+export * from './utils/embeds'
+export * from './utils/env'
+export * from './utils/logger'
 
-  container.bootModules()
+export * from './application/commands'
+export * from './application/config'
+export * from './application/container'
+export * from './application/modules'
 
-  await bot.setup()
-
-  const handler = bot.getCommandRegistry()
-
-  handler.registerArgumentType(CommandSignatureArgumentTypeString)
-
-  const modules = bot.getModuleLoader()
-  modules.load('./modules/r6stats')
-
-  await bot.connect()
-}
-
-run()
+export * from './handlers/command.handler'
+export * from './handlers/ready.handler'
