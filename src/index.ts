@@ -7,6 +7,8 @@ export * from './utils/embeds'
 export * from './utils/env'
 export * from './utils/logger'
 
+export * from './types'
+
 export * from './application/commands'
 export * from './application/config'
 export * from './application/container'
