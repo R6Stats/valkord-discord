@@ -38,6 +38,12 @@ export class CommandRegistrar implements OnModuleBoot {
     return this.commands
   }
 
+  public registerArgumentTypes (...types: Constructor<CommandSignatureArgumentType>[]): void {
+    for (const type of types) {
+      this.registerArgumentType(type)
+    }
+  }
+
   public registerArgumentType (type: Constructor<CommandSignatureArgumentType>): void {
     const instance = new (type)
 

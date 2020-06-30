@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
-import { LOGO_URL } from '../constants'
+import { LOGO_URL, PRIMARY_COLOR } from '../constants'
 import { ClientCommand, CommandContext } from '../../../application/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../../../utils/embeds'
@@ -82,7 +82,7 @@ export class StatsCommand extends ClientCommand {
       .build()
 
     const embed = new MessageEmbed()
-      .setColor('#f4bb0c')
+      .setColor(PRIMARY_COLOR)
       .setAuthor(player.username, getPlatformImage(platform), url)
       .setThumbnail(player.avatar_url_256)
       .setTitle('Player Stats')

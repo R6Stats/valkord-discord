@@ -13,6 +13,12 @@ export class Container {
     this.services.set(Container, this)
   }
 
+  public instance <T>(abstract: Constructor<T>, instance: T): T {
+    this.services.set(abstract, instance)
+
+    return instance
+  }
+
   public resolve <T>(service: Constructor<any>): T {
     const existingInstance = this.services.get(service)
 
@@ -26,7 +32,7 @@ export class Container {
     }
 
     const tokens = Reflect.getMetadata('design:paramtypes', service) || []
-    this.logger.debug(`Making ${service?.name}\n\t=> `, tokens.map(t => t?.name).join(', '))
+    this.logger.debug(`Making ${service?.name}\n\t=> `, tokens.map((t: Constructor<any>) => t?.name).join(', '))
     const injections = tokens.map((token: Constructor<any>) => this.resolve<any>(token))
 
     const newInstance = new service(...injections)
