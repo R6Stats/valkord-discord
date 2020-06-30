@@ -2,18 +2,22 @@ import { Message, MessageEmbed } from 'discord.js'
 import { ParsedCommandSignature } from './parsed-command-signature'
 
 export class MiddlewareContext {
-  public readonly original: Message
+  public readonly message: Message
   public readonly command: string
   public readonly args: string[]
 
   public constructor (original: Message, command: string, args: string[]) {
-    this.original = original
+    this.message = original
     this.command = command
     this.args = args
   }
 
   public async reply (message: Message | MessageEmbed | string): Promise<Message> {
-    return this.original.reply(message)
+    if (this.message.guild && !this.message.guild.me.permissionsIn(this.message.channel).has('SEND_MESSAGES')) {
+      return this.message.author.send(message)
+    }
+
+    return this.message.reply(message)
   }
 }
 
