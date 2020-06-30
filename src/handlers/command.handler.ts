@@ -37,6 +37,8 @@ export class CommandHandler extends Handler {
     const [prefix, cmd, ...args] = message.content.split(' ')
     const user = client.user
 
+    if (user.id === message.author.id) return
+
     const configPrefixes = this.config.get<string[]>('prefixes')
     const userPrefixes = [`<@!${user.id}>`, `<@${user.id}>`]
 
