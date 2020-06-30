@@ -1,17 +1,13 @@
 import { Constructor } from '../../types'
+import { ClientCommand } from '../commands'
 
 export interface ModuleMetadata {
   name: string
+  commands: Constructor<ClientCommand>
 }
 
-export function Module(metadata: ModuleMetadata) {
-  return (target: Constructor<any>) => {
-    Reflect.defineMetadata('module', true, target)
+export abstract class ValkordModule {
+  public abstract getName (): string
 
-    for (const property in metadata) {
-      if (metadata.hasOwnProperty(property)) {
-        Reflect.defineMetadata(property, metadata[property], target)
-      }
-    }
-  }
+  public abstract getCommands (): Constructor<ClientCommand>[]
 }
