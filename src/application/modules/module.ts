@@ -1,13 +1,15 @@
 import { Constructor } from '../../types'
-import { ClientCommand } from '../commands'
+import { ValkordCommand } from '../commands'
 
 export interface ModuleMetadata {
   name: string
-  commands: Constructor<ClientCommand>
+  commands: Constructor<ValkordCommand>
 }
 
-export abstract class ValkordModule {
+export abstract class ValkordModule<C = Record<string, any>> {
   public abstract getName (): string
 
-  public abstract getCommands (): Constructor<ClientCommand>[]
+  public abstract getCommands (): Constructor<ValkordCommand>[]
+
+  public abstract loadConfig (): C
 }

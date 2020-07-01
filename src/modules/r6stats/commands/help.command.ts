@@ -1,11 +1,11 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext, CommandRegistrar } from '../../../application/commands'
+import { ValkordCommand, CommandContext, CommandRegistrar } from '../../../application/commands'
 import { EmbedField } from '../../../utils/embeds'
 
 @Injectable()
-export class HelpCommand extends ClientCommand {
+export class HelpCommand extends ValkordCommand {
   public readonly command: string = 'help'
 
   private readonly commands: CommandRegistrar

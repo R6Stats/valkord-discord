@@ -6,7 +6,7 @@ import { CommandSignature } from './command-signature'
 export interface CommandArguments {
 }
 
-export abstract class ClientCommand {
+export abstract class ValkordCommand {
   public command: string = ''
   public aliases: string[] = []
   public group: string = ''

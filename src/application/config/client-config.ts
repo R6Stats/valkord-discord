@@ -1,8 +1,6 @@
-export interface ClientConfig {
+export interface ValkordConfig {
   [key: string]: any
 
-  token: string
-  prefixes: string[]
-
-  r6stats_token: string
+  // token: string
+  // prefixes: string[]
 }

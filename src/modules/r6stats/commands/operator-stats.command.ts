@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext, CommandSignatureArgumentValue } from '../../../application/commands'
+import { ValkordCommand, CommandContext, CommandSignatureArgumentValue } from '../../../application/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../../../utils/embeds'
 import { formatNumber, playtime } from '../utils/formatting'
@@ -14,7 +14,7 @@ export interface OperatorStatsCommandArguments {
 }
 
 @Injectable()
-export class OperatorStatsCommand extends ClientCommand {
+export class OperatorStatsCommand extends ValkordCommand {
   public command = 'operator'
   public signature = '<username:string> <platform:string> <operator:string>'
   public readonly name = 'Operator Stats'
