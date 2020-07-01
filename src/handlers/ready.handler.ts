@@ -1,29 +1,27 @@
 import { Injectable } from '../application/container'
-import { Container } from '../application/container/container'
 import { ValkordClient } from '../client'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
+import { Client } from 'discord.js'
 
 @Injectable()
 export class ReadyHandler extends Handler {
-  private readonly container: Container
+  private readonly client: Client
 
   private readonly logger = new Logger(ValkordClient.name)
 
-  public constructor (container: Container) {
+  public constructor (client: Client) {
     super()
 
-    this.container = container
+    this.client = client
   }
 
   public setup (): void {
-    const client = this.container.resolve<ValkordClient>(ValkordClient).getClient()
-
-    client.on('ready', () => {
-      if (client.shard) {
-        this.logger.log(`Shard ${client.shard.ids} online and ready to handle ${client.guilds.cache.size} guilds!`)
+    this.client.on('ready', () => {
+      if (this.client.shard) {
+        this.logger.log(`Shard ${this.client.shard.ids} online and ready to handle ${this.client.guilds.cache.size} guilds!`)
       } else {
-        this.logger.log(`Bot is online and ready to handle ${client.guilds.cache.size} guilds!`)
+        this.logger.log(`Bot is online and ready to handle ${this.client.guilds.cache.size} guilds!`)
       }
     })
   }

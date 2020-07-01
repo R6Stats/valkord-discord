@@ -9,7 +9,6 @@ import { DefaultValkordConfig, ConfigLoader } from './application/config'
 
 @Injectable()
 export class ValkordClient {
-  private client: Client
   private config: DefaultValkordConfig
   private loader: ConfigLoader
   private handler: CommandHandler
@@ -20,7 +19,7 @@ export class ValkordClient {
   public constructor (container: Container) {
     this.container = container
 
-    this.client = new Client()
+    this.container.instance(Client, new Client())
   }
 
   public async setup (): Promise<void> {
@@ -35,13 +34,10 @@ export class ValkordClient {
   }
 
   public async connect (): Promise<string> {
+    const client = this.container.resolve<Client>(Client)
     const token = this.config.get('token')
 
-    return this.client.login(token)
-  }
-
-  public getClient (): Client {
-    return this.client
+    return client.login(token)
   }
 
   public getCommandHandler (): CommandHandler {

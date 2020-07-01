@@ -1,7 +1,5 @@
-import { Message } from 'discord.js'
+import { Message, Client } from 'discord.js'
 import { Injectable } from '../application/container'
-import { Container } from '../application/container/container'
-import { ValkordClient } from '../client'
 import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../application/commands'
 import { ClientException } from '../exceptions/client.exception'
 import { Logger } from '../utils/logger'
@@ -10,32 +8,29 @@ import { DefaultValkordConfig } from '../application/config'
 
 @Injectable()
 export class CommandHandler extends Handler {
-  private readonly container: Container
+  private readonly client: Client
   private readonly config: DefaultValkordConfig
   private readonly commands: CommandRegistrar
   private readonly parser: CommandSignatureParser
 
   private readonly logger = new Logger(CommandHandler.name)
 
-  public constructor (container: Container, config: DefaultValkordConfig, commands: CommandRegistrar, parser: CommandSignatureParser) {
+  public constructor (client: Client, config: DefaultValkordConfig, commands: CommandRegistrar, parser: CommandSignatureParser) {
     super()
 
-    this.container = container
+    this.client = client
     this.config = config
     this.commands = commands
     this.parser = parser
   }
 
   public setup (): void {
-    const client = this.container.resolve<ValkordClient>(ValkordClient).getClient()
-
-    client.on('message', (message: Message) => this.handleMessage(message))
+    this.client.on('message', (message: Message) => this.handleMessage(message))
   }
 
   public handleMessage (message: Message): void {
-    const client = this.container.resolve<ValkordClient>(ValkordClient).getClient()
     const [prefix, cmd, ...args] = message.content.split(' ')
-    const user = client.user
+    const user = this.client.user
 
     if (user.id === message.author.id) return
 

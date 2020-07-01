@@ -17,7 +17,8 @@
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "build": "rm -rf dist/ && tsc"
+    "build": "rm -rf dist/ && tsc",
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "@r6stats/node": "^3.0.6",
