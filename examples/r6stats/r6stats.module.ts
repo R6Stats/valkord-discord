@@ -1,13 +1,13 @@
-import { ValkordModule } from '../../application/modules'
+import { ValkordModule } from '../../src/application/modules'
 import { PingCommand } from './commands/ping.command'
 import { HelpCommand } from './commands/help.command'
 import { InviteCommand } from './commands/invite.command'
 import { StatsCommand } from './commands/stats.command'
 import { OperatorStatsCommand } from './commands/operator-stats.command'
-import { Constructor } from '../../types'
-import { ValkordCommand } from '../../application/commands'
-import { env } from '../../utils/env'
-import { ValkordConfig } from '../../application/config'
+import { Constructor } from '../../src/types'
+import { ValkordCommand } from '../../src/application/commands'
+import { env } from '../../src/utils/env'
+import { ValkordConfig } from '../../src/application/config'
 
 export interface R6StatsModuleConfigOptions {
   r6stats_token: string

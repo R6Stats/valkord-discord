@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
-import { Injectable } from '../../../application/container'
-import { ValkordCommand, CommandContext } from '../../../application/commands'
+import { Injectable } from '../../../src/application/container'
+import { ValkordCommand, CommandContext } from '../../../src/application/commands'
 
 @Injectable()
 export class PingCommand extends ValkordCommand {

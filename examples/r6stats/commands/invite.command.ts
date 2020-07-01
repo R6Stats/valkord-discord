@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../../../application/container'
+import { Injectable } from '../../../src/application/container'
 import { INVITE_URL, LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ValkordCommand, CommandContext } from '../../../application/commands'
+import { ValkordCommand, CommandContext } from '../../../src/application/commands'
 
 @Injectable()
 export class InviteCommand extends ValkordCommand {

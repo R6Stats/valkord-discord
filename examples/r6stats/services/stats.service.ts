@@ -1,6 +1,6 @@
 import R6StatsAPI, { GenericStatsResponse, OperatorStatsResponse } from '@r6stats/node'
-import { Injectable } from '../../../application/container'
-import { OnModuleBoot } from '../../../application/container/container'
+import { Injectable } from '../../../src/application/container'
+import { OnModuleBoot } from '../../../src/application/container/container'
 import { R6StatsModuleConfig } from '../r6stats.module'
 
 @Injectable()

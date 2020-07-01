@@ -12,29 +12,43 @@ npm install @r6stats/valkord discord.js --save
 
 ## Creating a Module
 
-In order to create your own module, you'll want to extend the `ValkordModule` class and define the components that make up your module.
+In order to create your own module, you'll want to extend the `ValkordModule` class and define the components that make up your module. You can also optionally add add a custom config for loading variables from the user's `.env` file.
 
 ```ts
 import { ClientCommand, Constructor, ValkordModule } from '@r6stats/valkord'
 import { PingCommand } from './commands'
 
-export class MyModule extends ValkordModule {
+export class MyModule extends ValkordModule<MyModuleConfig> {
   public getName = (): string => 'MyStuff'
 
-  public getCommands = (): Constructor<ClientCommand>[] => [
+  public getConfig = (): Constructor<MyModuleConfig> | null => MyModuleConfig // or return null
+
+  public getCommands = (): Constructor<ClientCommand>[] => {
     PingCommand,
-  ]
+  }
 }
 ```
 
-The referenced command class makes use of the `ClientCommand` class built into Valkord, which is extensible and allows for custom command handling as well as built in support for aliases, help messages and more.
+```ts
+export interface MyModuleConfigOptions {
+  my_config_value: string
+}
+
+export class MyModuleConfig extends ValkordConfig<MyModuleConfigOptions> {
+  public load = (): MyModuleConfigOptions => ({
+    my_config_value: env('MY_CONFIG_VALUE')
+  })
+}
+```
+
+The referenced command class makes use of the `ValkordCommand` class built into Valkord, which is extensible and allows for custom command handling as well as built in support for aliases, help messages and more.
 
 ```ts
-import { ClientCommand, CommandContext, Injectable } from '@r6stats/valkord'
+import { ValkordCommand, CommandContext, Injectable } from '@r6stats/valkord'
 import { Message } from 'discord.js'
 
 @Injectable()
-export class PingCommand extends ClientCommand {
+export class PingCommand extends ValkordCommand {
   public readonly command = 'ping'
   public readonly name = 'Ping'
 
@@ -64,11 +78,11 @@ export class TimeService {
 You can now reference the `TimeService` from any class where the `@Injectable()` decorator is present, more importantly in the commands.
 
 ```ts
-import { ClientCommand, CommandContext, Injectable } from '@r6stats/valkord'
+import { ValkordCommand, CommandContext, Injectable } from '@r6stats/valkord'
 import { Message } from 'discord.js'
 
 @Injectable()
-export class TimeCommand extends ClientCommand {
+export class TimeCommand extends ValkordCommand {
   public readonly command = 'time'
   public readonly name = 'Time'
 

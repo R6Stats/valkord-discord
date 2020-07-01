@@ -1,9 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../../../application/container'
+import { Injectable } from '../../../src/application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ValkordCommand, CommandContext } from '../../../application/commands'
+import { ValkordCommand, CommandContext } from '../../../src/application/commands'
 import { StatsService } from '../services/stats.service'
-import { EmbedField } from '../../../utils/embeds'
+import { EmbedField } from '../../../src/utils/embeds'
 import { formatNumber, playtime } from '../utils/formatting'
 import { getPlatformImage } from '../utils/resolvers'
 

@@ -4,6 +4,9 @@
   "description": "Valkord Micro Framework for discord.js Bots",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "keywords": [
     "discord",
     "discord-bot",

@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { Injectable } from '../../../application/container'
+import { Injectable } from '../../../src/application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ValkordCommand, CommandContext, CommandRegistrar } from '../../../application/commands'
-import { EmbedField } from '../../../utils/embeds'
+import { ValkordCommand, CommandContext, CommandRegistrar } from '../../../src/application/commands'
+import { EmbedField } from '../../../src/utils/embeds'
 
 @Injectable()
 export class HelpCommand extends ValkordCommand {
