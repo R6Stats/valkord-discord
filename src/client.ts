@@ -5,19 +5,19 @@ import { CommandRegistrar } from './application/commands'
 import { CommandHandler } from './handlers/command.handler'
 import { ModuleLoader } from './application/modules'
 import { ReadyHandler } from './handlers/ready.handler'
-import { DefaultValkordConfig } from './application/config'
+import { DefaultValkordConfig, ConfigLoader } from './application/config'
 
 @Injectable()
 export class ValkordClient {
   private client: Client
   private config: DefaultValkordConfig
+  private configLoader: ConfigLoader
   private handler: CommandHandler
   private commands: CommandRegistrar
   private container: Container
   private modules: ModuleLoader
 
-  public constructor (config: DefaultValkordConfig, container: Container) {
-    this.config = config
+  public constructor (container: Container) {
     this.container = container
 
     this.client = new Client()
@@ -27,6 +27,8 @@ export class ValkordClient {
     this.handler = this.container.resolve(CommandHandler)
     this.commands = this.container.resolve(CommandRegistrar)
     this.modules = this.container.resolve(ModuleLoader)
+    this.configLoader = this.container.resolve(ConfigLoader)
+    this.config = await this.configLoader.load<DefaultValkordConfig>(DefaultValkordConfig)
 
     this.container.resolve(ReadyHandler)
   }
