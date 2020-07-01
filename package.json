@@ -1,6 +1,6 @@
 {
   "name": "@r6stats/valkord",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Valkord Micro Framework for discord.js Bots",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
