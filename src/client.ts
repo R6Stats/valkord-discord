@@ -1,22 +1,22 @@
 import { Client } from 'discord.js'
-import { ConfigService } from './application/config/config.service'
 import { Injectable } from './application/container'
 import { Container } from './application/container/container'
 import { CommandRegistrar } from './application/commands'
 import { CommandHandler } from './handlers/command.handler'
 import { ModuleLoader } from './application/modules'
 import { ReadyHandler } from './handlers/ready.handler'
+import { DefaultValkordConfig } from './application/config'
 
 @Injectable()
 export class ValkordClient {
   private client: Client
-  private config: ConfigService
+  private config: DefaultValkordConfig
   private handler: CommandHandler
   private commands: CommandRegistrar
   private container: Container
   private modules: ModuleLoader
 
-  public constructor (config: ConfigService, container: Container) {
+  public constructor (config: DefaultValkordConfig, container: Container) {
     this.config = config
     this.container = container
 
@@ -32,7 +32,7 @@ export class ValkordClient {
   }
 
   public async connect (): Promise<string> {
-    const token = this.config.get<string>('token')
+    const token = this.config.get('token')
 
     return this.client.login(token)
   }

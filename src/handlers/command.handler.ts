@@ -1,5 +1,4 @@
 import { Message } from 'discord.js'
-import { ConfigService } from '../application/config/config.service'
 import { Injectable } from '../application/container'
 import { Container } from '../application/container/container'
 import { ValkordClient } from '../client'
@@ -7,17 +6,18 @@ import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareCon
 import { ClientException } from '../exceptions/client.exception'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
+import { DefaultValkordConfig } from '../application/config'
 
 @Injectable()
 export class CommandHandler extends Handler {
   private readonly container: Container
-  private readonly config: ConfigService
+  private readonly config: DefaultValkordConfig
   private readonly commands: CommandRegistrar
   private readonly parser: CommandSignatureParser
 
   private readonly logger = new Logger(CommandHandler.name)
 
-  public constructor (container: Container, config: ConfigService, commands: CommandRegistrar, parser: CommandSignatureParser) {
+  public constructor (container: Container, config: DefaultValkordConfig, commands: CommandRegistrar, parser: CommandSignatureParser) {
     super()
 
     this.container = container
@@ -39,7 +39,7 @@ export class CommandHandler extends Handler {
 
     if (user.id === message.author.id) return
 
-    const configPrefixes = this.config.get<string[]>('prefixes')
+    const configPrefixes = this.config.get('prefixes')
     const userPrefixes = [`<@!${user.id}>`, `<@${user.id}>`]
 
     const allPrefixes = [...configPrefixes, ...userPrefixes]

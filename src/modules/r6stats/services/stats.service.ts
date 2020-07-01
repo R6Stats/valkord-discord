@@ -1,14 +1,14 @@
 import R6StatsAPI, { GenericStatsResponse, OperatorStatsResponse } from '@r6stats/node'
-import { ConfigService } from '../../../application/config/config.service'
 import { Injectable } from '../../../application/container'
 import { OnModuleBoot } from '../../../application/container/container'
+import { R6StatsModuleConfig } from '../r6stats.module'
 
 @Injectable()
 export class StatsService implements OnModuleBoot {
-  private readonly config: ConfigService
+  private readonly config: R6StatsModuleConfig
   private client: R6StatsAPI
 
-  public constructor (config: ConfigService) {
+  public constructor (config: R6StatsModuleConfig) {
     this.config = config
   }
 

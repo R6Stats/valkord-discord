@@ -2,14 +2,14 @@ import { Injectable } from '../container'
 import { Container, OnModuleBoot } from '../container/container'
 import { Constructor } from '../../types'
 import { Logger } from '../../utils/logger'
-import { ClientCommand, CommandSignatureFactory } from '.'
+import { ValkordCommand, CommandSignatureFactory } from '.'
 import { CommandSignatureArgumentType } from './command-signature-argument-type'
 
 @Injectable()
 export class CommandRegistrar implements OnModuleBoot {
   private readonly container: Container
 
-  private readonly commands: ClientCommand[]
+  private readonly commands: ValkordCommand[]
   private readonly arguments: CommandSignatureArgumentType[]
 
   private booted: boolean = false
@@ -23,8 +23,8 @@ export class CommandRegistrar implements OnModuleBoot {
     this.arguments = []
   }
 
-  public registerCommand (command: Constructor<ClientCommand>): void {
-    const instance = this.container.resolve<ClientCommand>(command)
+  public registerCommand (command: Constructor<ValkordCommand>): void {
+    const instance = this.container.resolve<ValkordCommand>(command)
     this.commands.push(instance)
 
     this.logger.log(`Registered command ${command.name}`)
@@ -34,7 +34,7 @@ export class CommandRegistrar implements OnModuleBoot {
     }
   }
 
-  public getCommands (): ClientCommand[] {
+  public getCommands (): ValkordCommand[] {
     return this.commands
   }
 
@@ -68,7 +68,7 @@ export class CommandRegistrar implements OnModuleBoot {
     this.booted = true
   }
 
-  public setupCommand (command: ClientCommand): void {
+  public setupCommand (command: ValkordCommand): void {
     const parser = this.container.resolve<CommandSignatureFactory>(CommandSignatureFactory)
     command.parsed = parser.parse(command.signature)
 

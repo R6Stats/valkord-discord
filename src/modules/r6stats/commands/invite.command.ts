@@ -1,10 +1,10 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { INVITE_URL, LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext } from '../../../application/commands'
+import { ValkordCommand, CommandContext } from '../../../application/commands'
 
 @Injectable()
-export class InviteCommand extends ClientCommand {
+export class InviteCommand extends ValkordCommand {
   public readonly command = 'invite'
   public readonly name = 'Invite Link'
   public readonly group = 'Other'

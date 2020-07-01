@@ -1,14 +1,14 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { Injectable } from '../../../application/container'
 import { LOGO_URL, PRIMARY_COLOR } from '../constants'
-import { ClientCommand, CommandContext } from '../../../application/commands'
+import { ValkordCommand, CommandContext } from '../../../application/commands'
 import { StatsService } from '../services/stats.service'
 import { EmbedField } from '../../../utils/embeds'
 import { formatNumber, playtime } from '../utils/formatting'
 import { getPlatformImage } from '../utils/resolvers'
 
 @Injectable()
-export class StatsCommand extends ClientCommand {
+export class StatsCommand extends ValkordCommand {
   public command = 'stats'
   public signature = '<username:string> <platform:string> {queue:string}'
   public readonly name = 'Core Stats'
