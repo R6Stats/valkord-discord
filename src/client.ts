@@ -11,7 +11,7 @@ import { DefaultValkordConfig, ConfigLoader } from './application/config'
 export class ValkordClient {
   private client: Client
   private config: DefaultValkordConfig
-  private configLoader: ConfigLoader
+  private loader: ConfigLoader
   private handler: CommandHandler
   private commands: CommandRegistrar
   private container: Container
@@ -24,11 +24,12 @@ export class ValkordClient {
   }
 
   public async setup (): Promise<void> {
+    this.loader = this.container.resolve(ConfigLoader)
+    this.config = await this.loader.load<DefaultValkordConfig>(DefaultValkordConfig)
+
     this.handler = this.container.resolve(CommandHandler)
     this.commands = this.container.resolve(CommandRegistrar)
     this.modules = this.container.resolve(ModuleLoader)
-    this.configLoader = this.container.resolve(ConfigLoader)
-    this.config = await this.configLoader.load<DefaultValkordConfig>(DefaultValkordConfig)
 
     this.container.resolve(ReadyHandler)
   }

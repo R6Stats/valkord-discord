@@ -15,7 +15,10 @@ npm install @r6stats/valkord discord.js --save
 In order to create your own module, you'll want to extend the `ValkordModule` class and define the components that make up your module. You can also optionally add add a custom config for loading variables from the user's `.env` file.
 
 ```ts
+// my.module.ts
+
 import { ClientCommand, Constructor, ValkordModule } from '@r6stats/valkord'
+import { MyModuleConfig } from './my.module-config'
 import { PingCommand } from './commands'
 
 export class MyModule extends ValkordModule<MyModuleConfig> {
@@ -30,6 +33,10 @@ export class MyModule extends ValkordModule<MyModuleConfig> {
 ```
 
 ```ts
+// my.module-config.ts
+
+import { ValkordConfig } from '@r6stats/valkord'
+
 export interface MyModuleConfigOptions {
   my_config_value: string
 }
@@ -39,6 +46,13 @@ export class MyModuleConfig extends ValkordConfig<MyModuleConfigOptions> {
     my_config_value: env('MY_CONFIG_VALUE')
   })
 }
+```
+
+```ts
+// index.ts
+
+export * from './my.module-config'
+export * from './my.module'
 ```
 
 The referenced command class makes use of the `ValkordCommand` class built into Valkord, which is extensible and allows for custom command handling as well as built in support for aliases, help messages and more.

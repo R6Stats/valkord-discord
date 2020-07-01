@@ -9,6 +9,12 @@ export const DEFAULT_ARGUMENT_TYPES = [
 
 export class ValkordFactory {
   public static async create <T extends ValkordClient = ValkordClient>(base: Constructor<T>): Promise<ValkordClient> {
+    const { client } = await this.createWithContainer(base)
+
+    return client
+  }
+
+  public static async createWithContainer <T extends ValkordClient = ValkordClient>(base: Constructor<T>): Promise<{ container: Container; client: ValkordClient }> {
     const container = new Container()
 
     const client = container.resolve<T>(base)
@@ -21,6 +27,6 @@ export class ValkordFactory {
 
     handler.registerArgumentTypes(...DEFAULT_ARGUMENT_TYPES)
 
-    return client
+    return { container, client }
   }
 }

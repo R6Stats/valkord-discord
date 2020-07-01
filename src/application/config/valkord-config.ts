@@ -1,3 +1,4 @@
+
 export abstract class ValkordConfig<C extends Record<string, any> = { [key: string]: any }> {
   public config: C
 

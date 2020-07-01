@@ -13,8 +13,9 @@ export class ConfigLoader {
     this.container = container
   }
 
-  public async load <T extends ValkordConfig<any>>(config: Constructor<T>): Promise<T> {
+  public async load <T extends ValkordConfig>(config: Constructor<T>): Promise<T> {
     const instance = this.container.resolve<T>(config)
+    instance.init()
 
     return instance
   }

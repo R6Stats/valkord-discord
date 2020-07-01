@@ -32,12 +32,13 @@ export class ModuleLoader {
 
     this.logger.log(`Loading module ${name}...`)
 
-    for (const command of commands) {
-      this.commands.registerCommand(command)
-    }
-
     if (config) {
       this.config.load(config)
+      this.logger.log('Loaded module config!')
+    }
+
+    for (const command of commands) {
+      this.commands.registerCommand(command)
     }
 
     this.logger.log(`Loaded module ${name}!`)

@@ -1,6 +1,6 @@
 {
   "name": "@r6stats/valkord",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "Valkord Micro Framework for discord.js Bots",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,10 +17,7 @@
   ],
   "license": "GPL-3.0",
   "scripts": {
-    "build": "rm -rf dist/ && tsc",
-    "start:compiled": "babel-node dist/index",
-    "start": "ts-node src/",
-    "dev": "ts-node-dev src/"
+    "build": "rm -rf dist/ && tsc"
   },
   "dependencies": {
     "@r6stats/node": "^3.0.6",
