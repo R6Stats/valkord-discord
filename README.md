@@ -1,5 +1,10 @@
 # Valkord (valk-discord)
 
+[![Discord](https://discordapp.com/api/guilds/293848587391991836/embed.png)](https://discord.gg/pUdraS3)
+[![npm (scoped)](https://img.shields.io/npm/v/@r6stats/valkord)](https://www.npmjs.com/package/@r6stats/valkord)
+[![David](https://img.shields.io/david/r6stats/valkord-discord)](https://david-dm.org/r6stats/valkord-discord)
+[![David](https://img.shields.io/david/peer/r6stats/valkord-discord)](https://david-dm.org/r6stats/valkord-discord)
+
 Valkord is a micro framework for building Discord bots with [discordjs](https://discord.js.org/#/) and [TypeScript](https://www.typescriptlang.org/). Valkord uses a [Modular](https://en.wikipedia.org/wiki/Modular_design) component loading system, allowing you to develop or use 3rd party modules in your bot. Modules consist of commands, listeners and other classes that can be customized on a case-by-case basis.
 
 ## Installing
