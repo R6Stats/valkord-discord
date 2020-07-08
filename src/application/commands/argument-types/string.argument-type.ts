@@ -8,23 +8,29 @@ export class CommandSignatureArgumentTypeString extends CommandSignatureArgument
   protected readonly key: string = 'string'
 
   public parse (index: number, args: string[], arg: CommandSignatureArgument): CommandSignatureArgumentValue | null {
-    let check = args[index]
+    let value = args[index]
     let i = index
 
-    if (this.startsWith(check, QUOTE_CHARACTERS)) {
-      while (!this.endsWith(check, QUOTE_CHARACTERS) && i < args.length) {
-        check += ' ' + args[i]
+    if (!value) {
+      return new CommandSignatureArgumentValue(null, 0, arg)
+    }
+
+    if (this.startsWith(value, QUOTE_CHARACTERS)) {
+      while (!this.endsWith(value, QUOTE_CHARACTERS) && i + 1 < args.length) {
         i++
+        value += ' ' + args[i]
       }
 
-      check = check.substr(1, check.length - 1)
+      value = value.substr(1, value.length - 1)
 
-      if (this.hasLastChar(check, QUOTE_CHARACTERS)) {
-        check = check.substr(0, check.length - 1)
+      if (this.hasLastChar(value, QUOTE_CHARACTERS)) {
+        value = value.substr(0, value.length - 1)
       }
     }
 
-    return new CommandSignatureArgumentValue(args[index], 1, arg)
+    const length = i - index + 1
+
+    return new CommandSignatureArgumentValue(value, length, arg)
   }
 
   private startsWith (input: string, chars: string[]): boolean {
