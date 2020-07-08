@@ -18,7 +18,7 @@ npm install @r6stats/valkord discord.js --save
 ## Creating a Module
 
 In order to create your own module, you'll want to extend the `ValkordModule` class and define the components that make up your module. You can also optionally add add a custom config for loading variables from the user's `.env` file.
-
+cd 
 ```ts
 // my.module.ts
 

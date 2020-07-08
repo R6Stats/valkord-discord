@@ -2,6 +2,7 @@ import { ValkordClient } from './client'
 import { Container } from './application/container'
 import { Constructor } from './types'
 import { CommandSignatureArgumentTypeString } from './application/commands'
+import { ValkordManager } from './manager'
 
 export const DEFAULT_ARGUMENT_TYPES = [
   CommandSignatureArgumentTypeString,
@@ -12,6 +13,15 @@ export class ValkordFactory {
     const { client } = await this.createWithContainer(base)
 
     return client
+  }
+
+  public static async createManaged (path: string): Promise<ValkordManager> {
+    const container = new Container()
+    const manager = container.resolve<ValkordManager>(ValkordManager)
+
+    await manager.launch(path)
+
+    return manager
   }
 
   public static async createWithContainer <T extends ValkordClient = ValkordClient>(base: Constructor<T>): Promise<{ container: Container; client: ValkordClient }> {
