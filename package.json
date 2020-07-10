@@ -7,6 +7,10 @@
   "files": [
     "dist/"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/R6Stats/valkord-discord"
+  },
   "keywords": [
     "discord",
     "discord-bot",
@@ -21,8 +25,6 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@r6stats/node": "^3.0.6",
-    "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.10.2"
@@ -31,14 +33,14 @@
     "discord.js": "^12.2.0"
   },
   "devDependencies": {
-    "@types/node": "^14.0.14",
-    "@typescript-eslint/eslint-plugin": "^3.5.0",
-    "@typescript-eslint/parser": "^3.5.0",
+    "@types/node": "^14.0.22",
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "eslint": "^7.3.1",
-    "ts-node-dev": "^1.0.0-pre.49",
+    "eslint": "^7.4.0",
+    "ts-node-dev": "^1.0.0-pre.51",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.6"
   }
 }
