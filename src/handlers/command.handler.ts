@@ -39,7 +39,7 @@ export class CommandHandler extends Handler {
 
     const allPrefixes = [...configPrefixes, ...userPrefixes]
 
-    if (!allPrefixes.includes(prefix)) return
+    if (!allPrefixes.includes(prefix.toLowerCase())) return
 
     if (!cmd) return
 
