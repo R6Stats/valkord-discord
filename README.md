@@ -149,3 +149,30 @@ const run = async () => {
 run()
 
 ```
+
+### Sharded Bot
+
+Larger Discord bots may require sharding, typically suggested for any bots in more than 2000 guilds. Read more about sharding [here](https://discordjs.guide/sharding/). In order to enable sharding in Valkord, a second file is necessary to create shards of the client. 
+
+The new `index` file (TypeScript or JavaScript) will create an instance of the `ValkordManager` which will handle spawning the bot's shards. No changes to the client class are necessary.
+
+```ts
+// index.ts
+
+import { ValkordFactory } from '@r6stats/valkord'
+import * as path from 'path'
+
+export const run = async (): Promise<void> => {
+  // the path should refer to the file containing your ValkordClient instance
+  await ValkordFactory.createManaged(path.join(__dirname, './client.ts'))
+}
+
+run()
+```
+
+The total number of shards and the range of shards to create can be configured in the `.env` file. 
+
+```js
+TOTAL_SHARDS=3 // total number of shards, if running more than one instance of the manager
+SHARD_RANGE=0-2 // zero-based range of shards to run on this instance, starting at 0, last shard # should be one less than the total
+```
