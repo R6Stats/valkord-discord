@@ -59,6 +59,7 @@ export class CommandHandler extends Handler {
             command.handleException(midCtx, e)
           } else {
             this.logger.log(`An error occurred while processing a command: ${e.message}`)
+            this.logger.log(e)
           }
         }
       }

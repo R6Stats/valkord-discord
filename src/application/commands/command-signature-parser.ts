@@ -2,12 +2,19 @@ import { Injectable } from '../container/decorators/injectable.decorator'
 import { ParsedCommandSignature } from '.'
 import { MissingArgumentException } from '../../exceptions/missing-argument.exception'
 import { CommandSignature } from './command-signature'
+import { ArgumentLengthException } from '../../exceptions/argument-length.exception'
 
 @Injectable()
 export class CommandSignatureParser {
   public parse (signature: CommandSignature, args: string[]): ParsedCommandSignature {
     const signatureArgs = signature.getArguments()
     const parsed = []
+
+    const requiredCount = signatureArgs.filter(a => !a.isOptional()).length
+
+    if (requiredCount > args.length) {
+      throw new ArgumentLengthException()
+    }
 
     let index = 0
     for (const arg of signatureArgs) {

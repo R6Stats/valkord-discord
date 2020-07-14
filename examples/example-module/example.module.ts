@@ -1,9 +1,10 @@
 import { ValkordModule } from '../../src/application/modules'
 import { PingCommand } from './commands/ping.command'
 import { Constructor } from '../../src/types'
-import { ValkordCommand } from '../../src/application/commands'
+import { ValkordCommand, CommandSignatureArgumentType } from '../../src/application/commands'
 import { ValkordConfig } from '../../src/application/config'
-import { ArgsCommand } from './commands/args.command'
+import { AnimalCommand } from './commands/animal.command'
+import { CommandSignatureArgumentTypeAnimal } from './commands/argument-types/animal.argument-type'
 
 export interface ExampleModuleConfigOptions {
 }
@@ -20,6 +21,10 @@ export class ExampleModule extends ValkordModule<ExampleModuleConfig> {
 
   public getCommands = (): Constructor<ValkordCommand>[] => [
     PingCommand,
-    ArgsCommand,
+    AnimalCommand,
+  ]
+
+  public getArgumentTypes = (): Constructor<CommandSignatureArgumentType>[] => [
+    CommandSignatureArgumentTypeAnimal,
   ]
 }

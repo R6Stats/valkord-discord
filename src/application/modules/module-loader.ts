@@ -28,6 +28,7 @@ export class ModuleLoader {
 
     const name = instance.getName()
     const commands = instance.getCommands()
+    const args = instance.getArgumentTypes()
     const config = instance.getConfig()
 
     this.logger.log(`Loading module ${name}...`)
@@ -35,6 +36,10 @@ export class ModuleLoader {
     if (config) {
       this.config.load(config)
       this.logger.log('Loaded module config!')
+    }
+
+    for (const arg of args) {
+      this.commands.registerArgumentType(arg)
     }
 
     for (const command of commands) {
