@@ -1,8 +1,8 @@
-import { ValkordClient } from './client'
-import { Container } from './application/container'
-import { Constructor } from './types'
 import { CommandSignatureArgumentTypeString } from './application/commands'
+import { Container } from './application/container'
+import { ValkordClient } from './client'
 import { ValkordManager } from './manager'
+import { Constructor } from './types'
 
 export const DEFAULT_ARGUMENT_TYPES = [
   CommandSignatureArgumentTypeString,

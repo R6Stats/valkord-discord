@@ -1,6 +1,6 @@
-import { Container, Injectable } from './application/container'
 import { ShardingManager } from 'discord.js'
-import { DefaultValkordConfig, ConfigLoader } from './application/config'
+import { ConfigLoader, DefaultValkordConfig } from './application/config'
+import { Container, Injectable } from './application/container'
 import { Logger } from './utils/logger'
 
 @Injectable()

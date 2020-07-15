@@ -1,8 +1,8 @@
-import { Injectable } from '../container'
-import { Container, OnModuleBoot } from '../container/container'
+import { CommandSignatureFactory, ValkordCommand } from '.'
 import { Constructor } from '../../types'
 import { Logger } from '../../utils/logger'
-import { ValkordCommand, CommandSignatureFactory } from '.'
+import { Injectable } from '../container'
+import { Container, OnModuleBoot } from '../container/container'
 import { CommandSignatureArgumentType } from './command-signature-argument-type'
 
 @Injectable()

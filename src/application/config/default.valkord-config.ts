@@ -1,6 +1,6 @@
 import { env } from '../../utils/env'
-import { ValkordConfig } from './valkord-config'
 import { Injectable } from '../container'
+import { ValkordConfig } from './valkord-config'
 
 export interface DefaultValkordConfigOptions {
   token: string

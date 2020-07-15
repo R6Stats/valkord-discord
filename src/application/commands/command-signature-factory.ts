@@ -1,5 +1,5 @@
-import { Injectable } from '../container'
 import { InvalidArgumentException } from '../../exceptions/invalid-argument.exception'
+import { Injectable } from '../container'
 import { CommandRegistrar } from './command-registrar'
 import { CommandSignature } from './command-signature'
 import { CommandSignatureArgument } from './command-signature-argument'
@@ -39,4 +39,3 @@ export class CommandSignatureFactory {
     return new CommandSignature(parsed)
   }
 }
-

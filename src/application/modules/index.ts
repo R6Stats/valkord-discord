@@ -1,2 +1,2 @@
-export * from './module-loader'
 export * from './module'
+export * from './module-loader'

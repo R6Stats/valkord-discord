@@ -1,11 +1,11 @@
-import { CommandRegistrar, ValkordCommand } from '../commands'
-import { Injectable, Container } from '../container'
-import * as path from 'path'
 import * as fs from 'fs'
-import { Logger } from '../../utils/logger'
-import { ValkordModule } from './module'
+import * as path from 'path'
 import { Constructor } from '../../types'
+import { Logger } from '../../utils/logger'
+import { CommandRegistrar, ValkordCommand } from '../commands'
 import { ConfigLoader } from '../config'
+import { Container, Injectable } from '../container'
+import { ValkordModule } from './module'
 
 export const DEFAULT_COMMANDS_DIRECTORY = 'commands'
 

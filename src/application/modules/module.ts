@@ -1,5 +1,5 @@
 import { Constructor } from '../../types'
-import { ValkordCommand, CommandSignatureArgumentType } from '../commands'
+import { CommandSignatureArgumentType, ValkordCommand } from '../commands'
 import { ValkordConfig } from '../config'
 
 export abstract class ValkordModule<C extends ValkordConfig = ValkordConfig> {

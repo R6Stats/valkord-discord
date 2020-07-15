@@ -1,11 +1,11 @@
 import { Client } from 'discord.js'
+import { CommandRegistrar } from './application/commands'
+import { ConfigLoader, DefaultValkordConfig } from './application/config'
 import { Injectable } from './application/container'
 import { Container } from './application/container/container'
-import { CommandRegistrar } from './application/commands'
-import { CommandHandler } from './handlers/command.handler'
 import { ModuleLoader } from './application/modules'
+import { CommandHandler } from './handlers/command.handler'
 import { ReadyHandler } from './handlers/ready.handler'
-import { DefaultValkordConfig, ConfigLoader } from './application/config'
 
 @Injectable()
 export class ValkordClient {

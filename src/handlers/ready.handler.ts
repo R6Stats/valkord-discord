@@ -1,8 +1,8 @@
+import { Client } from 'discord.js'
 import { Injectable } from '../application/container'
 import { ValkordClient } from '../client'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
-import { Client } from 'discord.js'
 
 @Injectable()
 export class ReadyHandler extends Handler {
