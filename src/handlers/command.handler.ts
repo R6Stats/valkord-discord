@@ -1,10 +1,10 @@
-import { Message, Client } from 'discord.js'
-import { Injectable } from '../application/container'
+import { Client, Message } from 'discord.js'
 import { CommandContext, CommandRegistrar, CommandSignatureParser, MiddlewareContext } from '../application/commands'
+import { DefaultValkordConfig } from '../application/config'
+import { Injectable } from '../application/container'
 import { ClientException } from '../exceptions/client.exception'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
-import { DefaultValkordConfig } from '../application/config'
 
 @Injectable()
 export class CommandHandler extends Handler {
@@ -29,7 +29,11 @@ export class CommandHandler extends Handler {
   }
 
   public handleMessage (message: Message): void {
-    const [prefix, cmd, ...args] = message.content.split(' ')
+    const split = message.content.split(' ')
+
+    if (split.length <= 1) return
+
+    const [prefix, cmd, ...args] = split
     const user = this.client.user
 
     if (user.id === message.author.id) return
