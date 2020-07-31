@@ -1,10 +1,10 @@
 import { ClientException } from './client.exception'
 
 export class MissingArgumentException extends ClientException {
-  private readonly argument: string
+  public readonly argument: string
 
-  public constructor (argument: string) {
-    super(`The ${argument} argument is required!`)
+  public constructor (argument: string, message: string = `The ${argument} argument is required!`) {
+    super(message)
 
     this.argument = argument
 

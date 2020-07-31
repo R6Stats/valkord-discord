@@ -5,6 +5,9 @@ import { Injectable } from '../application/container'
 import { ClientException } from '../exceptions/client.exception'
 import { Logger } from '../utils/logger'
 import { Handler } from './handler'
+import { ArgumentLengthException } from '../exceptions/argument-length.exception'
+import { InvalidArgumentException } from '../exceptions/invalid-argument.exception'
+import { MissingArgumentException } from '../exceptions/missing-argument.exception'
 
 @Injectable()
 export class CommandHandler extends Handler {
@@ -59,7 +62,9 @@ export class CommandHandler extends Handler {
 
           command.handle(ctx)
         } catch (e) {
-          if (e instanceof ClientException) {
+          if (e instanceof ArgumentLengthException || e instanceof InvalidArgumentException || e instanceof MissingArgumentException) {
+            command.help(midCtx, e)
+          } else if (e instanceof ClientException) {
             command.handleException(midCtx, e)
           } else {
             this.logger.log(`An error occurred while processing a command: ${e.message}`)

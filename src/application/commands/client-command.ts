@@ -2,6 +2,9 @@ import { Message } from 'discord.js'
 import { ClientException } from '../../exceptions/client.exception'
 import { CommandContext, MiddlewareContext } from './command-context'
 import { CommandSignature } from './command-signature'
+import { InvalidArgumentException } from '../../exceptions/invalid-argument.exception'
+import { MissingArgumentException } from '../../exceptions/missing-argument.exception'
+import { ArgumentLengthException } from '../../exceptions/argument-length.exception'
 
 export interface CommandArguments {
 }
@@ -53,6 +56,23 @@ export abstract class ValkordCommand {
    */
   public handleException (ctx: MiddlewareContext, ex: ClientException): Promise<void | Message | Message[]> {
     return ctx.reply(ex.message)
+  }
+
+  /**
+   * Override this method to provide a custom help message when an argument related exception is
+   * caught. By default, the help handler will attempt to send the `shortHelp` messsage specified
+   * in the ValkordCommand class, otherwise falling back to `this.handleException()`
+   *
+   * @param {MiddlewareContext} ctx
+   * @param {ClientException} ex
+   * @return {Promise<void | Message | Message[]>}
+   */
+  public help (ctx: MiddlewareContext, ex: InvalidArgumentException | MissingArgumentException | ArgumentLengthException): Promise<void | Message | Message[]> {
+    if (this.shortHelp && this.shortHelp.trim() !== '') {
+      return ctx.reply(this.shortHelp)
+    }
+
+    return this.handleException(ctx, ex)
   }
 }
 

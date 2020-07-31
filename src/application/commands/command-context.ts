@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js'
+import { Message, MessageOptions, StringResolvable, MessageEmbed } from 'discord.js'
 import { ParsedCommandSignature } from './parsed-command-signature'
 
 export class MiddlewareContext {
@@ -12,9 +12,15 @@ export class MiddlewareContext {
     this.args = args
   }
 
-  public async reply (message: Message | MessageEmbed | string): Promise<Message> {
-    if (this.message.guild && !this.message.guild.me.permissionsIn(this.message.channel).has('SEND_MESSAGES')) {
+  public async reply (message: MessageOptions | StringResolvable | MessageEmbed): Promise<Message> {
+    if ((this.message.guild && !this.message.guild.me.permissionsIn(this.message.channel).has('SEND_MESSAGES')) || !this.message.guild) {
+      if (message.constructor.name === 'MessageEmbed') {
+        return this.message.author.send({ embed: message })
+      }
+
       return this.message.author.send(message)
+    } else if (message.constructor.name === 'MessageEmbed') {
+      return this.message.channel.send({ embed: message, content: `<@${this.message.author.id}>,` })
     }
 
     return this.message.reply(message)
